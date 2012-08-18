@@ -15,65 +15,6 @@ namespace game {
 
 
 
-	Glex::Glex() {
-		_nearView = 1.0f;
-		_farView = 50.0f;
-		_height = -1.0f;
-		_width = 0;
-		glActiveTextureARB = 0;
-		glGenFramebuffersEXT = 0;
-		glBindFramebufferEXT = 0;
-		glFramebufferTexture2DEXT = 0;
-		glCheckFramebufferStatusEXT	= 0;
-		glCreateShader = 0;
-		glCompileShader = 0;
- 		glShaderSource = 0;
-		glGetShaderiv = 0;
-		glDeleteShader = 0;
-		glGetGetShaderInfoLog = 0;
-		glCreateProgramObjectARB = 0;
-		glUseProgramObjectARB = 0;
-		glCreateShaderObjectARB = 0;
-		glShaderSourceARB = 0;
-		glCompileShaderARB = 0;
-		glGetObjectParameterivARB = 0;
-		glAttachObjectARB = 0;
-		glGetInfoLogARB = 0;
-		glLinkProgramARB = 0;
-		glGetUniformLocationARB = 0;
-		glUniform1iARB = 0;
-	}
-
-	void Glex::assignFunctionPointers()
-	{
-		// FBO
-		glActiveTextureARB = (PFNGLACTIVETEXTUREARBPROC)getGLProc("glActiveTextureARB");
-		glGenFramebuffersEXT		= (PFNGLGENFRAMEBUFFERSEXTPROC)		getGLProc("glGenFramebuffersEXT");
-		glBindFramebufferEXT		= (PFNGLBINDFRAMEBUFFEREXTPROC)		getGLProc("glBindFramebufferEXT");
-		glFramebufferTexture2DEXT	= (PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)getGLProc("glFramebufferTexture2DEXT");
-		glCheckFramebufferStatusEXT	= (PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)getGLProc("glCheckFramebufferStatusEXT");
-
-		// Shaders
-		glCreateShader = (PFNGLCREATESHADERPROC) getGLProc("glCreateShader");
-		glCompileShader = (PFNGLCOMPILESHADERPROC) getGLProc("glCompileShader");
-		glShaderSource = (PFNGLSHADERSOURCEPROC) getGLProc("glShaderSource");
-		glGetShaderiv = (PFNGLGETSHADERIVPROC) getGLProc("glGetShaderiv");
-		glDeleteShader = (PFNGLDELETESHADERPROC) getGLProc("glDeleteShader");
-		glGetGetShaderInfoLog = (PFNGLGETSHADERINFOLOGPROC) getGLProc("glGetShaderInfoLog");
-		glCreateProgramObjectARB = (PFNGLCREATEPROGRAMOBJECTARBPROC)getGLProc("glCreateProgramObjectARB");
-		glUseProgramObjectARB = (PFNGLUSEPROGRAMOBJECTARBPROC)getGLProc("glUseProgramObjectARB");
-		glCreateShaderObjectARB = (PFNGLCREATESHADEROBJECTARBPROC)getGLProc("glCreateShaderObjectARB");
-		glShaderSourceARB = (PFNGLSHADERSOURCEARBPROC)getGLProc("glShaderSourceARB");
-		glCompileShaderARB = (PFNGLCOMPILESHADERARBPROC)getGLProc("glCompileShaderARB");
-		glGetObjectParameterivARB = (PFNGLGETOBJECTPARAMETERIVARBPROC)getGLProc("glGetObjectParameterivARB");
-		glAttachObjectARB = (PFNGLATTACHOBJECTARBPROC)getGLProc("glAttachObjectARB");
-		glGetInfoLogARB = (PFNGLGETINFOLOGARBPROC)getGLProc("glGetInfoLogARB");
-		glLinkProgramARB = (PFNGLLINKPROGRAMARBPROC)getGLProc("glLinkProgramARB");
-		glGetUniformLocationARB = (PFNGLGETUNIFORMLOCATIONARBPROC)getGLProc("glGetUniformLocationARB");
-		glUniform1iARB = (PFNGLUNIFORM1IARBPROC)getGLProc("glUniform1iARB");
-
-	}
-
 
 	bool Glex::hasExtensions(const char * extension, ...) {
 		std::string extensions((const char*) glGetString(GL_EXTENSIONS));
@@ -132,14 +73,42 @@ namespace game {
 		throw systemex::runtime_error_ex("%s (%d)",error,code);
 	}
 
-	void Glex::initialise(int width, int height) {
+	Glex::Glex(int width, int height) {
+		_nearView = 1.0f;
+		_farView = 50.0f;
+		_height = -1.0f;
 		_width = width;
 		_height = height;
 		std::string version( (const char *) glGetString(GL_VERSION));
 		LOG << "Running OpenGL Version " << version;
 		if (version[0] < '3')
 			throw std::runtime_error("Needs OpenGL version 3.0.0 or later");
-		assignFunctionPointers();
+		// FBO
+		glActiveTextureARB = (PFNGLACTIVETEXTUREARBPROC)getGLProc("glActiveTextureARB");
+		glGenFramebuffersEXT		= (PFNGLGENFRAMEBUFFERSEXTPROC)		getGLProc("glGenFramebuffersEXT");
+		glBindFramebufferEXT		= (PFNGLBINDFRAMEBUFFEREXTPROC)		getGLProc("glBindFramebufferEXT");
+		glFramebufferTexture2DEXT	= (PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)getGLProc("glFramebufferTexture2DEXT");
+		glCheckFramebufferStatusEXT	= (PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)getGLProc("glCheckFramebufferStatusEXT");
+
+		// Shaders
+		glCreateShader = (PFNGLCREATESHADERPROC) getGLProc("glCreateShader");
+		glCompileShader = (PFNGLCOMPILESHADERPROC) getGLProc("glCompileShader");
+		glShaderSource = (PFNGLSHADERSOURCEPROC) getGLProc("glShaderSource");
+		glGetShaderiv = (PFNGLGETSHADERIVPROC) getGLProc("glGetShaderiv");
+		glDeleteShader = (PFNGLDELETESHADERPROC) getGLProc("glDeleteShader");
+		glGetGetShaderInfoLog = (PFNGLGETSHADERINFOLOGPROC) getGLProc("glGetShaderInfoLog");
+		glCreateProgramObjectARB = (PFNGLCREATEPROGRAMOBJECTARBPROC)getGLProc("glCreateProgramObjectARB");
+		glUseProgramObjectARB = (PFNGLUSEPROGRAMOBJECTARBPROC)getGLProc("glUseProgramObjectARB");
+		glCreateShaderObjectARB = (PFNGLCREATESHADEROBJECTARBPROC)getGLProc("glCreateShaderObjectARB");
+		glShaderSourceARB = (PFNGLSHADERSOURCEARBPROC)getGLProc("glShaderSourceARB");
+		glCompileShaderARB = (PFNGLCOMPILESHADERARBPROC)getGLProc("glCompileShaderARB");
+		glGetObjectParameterivARB = (PFNGLGETOBJECTPARAMETERIVARBPROC)getGLProc("glGetObjectParameterivARB");
+		glAttachObjectARB = (PFNGLATTACHOBJECTARBPROC)getGLProc("glAttachObjectARB");
+		glGetInfoLogARB = (PFNGLGETINFOLOGARBPROC)getGLProc("glGetInfoLogARB");
+		glLinkProgramARB = (PFNGLLINKPROGRAMARBPROC)getGLProc("glLinkProgramARB");
+		glGetUniformLocationARB = (PFNGLGETUNIFORMLOCATIONARBPROC)getGLProc("glGetUniformLocationARB");
+		glUniform1iARB = (PFNGLUNIFORM1IARBPROC)getGLProc("glUniform1iARB");
+
 		/* Our shading model--Gouraud (smooth). */
 		glShadeModel(GL_SMOOTH);
 		/* Culling. */
@@ -154,6 +123,8 @@ namespace game {
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		updatePerspective();
+
+
 	}
 
 	void Glex::setViewRange(const float& nearV, const float& farV) {
@@ -195,11 +166,11 @@ namespace game {
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		check(SDL_SetVideoMode(width, height, bpp, flags));
-		instance.initialise(width, height);
+		instance_p =  Glex::u_ptr(new Glex(width, height));
 	}
 
 	Glex& DrawContext::gl() {
-		return instance;
+		return *instance_p;
 	}
 
 	DrawContext::~DrawContext() {
@@ -208,18 +179,15 @@ namespace game {
 
 	void GameObjectWithParts::collect(std::deque<GameObject *> &c) {
 		c.push_back(this);
-		for_each(it,parts)
+		for_each(it,_parts)
 			(*it)->collect(c);
 	}
 
 	void GameObjectWithParts::update(const UpdateContext &context) {
-		for_each(it,parts)
+		for_each(it,_parts)
 			(*it)->update(context);
 	}
 
-	GameObjectWithParts::~GameObjectWithParts() {
-		systemex::delete_all(parts);
-	}
 
 	/// targetUpdateDelay : milliseconds to update
 	UpdateContext::UpdateContext(time targetUpdateDelay, time drawUpdateDelay) :

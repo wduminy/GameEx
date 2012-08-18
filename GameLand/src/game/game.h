@@ -4,6 +4,8 @@
 #include "../systemex/systemex.h"
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
+#include <forward_list>
+#include <memory>
 
 namespace game {
 	typedef uint32_t time;
@@ -41,16 +43,16 @@ namespace game {
 			void throw_error();
 			void setViewRange(const float&, const float&);
 		private:
-			Glex();
+			Glex(int width, int height);
 			// NB: terminate arg list with NULL
 			bool hasExtensions(const char * extension, ...);
-			void initialise(int width, int height);
 			void updatePerspective();
-			void assignFunctionPointers();
 			GLdouble _nearView;
 			GLdouble _farView;
 			GLfloat _width;
 			GLfloat _height;
+		public:
+			typedef std::unique_ptr<Glex> u_ptr;
 	};
 
 	class ResourceContext {
@@ -89,17 +91,15 @@ namespace game {
 	};
 
 	class DrawContext {
-		PREVENT_COPY(DrawContext)
 		public:
 			DrawContext(const bool fullscreen, const int width, const int height);
 			~DrawContext();
 			Glex& gl();
 		private:
-			Glex instance;
+			Glex::u_ptr instance_p;
 	};
 
 	class GameObject {
-		PREVENT_COPY(GameObject)
 		public:
 			GameObject(int drawOrder = 0) :	_drawOrder(drawOrder) {}
 			;
@@ -122,6 +122,8 @@ namespace game {
 			}
 		private:
 			const int _drawOrder;
+		public:
+			typedef std::unique_ptr<GameObject> u_ptr;
 	};
 
 	class GameObjectWithParts: public GameObject {
@@ -132,19 +134,17 @@ namespace game {
 			;
 			// initialises all the parts
 			virtual void initialise(const ResourceContext &context) {
-				for_all_m(parts, GameObject::initialise, context);
+				for_each(p,_parts) (*p)->initialise(context);
 			}
 			;
 			void update(const UpdateContext &context);
-			// receiver owns the object
-			void addObject(GameObject *object) {
-				parts.push_back(object);
+			void add_part(GameObject::u_ptr object) {
+				_parts.emplace_after(_parts.before_begin(), std::move(object));
 			}
 			;
-			virtual ~GameObjectWithParts();
 			void collect(std::deque<GameObject*> &c);
 		protected:
-			std::list<GameObject *> parts;
+			std::forward_list<GameObject::u_ptr> _parts;
 
 	};
 
