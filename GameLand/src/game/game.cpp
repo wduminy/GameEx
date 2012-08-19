@@ -1,140 +1,8 @@
 #include "game.h"
-#include <GL/gl.h>
-#include <GL/glu.h>
 #include "../systemex/log.h"
 #include <windows.h>
 
 namespace game {
-
-	PROC getGLProc(const char * name) {
-		PROC result = wglGetProcAddress(name);
-		if (!result)
-			systemex::throw_LastError(name);
-		return result;
-	}
-
-
-
-
-	bool Glex::hasExtensions(const char * extension, ...) {
-		std::string extensions((const char*) glGetString(GL_EXTENSIONS));
-		const char * ext = extension;
-		bool result = true;
-		va_list args;
-		va_start(args, extension);
-		do {
-			if (extensions.find(ext) == std::string::npos) {
-				LOG << "GL Does not support: " << ext;
-				result = false;
-			} else
-				LOG << "GL Supports: " << ext;
-			ext = va_arg(args, const char *);
-		} while (ext != NULL);va_end(args);
-		return result;
-	}
-
-	void Glex::updatePerspective() {
-		if (_height < 0.0f)
-			throw std::runtime_error("height has not been set");
-		float ratio = _width / _height;
-		glLoadIdentity(); // load identity because we want to 'reset' the perspective
-		gluPerspective(60.0, ratio, _nearView, _farView);
-	}
-
-	void Glex::throw_error() {
-		auto code = glGetError();
-		const char * error;
-		switch (code) {
-		case GL_INVALID_ENUM:
-			error = "An unacceptable value is specified for an enumerated argument. The offending command is ignored and has no other side effect than to set the error flag.";
-			break;
-		case GL_INVALID_VALUE:
-			error = "A numeric argument is out of range. The offending command is ignored and has no other side effect than to set the error flag.";
-			break;
-		case GL_INVALID_OPERATION:
-			error = "The specified operation is not allowed in the current state. The offending command is ignored and has no other side effect than to set the error flag.";
-			break;
-		case GL_STACK_OVERFLOW:
-			error = "This command would cause a stack overflow. The offending command is ignored and has no other side effect than to set the error flag.";
-			break;
-		case GL_STACK_UNDERFLOW:
-			error = "This command would cause a stack underflow. The offending command is ignored and has no other side effect than to set the error flag.";
-			break;
-		case GL_OUT_OF_MEMORY:
-			error = "There is not enough memory left to execute the command. The state of the GL is undefined, except for the state of the error flags, after this error is recorded.";
-			break;
-		case GL_TABLE_TOO_LARGE:
-			error = "The specified table exceeds the implementation's maximum supported table size. The offending command is ignored and has no other side effect than to set the error flag.";
-			break;
-		default:
-			error = "An undefined error occurred";
-			break;
-		}
-		throw systemex::runtime_error_ex("%s (%d)",error,code);
-	}
-
-	Glex::Glex(int width, int height) {
-		_nearView = 1.0f;
-		_farView = 50.0f;
-		_height = -1.0f;
-		_width = width;
-		_height = height;
-		std::string version( (const char *) glGetString(GL_VERSION));
-		LOG << "Running OpenGL Version " << version;
-		if (version[0] < '3')
-			throw std::runtime_error("Needs OpenGL version 3.0.0 or later");
-		// FBO
-		glActiveTextureARB = (PFNGLACTIVETEXTUREARBPROC)getGLProc("glActiveTextureARB");
-		glGenFramebuffersEXT		= (PFNGLGENFRAMEBUFFERSEXTPROC)		getGLProc("glGenFramebuffersEXT");
-		glBindFramebufferEXT		= (PFNGLBINDFRAMEBUFFEREXTPROC)		getGLProc("glBindFramebufferEXT");
-		glFramebufferTexture2DEXT	= (PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)getGLProc("glFramebufferTexture2DEXT");
-		glCheckFramebufferStatusEXT	= (PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)getGLProc("glCheckFramebufferStatusEXT");
-
-		// Shaders
-		glCreateShader = (PFNGLCREATESHADERPROC) getGLProc("glCreateShader");
-		glCompileShader = (PFNGLCOMPILESHADERPROC) getGLProc("glCompileShader");
-		glShaderSource = (PFNGLSHADERSOURCEPROC) getGLProc("glShaderSource");
-		glGetShaderiv = (PFNGLGETSHADERIVPROC) getGLProc("glGetShaderiv");
-		glDeleteShader = (PFNGLDELETESHADERPROC) getGLProc("glDeleteShader");
-		glGetGetShaderInfoLog = (PFNGLGETSHADERINFOLOGPROC) getGLProc("glGetShaderInfoLog");
-		glCreateProgramObjectARB = (PFNGLCREATEPROGRAMOBJECTARBPROC)getGLProc("glCreateProgramObjectARB");
-		glUseProgramObjectARB = (PFNGLUSEPROGRAMOBJECTARBPROC)getGLProc("glUseProgramObjectARB");
-		glCreateShaderObjectARB = (PFNGLCREATESHADEROBJECTARBPROC)getGLProc("glCreateShaderObjectARB");
-		glShaderSourceARB = (PFNGLSHADERSOURCEARBPROC)getGLProc("glShaderSourceARB");
-		glCompileShaderARB = (PFNGLCOMPILESHADERARBPROC)getGLProc("glCompileShaderARB");
-		glGetObjectParameterivARB = (PFNGLGETOBJECTPARAMETERIVARBPROC)getGLProc("glGetObjectParameterivARB");
-		glAttachObjectARB = (PFNGLATTACHOBJECTARBPROC)getGLProc("glAttachObjectARB");
-		glGetInfoLogARB = (PFNGLGETINFOLOGARBPROC)getGLProc("glGetInfoLogARB");
-		glLinkProgramARB = (PFNGLLINKPROGRAMARBPROC)getGLProc("glLinkProgramARB");
-		glGetUniformLocationARB = (PFNGLGETUNIFORMLOCATIONARBPROC)getGLProc("glGetUniformLocationARB");
-		glUniform1iARB = (PFNGLUNIFORM1IARBPROC)getGLProc("glUniform1iARB");
-
-		/* Our shading model--Gouraud (smooth). */
-		glShadeModel(GL_SMOOTH);
-		/* Culling. */
-		glCullFace(GL_BACK);
-		glFrontFace(GL_CCW);
-		glEnable(GL_CULL_FACE);
-		glEnable(GL_DEPTH_TEST);
-		/* Set the clear color. */
-		glClearColor(0.15, 0.15, 0.3, 0);
-		/* Setup our viewport. */
-		glViewport(0, 0, width, height);
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		updatePerspective();
-
-
-	}
-
-	void Glex::setViewRange(const float& nearV, const float& farV) {
-		if (farV <= nearV)
-			throw std::runtime_error("near must be smaller than far");
-		_nearView = nearV;
-		_farView = farV;
-		updatePerspective();
-	}
-
 	void check(int sdl_result) {
 		if (sdl_result != 0)
 			throw systemex::runtime_error_ex("SDL call returned %d, error:%s",
@@ -169,7 +37,7 @@ namespace game {
 		instance_p =  Glex::u_ptr(new Glex(width, height));
 	}
 
-	Glex& DrawContext::gl() {
+	Glex& DrawContext::gl() const {
 		return *instance_p;
 	}
 
@@ -232,21 +100,19 @@ namespace game {
 			draw = false;
 	}
 
-	Game::Game(MainObject * primaryPart, UpdateContext * update,
+	Game::Game(MainObject::u_ptr primaryPart, UpdateContext * update,
 			DrawContext * draw, ResourceContext * resource) :
-			primary(primaryPart), update_ctx(update), draw_ctx(draw), resource_ctx(
+			primary(std::move(primaryPart)), update_ctx(update), draw_ctx(draw), resource_ctx(
 					resource) {
 	}
 
 	Game::~Game() {
-		delete primary;
 		delete resource_ctx;
 		delete update_ctx;
 		delete draw_ctx;
 	}
 	void Game::run() {
-		primary->initialise(*resource_ctx);
-		primary->initialiseDraw(*draw_ctx);
+		primary->initialise(*resource_ctx, *draw_ctx);
 		std::deque<GameObject *> objects;
 		primary->collect(objects);
 		// to fix draw order, sort the object
@@ -298,4 +164,23 @@ namespace game {
 		glLoadIdentity();
 	}
 
+	const std::string RESOURCE_PATH("media/");
+
+	ResourceContext::ResourceContext(const string& subDirectory) : _root_directory(RESOURCE_PATH + subDirectory) {
+		if (_root_directory.back() != '/')
+			throw systemex::runtime_error_ex("subDirectory (%s) must end with '/'", subDirectory.c_str());
+	}
+
+	SDL_Surface_u_ptr ResourceContext::load_BMP(const char * filename) const {
+		auto fullname = _root_directory + filename;
+		SDL_Surface_u_ptr result(SDL_LoadBMP(fullname.c_str()));
+		if (result.get() == 0)
+			throw systemex::runtime_error_ex("could not load '%s'", fullname.c_str());
+		return result;
+	}
+
+	string ResourceContext::load_text(const char * filename) const {
+		auto fullname = _root_directory + filename;
+		return systemex::string_from_file(fullname.c_str());
+	}
 }

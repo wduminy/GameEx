@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <functional>
 #include <list>
+#include <memory>
 #define PREVENT_COPY(X) private: X(const X &source); X & operator=(const X&);
 #define ENSURE(P,M) if (!(P)) throw std::runtime_error(M)
 #define for_all_m(C,F,A) systemex::for_all(C,std::bind2nd(std::mem_fun(&F),A))

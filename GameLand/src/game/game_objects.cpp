@@ -5,9 +5,9 @@ namespace game {
 
 	TriangleStrip::TriangleStrip(const int numberOfTriangles)  {
 		auto size = (numberOfTriangles+2)*3;
-		_verts = new GLfloat[size];
-		_ins = _verts;
-		_end = _verts + size;
+		_verts = std::unique_ptr<GLfloat[]>(new GLfloat[size]);
+		_ins = _verts.get();
+		_end = _verts.get() + size;
 		_it = _ins;
 	}
 	void TriangleStrip::push_back(const GLfloat& x, const GLfloat& y, const GLfloat& z) {
@@ -16,10 +16,6 @@ namespace game {
 		*(_ins++) = x;
 		*(_ins++) = y;
 		*(_ins++) = z;
-	}
-
-	TriangleStrip::~TriangleStrip() {
-		delete[] _verts;
 	}
 
 	void TriangleStrip::push_back3f(const GLfloat* xyz) {

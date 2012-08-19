@@ -6,7 +6,6 @@ namespace duality {
 	class DualityScene: public game::MainObject {
 	public:
 		DualityScene();
-		virtual ~DualityScene();
 	};
 
 }

@@ -26,7 +26,7 @@ class Arena : public game::GameObject {
 public:
 	Arena() : _strip(2) {};
 
-	void initialise(const ResourceContext &) override {
+	void initialise(const ResourceContext &ctx, const DrawContext &draw) override {
 		const float arenaHalf = 2.0f;
 		const float floorLevl = 0.0f;
 		static GLfloat leftBack[] = { -arenaHalf, floorLevl, -arenaHalf };
@@ -37,16 +37,19 @@ public:
 		_strip.push_back3f(rightFront);
 		_strip.push_back3f(leftBack);
 		_strip.push_back3f(rightBack);
+		_program_p = ShaderProgram::u_ptr(new ShaderProgram(draw.gl()));
+		_program_p->bind(ctx.load_text("arena.vert"), ctx.load_text("arena.frag"));
 	}
 
-	void draw(const DrawContext&) override {
+	void draw(const DrawContext& draw) override {
 		glBegin(GL_TRIANGLE_STRIP);
 		drawTriangles(_strip);
 		glEnd();
 	}
 
 private:
-	game::TriangleStrip _strip;
+	TriangleStrip _strip;
+	ShaderProgram::u_ptr _program_p;
 };
 
 
@@ -55,7 +58,5 @@ DualityScene::DualityScene() : MainObject(-100) {
 	add_part(GameObject::u_ptr(new SphereCamera(drawOrder() + 1)));
 }
 
-DualityScene::~DualityScene() {
-}
 
 }

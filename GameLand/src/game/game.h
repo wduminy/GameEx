@@ -1,62 +1,27 @@
 #pragma once
 #include <list>
 #include <deque>
-#include "../systemex/systemex.h"
-#include <SDL/SDL.h>
-#include <SDL/SDL_opengl.h>
 #include <forward_list>
-#include <memory>
+#include "gl_objects.h"
 
 namespace game {
 	typedef uint32_t time;
 	using std::string;
 
-	// openGL extensions and helpers
-	class Glex {
-		PREVENT_COPY(Glex)
-		friend class DrawContext;
-		public:
-			// FrameBuffer (FBO) gen, bin and texturebind
-			PFNGLGENFRAMEBUFFERSEXTPROC glGenFramebuffersEXT;
-			PFNGLBINDFRAMEBUFFEREXTPROC glBindFramebufferEXT;
-			PFNGLFRAMEBUFFERTEXTURE2DEXTPROC glFramebufferTexture2DEXT;
-			PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC glCheckFramebufferStatusEXT;
-			// Shader functions
-			PFNGLCREATESHADERPROC glCreateShader;
-			PFNGLCOMPILESHADERPROC glCompileShader;
-			PFNGLGETSHADERIVPROC glGetShaderiv;
-			PFNGLDELETESHADERPROC glDeleteShader;
-			PFNGLGETSHADERINFOLOGPROC glGetGetShaderInfoLog;
-			PFNGLSHADERSOURCEPROC glShaderSource;
-			PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;
-			PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
-			PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObjectARB;
-			PFNGLSHADERSOURCEARBPROC glShaderSourceARB;
-			PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
-			PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameterivARB;
-			PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
-			PFNGLLINKPROGRAMARBPROC glLinkProgramARB;
-			PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocationARB;
-			PFNGLUNIFORM1IARBPROC glUniform1iARB;
-			PFNGLACTIVETEXTUREARBPROC glActiveTextureARB;
-			PFNGLGETINFOLOGARBPROC glGetInfoLogARB;
-			void throw_error();
-			void setViewRange(const float&, const float&);
-		private:
-			Glex(int width, int height);
-			// NB: terminate arg list with NULL
-			bool hasExtensions(const char * extension, ...);
-			void updatePerspective();
-			GLdouble _nearView;
-			GLdouble _farView;
-			GLfloat _width;
-			GLfloat _height;
-		public:
-			typedef std::unique_ptr<Glex> u_ptr;
-	};
+
+	typedef std::unique_ptr<SDL_Surface> SDL_Surface_u_ptr;
 
 	class ResourceContext {
-
+	public:
+		/**
+		 *
+		 * @param subDirectory must have a '/' at the end
+		 */
+		ResourceContext(const string& subDirectory = "");
+		SDL_Surface_u_ptr load_BMP(const char * filename) const;
+		string load_text(const char * filename) const;
+	private:
+		const string _root_directory;
 	};
 
 	class UpdateContext {
@@ -94,7 +59,7 @@ namespace game {
 		public:
 			DrawContext(const bool fullscreen, const int width, const int height);
 			~DrawContext();
-			Glex& gl();
+			Glex& gl() const;
 		private:
 			Glex::u_ptr instance_p;
 	};
@@ -103,7 +68,7 @@ namespace game {
 		public:
 			GameObject(int drawOrder = 0) :	_drawOrder(drawOrder) {}
 			;
-			virtual void initialise(const ResourceContext &) {}
+			virtual void initialise(const ResourceContext & rctx, const DrawContext& dctx) {}
 			;
 			/** draw only this, not children */
 			virtual void draw(const DrawContext& gc) = 0;
@@ -133,8 +98,8 @@ namespace game {
 			}
 			;
 			// initialises all the parts
-			virtual void initialise(const ResourceContext &context) {
-				for_each(p,_parts) (*p)->initialise(context);
+			virtual void initialise(const ResourceContext &rctx, const DrawContext& dctx) override {
+				for_each(p,_parts) (*p)->initialise(rctx,dctx);
 			}
 			;
 			void update(const UpdateContext &context);
@@ -164,25 +129,27 @@ namespace game {
 			}
 			;
 			void draw(const DrawContext&);
-			// initialise the draw context. called once before the game starts
-			virtual void initialiseDraw(DrawContext &) {}
 		private:
 			bool running;
+
+		public:
+			typedef std::unique_ptr<MainObject> u_ptr;
+
 	};
 
 	class Game {
 		PREVENT_COPY(Game)
 		public:
 			// the game owns these 'pointers'
-			Game(MainObject * primaryPart,
-					UpdateContext * update = new UpdateContext(100), DrawContext * draw =
-							new DrawContext(false, 640, 480), ResourceContext * resource =
-							new ResourceContext());
+			Game(MainObject::u_ptr primaryPart,
+				UpdateContext * update = new UpdateContext(100),
+				DrawContext * draw = new DrawContext(false, 640, 480),
+				ResourceContext * resource = new ResourceContext(""));
 			// the game runs until primary is dead
 			void run();
 			~Game();
 		private:
-			MainObject * primary;
+			MainObject::u_ptr primary;
 			UpdateContext * update_ctx;
 			DrawContext * draw_ctx;
 			ResourceContext * resource_ctx;

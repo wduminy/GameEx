@@ -4,9 +4,6 @@
 #pragma once
 namespace game {
 
-	class VertexBuffer {
-	};
-
   // triangles are specified anti-clockwise
 	class TriangleStrip {
 			PREVENT_COPY(TriangleStrip);
@@ -14,12 +11,11 @@ namespace game {
 			TriangleStrip(const int numberOfTriangles);
 			void push_back(const GLfloat& x, const GLfloat& y, const GLfloat& z);
 			void push_back3f(const GLfloat* xyz);
-			void reset() const {_it = _verts;}
+			void reset() const {_it = _verts.get();}
 			bool at_end() const {return _it >= _ins;}
 			void draw() const {glVertex3fv(_it);_it+=3;}
-			~TriangleStrip();
 		private:
-			GLfloat * _verts;
+			std::unique_ptr<GLfloat []> _verts;
 			mutable GLfloat * _it;
 			GLfloat * _ins;
 			GLfloat * _end;
@@ -36,6 +32,8 @@ namespace game {
 			double _theta;
 			double _delta;
 	};
+
+
 }
 
 

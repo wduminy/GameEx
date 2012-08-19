@@ -1,6 +1,6 @@
 // see licence.txt
 #include "../testex/test_util.h"
-#include "shader.h"
+#include "game.h"
 #include "game_math.h"
 
 #define TEST template<> template<> void test_group<gamedata>::object::test
@@ -20,14 +20,8 @@ namespace tut {
 
 	TEST<1>() {
 		DrawContext ctx(false,10,10);
-		ShaderProgram p(ctx);
-		try {
-			p.load("hello","there");
-			fail("exception not thrown");
-		} catch (std::runtime_error &ex) {
-			ensure_contains(ex,"syntax error");
-		}
-
+		ShaderProgram p(ctx.gl());
+		ensure_error(p.bind("hello","there"),"syntax error");
 	}
 
 	TEST<2>() {
@@ -106,4 +100,23 @@ namespace tut {
 		ensure_equals("rs*rt*rt*rx*ry",Vector(2,2,4), (rs*rt*rt*rx*ry)*u);
 	}
 
+	TEST<8>() {
+		set_test_name("load bmp");
+		ResourceContext ctx;
+		ctx.load_BMP("test.BMP");
+	}
+
+	TEST<9>() {
+		set_test_name("load BMP fails");
+		ResourceContext ctx;
+		ensure_error(ctx.load_BMP("_not_a_name.bmp"),"name.bmp");
+	}
+
+	TEST<10>() {
+		set_test_name("load opengl surface");
+		ResourceContext ctx;
+		auto surface = ctx.load_BMP("test.BMP");
+		Texture t;
+		t.bind(*surface);
+	}
 }
