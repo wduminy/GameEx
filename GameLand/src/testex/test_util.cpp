@@ -1,4 +1,7 @@
-// see licence.txt
+/**
+ * Copyright 2012 Willem Duminy
+ * See LICENCE.txt
+ */
 
 #include "test_util.h"
 #include <cstring>

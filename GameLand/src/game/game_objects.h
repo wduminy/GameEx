@@ -1,4 +1,7 @@
-// see licence.txt
+/**
+ * Copyright 2012 Willem Duminy
+ * See LICENCE.txt
+ */
 #include "game.h"
 #include <array>
 #pragma once

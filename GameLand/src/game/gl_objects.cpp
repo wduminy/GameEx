@@ -1,4 +1,7 @@
-// see licence.txt
+/**
+ * Copyright 2012 Willem Duminy
+ * See LICENCE.txt
+ */
 #include "gl_objects.h"
 #include "../systemex/log.h"
 

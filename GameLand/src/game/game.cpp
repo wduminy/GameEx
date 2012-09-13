@@ -1,3 +1,7 @@
+/**
+ * Copyright 2012 Willem Duminy
+ * See LICENCE.txt
+ */
 #include "game.h"
 #include "../systemex/log.h"
 #include <windows.h>

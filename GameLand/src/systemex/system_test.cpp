@@ -1,3 +1,7 @@
+/**
+ * Copyright 2012 Willem Duminy
+ * See LICENCE.txt
+ */
 #include <tut/tut.hpp>
 #include "systemex.h"
 /**

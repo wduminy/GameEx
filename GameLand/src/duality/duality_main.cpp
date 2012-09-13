@@ -1,3 +1,7 @@
+/**
+ * Copyright 2012 Willem Duminy
+ * See LICENCE.txt
+ */
 #include "main_scene.h"
 #include "../systemex/log.h"
 #include <iostream>

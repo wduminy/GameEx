@@ -1,3 +1,7 @@
+/**
+ * Copyright 2012 Willem Duminy
+ * See LICENCE.txt
+ */
 #ifdef TEST
 #include <tut/tut.hpp>
 #include <tut/tut_reporter.hpp>

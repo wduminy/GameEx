@@ -1,3 +1,7 @@
+/**
+ * Copyright 2012 Willem Duminy
+ * See LICENCE.txt
+ */
 #include "../game/game_objects.h"
 #include "main_scene.h"
 namespace duality {

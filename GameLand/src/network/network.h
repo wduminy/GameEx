@@ -1,3 +1,7 @@
+/**
+ * Copyright 2012 Willem Duminy
+ * See LICENCE.txt
+ */
 #pragma once
 #include <winsock2.h>
 #include "../systemex/systemex.h"

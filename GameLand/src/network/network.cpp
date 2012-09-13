@@ -1,6 +1,8 @@
+/**
+ * Copyright 2012 Willem Duminy
+ * See LICENCE.txt
+ */
 #include "network.h"
-
-
 
 namespace network {
 
