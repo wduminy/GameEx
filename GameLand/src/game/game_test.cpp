@@ -120,8 +120,9 @@ namespace tut {
 	TEST<10>() {
 		set_test_name("load opengl surface");
 		ResourceContext ctx;
+		DrawContext dx(false,10,10);
 		auto surface = ctx.load_BMP("test.BMP");
-		Texture t;
-		t.bind(*surface);
+		Texture t(dx.gl());
+		t.copy_from(*surface);
 	}
 }

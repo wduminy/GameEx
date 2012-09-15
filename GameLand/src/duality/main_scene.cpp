@@ -28,7 +28,7 @@ void drawTriangles(const TriangleStrip& strip) {
 
 class Arena : public game::GameObject {
 public:
-	Arena() : _strip(2),_program_p() {};
+	Arena() : _strip(2),_program_p(),_tex_p() {};
 
 	void initialise(const ResourceContext &ctx, const DrawContext &draw) override {
 		const float arenaHalf = 2.0f;
@@ -43,18 +43,24 @@ public:
 		_strip.push_back3f(rightBack);
 		_program_p = ShaderProgram::u_ptr(new ShaderProgram(draw.gl()));
 		_program_p->bind(ctx.load_text("arena.vert"), ctx.load_text("arena.frag"));
+		_tex_p = Texture::u_ptr(new Texture(draw.gl()));
+		_tex_p->copy_from(*ctx.load_BMP("../test.bmp"));
+        _tex_p->activate(GL_TEXTURE0);
 	}
 
 	void draw(const DrawContext& draw) override {
+        _program_p->begin();
+        _program_p->arg("tex",0);
 		glBegin(GL_TRIANGLE_STRIP);
-// TODO (willemd#1#): use test shader
 		drawTriangles(_strip);
 		glEnd();
+		_program_p->end();
 	}
 
 private:
 	TriangleStrip _strip;
 	ShaderProgram::u_ptr _program_p;
+	Texture::u_ptr _tex_p;
 };
 
 

@@ -34,7 +34,10 @@ namespace game {
 			PFNGLLINKPROGRAMPROC glLinkProgram;
 			PFNGLGETPROGRAMIVPROC glGetProgramiv;
 			PFNGLDELETEPROGRAMPROC glDeleteProgram;
-			void throw_error();
+			PFNGLACTIVETEXTUREPROC glActiveTexture;
+			PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
+			PFNGLUNIFORM1IPROC glUniform1i;
+			void check_error();
 			void setViewRange(const float&, const float&);
 		private:
 			// NB: terminate arg list with NULL
@@ -52,11 +55,15 @@ namespace game {
 	class Texture {
 		PREVENT_COPY(Texture)
 	public:
-		Texture();
-		void bind(SDL_Surface& surface);
+		Texture(Glex &context);
+		void copy_from(SDL_Surface& surface);
+		void activate(const GLenum gl_texture);
 		~Texture();
 	private:
+        Glex& _context;
 		GLuint _texture;
+    public:
+        typedef std::unique_ptr<Texture> u_ptr;
 	};
 
 	class ShaderProgram {
@@ -64,12 +71,14 @@ namespace game {
 		public:
 			ShaderProgram(Glex& aContext);
 			void bind(const string& vertexSource, const string& fragmentSource);
+			void arg(const GLchar * name, const GLuint value);
 			void begin();
 			void end();
 			~ShaderProgram();
 		private:
 			void destroy_shaders();
-			GLint compile(const char * source,GLenum type);
+			GLint compile(const GLchar * source,GLenum type);
+			GLint loc(const GLchar * name);
 			Glex& _context;
 			GLint _vertexShader;
 			GLint _fragmentShader;

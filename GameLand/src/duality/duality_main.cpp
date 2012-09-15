@@ -19,8 +19,10 @@ int main( int , char* [] ) {
 		g.run();
 	} catch (std::exception &e) {
 		LOG << "exception: " << (e.what()) << std::endl;
-	} catch (...) {
+        return EXIT_FAILURE;
+  	} catch (...) {
 		LOG << "unexpected error occurred";
-	}
+        return EXIT_FAILURE;
+    }
 	return EXIT_SUCCESS;
 }

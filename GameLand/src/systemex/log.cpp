@@ -12,7 +12,7 @@ namespace systemex {
 		return s_instance;
 	}
 
-	Log::Log(const std::string& filename) : _file(filename.c_str()) {
+	Log::Log(const std::string& filename) : _file(filename.c_str()), _start(0), _last(0) {
 		time(&_start);
 		LOG << "*** START";
 	}

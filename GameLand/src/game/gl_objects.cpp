@@ -57,8 +57,10 @@ void Glex::updatePerspective() {
 	gluPerspective(60.0, ratio, _nearView, _farView);
 }
 
-void Glex::throw_error() {
+void Glex::check_error() {
 	auto code = glGetError();
+	if (code == NO_ERROR)
+        return;
 	const char * error;
 	switch (code) {
 	case GL_INVALID_ENUM:
@@ -71,7 +73,7 @@ void Glex::throw_error() {
 		break;
 	case GL_INVALID_OPERATION:
 		error =
-				"The specified operation is not allowed in the current state. The offending command is ignored and has no other side effect than to set the error flag.";
+				"GL_INVALID_OPERATION. The specified operation is not allowed in the current state. The offending command is ignored and has no other side effect than to set the error flag.";
 		break;
 	case GL_STACK_OVERFLOW:
 		error =
@@ -113,6 +115,9 @@ Glex::Glex(int width, int height)
 	, glLinkProgram  ((PFNGLLINKPROGRAMPROC) getGLProc("glLinkProgram"))
 	, glGetProgramiv  ((PFNGLGETPROGRAMIVPROC) getGLProc("glGetProgramiv"))
 	, glDeleteProgram  ((PFNGLDELETEPROGRAMPROC) getGLProc("glDeleteProgram"))
+	, glActiveTexture ((PFNGLACTIVETEXTUREPROC) getGLProc("glActiveTexture"))
+	, glGetUniformLocation	((PFNGLGETUNIFORMLOCATIONPROC) getGLProc("glGetUniformLocation"))
+	, glUniform1i ((PFNGLUNIFORM1IPROC) getGLProc("glUniform1i"))
 	, _nearView(1.0f)
 	, _farView(50.0f)
 	, _width(width)
@@ -143,9 +148,9 @@ void Glex::setViewRange(const float& nearV, const float& farV) {
 	updatePerspective();
 }
 
-Texture::Texture() : _texture(0)  {}
+Texture::Texture(Glex& context) : _context(context), _texture(0)  {}
 
-void Texture::bind(SDL_Surface& surface) {
+void Texture::copy_from(SDL_Surface& surface) {
 	if ((surface.w & (surface.w - 1)) != 0)
 		throw std::runtime_error("surface  width is not a power of 2");
 	if ((surface.h & (surface.h - 1)) != 0)
@@ -168,12 +173,17 @@ void Texture::bind(SDL_Surface& surface) {
 		throw std::runtime_error("surface is not true colour");
 	glGenTextures(1, &_texture);
 	glBindTexture(GL_TEXTURE_2D, _texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, bpp, surface.w, surface.h, 0,
 			texture_format, GL_UNSIGNED_BYTE, surface.pixels);
+}
 
-
+void Texture::activate(const GLenum texture) {
+    _context.glActiveTexture(texture);
+    glBindTexture(GL_TEXTURE_2D,_texture);
 }
 
 Texture::~Texture() {
@@ -193,7 +203,6 @@ void ShaderProgram::bind(const string& vertexSource,
 	destroy_shaders();
 	_vertexShader = compile(vertexSource.c_str(), GL_VERTEX_SHADER);
 	_fragmentShader = compile(fragmentSource.c_str(), GL_FRAGMENT_SHADER);
-// TODO (willemd#1#): must link the program here
     _program = _context.glCreateProgram();
     _context.glAttachShader(_program,_vertexShader);
     _context.glAttachShader(_program,_fragmentShader);
@@ -204,8 +213,19 @@ void ShaderProgram::bind(const string& vertexSource,
         throw runtime_error("link failed");
 }
 
+GLint ShaderProgram::loc(const GLchar * name) {
+    const auto result = _context.glGetUniformLocation(_program,name);
+    if (result == -1)
+        throw systemex::runtime_error_ex("Could not locate uniform variable '%s'",name);
+    return result;
+}
+
+void ShaderProgram::arg(const GLchar * name, const GLuint value) {
+    _context.glUniform1i(loc(name),value);
+    _context.check_error();
+}
+
 void ShaderProgram::begin() {
-// TODO (willemd#1#): must use program here
     _context.glUseProgram(_program);
 }
 
@@ -217,7 +237,7 @@ GLint ShaderProgram::compile(const char * source, GLenum type) {
 	auto &g = _context;
 	GLint shader = g.glCreateShader(type);
 	if (!shader)
-		g.throw_error();
+		g.check_error();
 	const GLchar* src[] = { (source) };
 	g.glShaderSource(shader, 1, src, NULL);
 	g.glCompileShader(shader);
