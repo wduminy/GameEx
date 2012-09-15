@@ -18,16 +18,11 @@ namespace game {
 			throw systemex::runtime_error_ex("SDL error: %s", SDL_GetError());
 	}
 
-
-
-	DrawContext::DrawContext(const bool fullscreen, const int width,
-			const int height) {
+    Glex * glexAfterInit(const bool fullscreen, const int w, const int h) {
 		check(SDL_Init(SDL_INIT_VIDEO));
 		auto version = SDL_Linked_Version();
 		LOG << "Using SDL version " << (int) version->major << "." << (int) version->minor << "." << (int) version->patch;
 		auto info = SDL_GetVideoInfo();
-//    This does not work, unfortunately
-//		LOG << "Size of video memory is " << info->video_mem / 1024 << " kilobytes";
 		auto bpp = info->vfmt->BitsPerPixel;
 		int flags = SDL_OPENGL;
 		if (fullscreen)
@@ -37,9 +32,13 @@ namespace game {
 		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-		check(SDL_SetVideoMode(width, height, bpp, flags));
-		instance_p =  Glex::u_ptr(new Glex(width, height));
-	}
+		check(SDL_SetVideoMode(w, h, bpp, flags));
+		return new Glex(w,h);
+    }
+
+
+	DrawContext::DrawContext(const bool fullscreen, const int width,
+			const int height) : instance_p(glexAfterInit(fullscreen,width, height)) {}
 
 	Glex& DrawContext::gl() const {
 		return *instance_p;
@@ -63,12 +62,14 @@ namespace game {
 
 	/// targetUpdateDelay : milliseconds to update
 	UpdateContext::UpdateContext(time targetUpdateDelay, time drawUpdateDelay) :
-			elapsed_target(targetUpdateDelay), draw_target(drawUpdateDelay) {
-		next_update = SDL_GetTicks() + targetUpdateDelay;
-		next_draw = 0;
-		update = false;
-		draw = false;
-	}
+            event(),
+			elapsed_target(targetUpdateDelay),
+			draw_target(drawUpdateDelay),
+            next_update(SDL_GetTicks() + targetUpdateDelay),
+            next_draw(0),
+            update(false),
+            draw(false)
+             {}
 
 	SDLKey UpdateContext::keyDown() const {
 		if (event.type != SDL_KEYDOWN)

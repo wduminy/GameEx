@@ -97,11 +97,11 @@ namespace systemex {
 	};
 
 	template <class T, class F> inline
-	void for_all(T coll, F fun) {std::for_each(coll.begin(), coll.end(), fun);};
+	void for_all(T coll, F fun) {std::for_each(coll.begin(), coll.end(), fun);}
 
-	template <class E> inline void deleteF(E e) {delete e;};
+	template <class E> inline void deleteF(E e) {delete e;}
 
-	template <class T> inline void delete_all(std::list<T> coll) {for_all(coll,deleteF<T>);};
+	template <class T> inline void delete_all(std::list<T> coll) {for_all(coll,deleteF<T>);}
 
 }
 #define for_each(I,C) for(auto I = C.begin(); I != C.end(); ++I)

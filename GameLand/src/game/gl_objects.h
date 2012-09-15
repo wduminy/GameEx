@@ -3,10 +3,10 @@
  * See LICENCE.txt
  */
 #pragma once
+#include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <SDL/SDL.h>
 #include "../systemex/systemex.h"
 
 namespace game {
@@ -15,7 +15,6 @@ namespace game {
 	// openGL extensions and helpers
 	class Glex {
 		PREVENT_COPY(Glex)
-		friend class DrawContext;
 		public:
 			// FrameBuffer (FBO) gen, bin and texturebind
 			PFNGLGENFRAMEBUFFERSEXTPROC glGenFramebuffersEXT;
@@ -29,22 +28,15 @@ namespace game {
 			PFNGLDELETESHADERPROC glDeleteShader;
 			PFNGLGETSHADERINFOLOGPROC glGetGetShaderInfoLog;
 			PFNGLSHADERSOURCEPROC glShaderSource;
-			PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;
-			PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
-			PFNGLCREATESHADEROBJECTARBPROC glCreateShaderObjectARB;
-			PFNGLSHADERSOURCEARBPROC glShaderSourceARB;
-			PFNGLCOMPILESHADERARBPROC glCompileShaderARB;
-			PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameterivARB;
-			PFNGLATTACHOBJECTARBPROC glAttachObjectARB;
-			PFNGLLINKPROGRAMARBPROC glLinkProgramARB;
-			PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocationARB;
-			PFNGLUNIFORM1IARBPROC glUniform1iARB;
-			PFNGLACTIVETEXTUREARBPROC glActiveTextureARB;
-			PFNGLGETINFOLOGARBPROC glGetInfoLogARB;
+			PFNGLCREATEPROGRAMPROC glCreateProgram;
+			PFNGLUSEPROGRAMPROC glUseProgram;
+			PFNGLATTACHSHADERPROC glAttachShader;
+			PFNGLLINKPROGRAMPROC glLinkProgram;
+			PFNGLGETPROGRAMIVPROC glGetProgramiv;
+			PFNGLDELETEPROGRAMPROC glDeleteProgram;
 			void throw_error();
 			void setViewRange(const float&, const float&);
 		private:
-			Glex(int width, int height);
 			// NB: terminate arg list with NULL
 			bool hasExtensions(const char * extension, ...);
 			void updatePerspective();
@@ -53,6 +45,7 @@ namespace game {
 			GLfloat _width;
 			GLfloat _height;
 		public:
+			Glex(int width, int height);
 			typedef std::unique_ptr<Glex> u_ptr;
 	};
 
@@ -71,13 +64,16 @@ namespace game {
 		public:
 			ShaderProgram(Glex& aContext);
 			void bind(const string& vertexSource, const string& fragmentSource);
+			void begin();
+			void end();
 			~ShaderProgram();
 		private:
 			void destroy_shaders();
 			GLint compile(const char * source,GLenum type);
-			GLint vertexShader;
-			GLint fragmentShader;
-			Glex& context;
+			Glex& _context;
+			GLint _vertexShader;
+			GLint _fragmentShader;
+			GLint _program;
 		public:
 			typedef std::unique_ptr<ShaderProgram> u_ptr;
 	};

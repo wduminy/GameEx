@@ -7,8 +7,24 @@
 
 namespace game {
 using systemex::runtime_error;
+bool gl_initialised = false;
+
+void init_opengl() {
+    if (gl_initialised)
+        return;
+
+    const char * glv = (const char *) glGetString(GL_VERSION);
+    if (!glv)
+        throw runtime_error("opengl context not setup");
+    std::string version(glv);
+	LOG<< "Running OpenGL Version " << version;
+	if (version[0] < '3')
+		throw std::runtime_error("Needs OpenGL version 3.0.0 or later");
+    gl_initialised = true;
+}
 
 PROC getGLProc(const char * name) {
+    init_opengl();
 	PROC result = wglGetProcAddress(name);
 	if (!result)
 		systemex::throw_LastError(name);
@@ -80,57 +96,28 @@ void Glex::throw_error() {
 	throw systemex::runtime_error_ex("%s (%d)", error, code);
 }
 
-Glex::Glex(int width, int height) {
-	_nearView = 1.0f;
-	_farView = 50.0f;
-	_height = -1.0f;
-	_width = width;
-	_height = height;
-	std::string version((const char *) glGetString(GL_VERSION));
-	LOG<< "Running OpenGL Version " << version;
-	if (version[0] < '3')
-		throw std::runtime_error("Needs OpenGL version 3.0.0 or later");
-	// FBO
-	glActiveTextureARB = (PFNGLACTIVETEXTUREARBPROC) getGLProc(
-			"glActiveTextureARB");
-	glGenFramebuffersEXT = (PFNGLGENFRAMEBUFFERSEXTPROC) getGLProc(
-			"glGenFramebuffersEXT");
-	glBindFramebufferEXT = (PFNGLBINDFRAMEBUFFEREXTPROC) getGLProc(
-			"glBindFramebufferEXT");
-	glFramebufferTexture2DEXT = (PFNGLFRAMEBUFFERTEXTURE2DEXTPROC) getGLProc(
-			"glFramebufferTexture2DEXT");
-	glCheckFramebufferStatusEXT =
-			(PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC) getGLProc(
-					"glCheckFramebufferStatusEXT");
-
-	// Shaders
-	glCreateShader = (PFNGLCREATESHADERPROC) getGLProc("glCreateShader");
-	glCompileShader = (PFNGLCOMPILESHADERPROC) getGLProc("glCompileShader");
-	glShaderSource = (PFNGLSHADERSOURCEPROC) getGLProc("glShaderSource");
-	glGetShaderiv = (PFNGLGETSHADERIVPROC) getGLProc("glGetShaderiv");
-	glDeleteShader = (PFNGLDELETESHADERPROC) getGLProc("glDeleteShader");
-	glGetGetShaderInfoLog = (PFNGLGETSHADERINFOLOGPROC) getGLProc(
-			"glGetShaderInfoLog");
-	glCreateProgramObjectARB = (PFNGLCREATEPROGRAMOBJECTARBPROC) getGLProc(
-			"glCreateProgramObjectARB");
-	glUseProgramObjectARB = (PFNGLUSEPROGRAMOBJECTARBPROC) getGLProc(
-			"glUseProgramObjectARB");
-	glCreateShaderObjectARB = (PFNGLCREATESHADEROBJECTARBPROC) getGLProc(
-			"glCreateShaderObjectARB");
-	glShaderSourceARB = (PFNGLSHADERSOURCEARBPROC) getGLProc(
-			"glShaderSourceARB");
-	glCompileShaderARB = (PFNGLCOMPILESHADERARBPROC) getGLProc(
-			"glCompileShaderARB");
-	glGetObjectParameterivARB = (PFNGLGETOBJECTPARAMETERIVARBPROC) getGLProc(
-			"glGetObjectParameterivARB");
-	glAttachObjectARB = (PFNGLATTACHOBJECTARBPROC) getGLProc(
-			"glAttachObjectARB");
-	glGetInfoLogARB = (PFNGLGETINFOLOGARBPROC) getGLProc("glGetInfoLogARB");
-	glLinkProgramARB = (PFNGLLINKPROGRAMARBPROC) getGLProc("glLinkProgramARB");
-	glGetUniformLocationARB = (PFNGLGETUNIFORMLOCATIONARBPROC) getGLProc(
-			"glGetUniformLocationARB");
-	glUniform1iARB = (PFNGLUNIFORM1IARBPROC) getGLProc("glUniform1iARB");
-
+Glex::Glex(int width, int height)
+	: glGenFramebuffersEXT((PFNGLGENFRAMEBUFFERSEXTPROC) getGLProc("glGenFramebuffersEXT"))
+	, glBindFramebufferEXT ((PFNGLBINDFRAMEBUFFEREXTPROC) getGLProc("glBindFramebufferEXT"))
+	, glFramebufferTexture2DEXT ((PFNGLFRAMEBUFFERTEXTURE2DEXTPROC) getGLProc("glFramebufferTexture2DEXT"))
+	, glCheckFramebufferStatusEXT ((PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC) getGLProc("glCheckFramebufferStatusEXT"))
+    , glCreateShader ((PFNGLCREATESHADERPROC) getGLProc("glCreateShader"))
+	, glCompileShader ((PFNGLCOMPILESHADERPROC) getGLProc("glCompileShader"))
+	, glGetShaderiv ((PFNGLGETSHADERIVPROC) getGLProc("glGetShaderiv"))
+	, glDeleteShader ((PFNGLDELETESHADERPROC) getGLProc("glDeleteShader"))
+	, glGetGetShaderInfoLog ((PFNGLGETSHADERINFOLOGPROC) getGLProc("glGetShaderInfoLog"))
+	, glShaderSource ((PFNGLSHADERSOURCEPROC) getGLProc("glShaderSource"))
+	, glCreateProgram ((PFNGLCREATEPROGRAMPROC) getGLProc("glCreateProgram"))
+	, glUseProgram ((PFNGLUSEPROGRAMPROC) getGLProc("glUseProgram"))
+	, glAttachShader ((PFNGLATTACHSHADERPROC) getGLProc("glAttachShader"))
+	, glLinkProgram  ((PFNGLLINKPROGRAMPROC) getGLProc("glLinkProgram"))
+	, glGetProgramiv  ((PFNGLGETPROGRAMIVPROC) getGLProc("glGetProgramiv"))
+	, glDeleteProgram  ((PFNGLDELETEPROGRAMPROC) getGLProc("glDeleteProgram"))
+	, _nearView(1.0f)
+	, _farView(50.0f)
+	, _width(width)
+	, _height(height)
+{
 	/* Our shading model--Gouraud (smooth). */
 	glShadeModel(GL_SMOOTH);
 	/* Culling. */
@@ -156,9 +143,7 @@ void Glex::setViewRange(const float& nearV, const float& farV) {
 	updatePerspective();
 }
 
-Texture::Texture()  {
-	_texture = 0;
-}
+Texture::Texture() : _texture(0)  {}
 
 void Texture::bind(SDL_Surface& surface) {
 	if ((surface.w & (surface.w - 1)) != 0)
@@ -196,21 +181,40 @@ Texture::~Texture() {
 		glDeleteTextures(1, &_texture);
 }
 
-ShaderProgram::ShaderProgram(Glex& aContext) :
-		context(aContext) {
-	vertexShader = 0;
-	fragmentShader = 0;
-}
+ShaderProgram::ShaderProgram(Glex& aContext)
+    : _context(aContext)
+	, _vertexShader(0)
+	, _fragmentShader(0)
+	, _program(0)
+{}
 
 void ShaderProgram::bind(const string& vertexSource,
 		const string& fragmentSource) {
 	destroy_shaders();
-	vertexShader = compile(vertexSource.c_str(), GL_VERTEX_SHADER);
-	fragmentShader = compile(fragmentSource.c_str(), GL_FRAGMENT_SHADER);
+	_vertexShader = compile(vertexSource.c_str(), GL_VERTEX_SHADER);
+	_fragmentShader = compile(fragmentSource.c_str(), GL_FRAGMENT_SHADER);
+// TODO (willemd#1#): must link the program here
+    _program = _context.glCreateProgram();
+    _context.glAttachShader(_program,_vertexShader);
+    _context.glAttachShader(_program,_fragmentShader);
+    _context.glLinkProgram(_program);
+    GLint result;
+    _context.glGetProgramiv(_program,GL_LINK_STATUS, &result);
+    if (result == GL_FALSE)
+        throw runtime_error("link failed");
+}
+
+void ShaderProgram::begin() {
+// TODO (willemd#1#): must use program here
+    _context.glUseProgram(_program);
+}
+
+void ShaderProgram::end() {
+    _context.glUseProgram(0);
 }
 
 GLint ShaderProgram::compile(const char * source, GLenum type) {
-	auto &g = context;
+	auto &g = _context;
 	GLint shader = g.glCreateShader(type);
 	if (!shader)
 		g.throw_error();
@@ -234,13 +238,15 @@ GLint ShaderProgram::compile(const char * source, GLenum type) {
 }
 
 void ShaderProgram::destroy_shaders() {
-	auto &g = context;
-	if (vertexShader)
-		g.glDeleteShader(vertexShader);
-	vertexShader = 0;
-	if (fragmentShader)
-		g.glDeleteShader(fragmentShader);
-	fragmentShader = 0;
+	auto &g = _context;
+	if (_program)
+        g.glDeleteProgram(_program);
+	if (_vertexShader)
+		g.glDeleteShader(_vertexShader);
+	_vertexShader = 0;
+	if (_fragmentShader)
+		g.glDeleteShader(_fragmentShader);
+	_fragmentShader = 0;
 }
 
 ShaderProgram::~ShaderProgram() {

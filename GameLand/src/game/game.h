@@ -99,7 +99,7 @@ namespace game {
 	class GameObjectWithParts: public GameObject {
 		public:
 			GameObjectWithParts(const int drawOrder) :
-					GameObject(drawOrder) {
+					GameObject(drawOrder), _parts() {
 			}
 			;
 			// initialises all the parts
@@ -121,9 +121,7 @@ namespace game {
 	class MainObject: public GameObjectWithParts {
 		public:
 			MainObject(int drawOrder) :
-					GameObjectWithParts(drawOrder) {
-				running = true;
-			}
+					GameObjectWithParts(drawOrder), running(true) {}
 			;
 			void exit() {
 				running = false;

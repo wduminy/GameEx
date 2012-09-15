@@ -28,7 +28,7 @@ void drawTriangles(const TriangleStrip& strip) {
 
 class Arena : public game::GameObject {
 public:
-	Arena() : _strip(2) {};
+	Arena() : _strip(2),_program_p() {};
 
 	void initialise(const ResourceContext &ctx, const DrawContext &draw) override {
 		const float arenaHalf = 2.0f;
@@ -47,6 +47,7 @@ public:
 
 	void draw(const DrawContext& draw) override {
 		glBegin(GL_TRIANGLE_STRIP);
+// TODO (willemd#1#): use test shader
 		drawTriangles(_strip);
 		glEnd();
 	}

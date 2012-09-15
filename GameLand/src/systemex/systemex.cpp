@@ -99,7 +99,7 @@ namespace systemex {
 	}
 
 	runtime_error_ex::runtime_error_ex(const char *szFormat, ...) :
-			runtime_error("Extended") {
+			runtime_error("Extended"), m_message() {
 		char buffer[1024];
 		buffer[sizeof(buffer) - 1] = 0;
 		va_list args;
@@ -110,7 +110,7 @@ namespace systemex {
 	}
 
 	runtime_error_ex::runtime_error_ex(void) :
-			runtime_error("Extended") {
+			runtime_error("Extended"), m_message() {
 	}
 
 	runtime_error_ex::~runtime_error_ex() throw () {
@@ -120,12 +120,9 @@ namespace systemex {
 		return m_message.c_str();
 	}
 
-	Answer::Answer() {
-		_what = 0;
-		_value = true;
-	}
+	Answer::Answer() : _what(0), _value(true) {}
 
-	Answer::Answer(bool value, const char * format, ...) {
+	Answer::Answer(bool value, const char * format, ...) : _what(0), _value(value) {
 		char buffer[1024];
 		buffer[sizeof(buffer) - 1] = 0;
 		va_list args;
@@ -133,10 +130,9 @@ namespace systemex {
 		vsnprintf(buffer, sizeof(buffer) - 1, format, args);
 		va_end(args);
 		_what = cstring_copy(buffer);
-		_value = value;
 	}
 
-	Answer::Answer(Answer&& rhs) {
+	Answer::Answer(Answer&& rhs) : _what(0),_value(true) {
 		moveData(static_cast<Answer&&>(rhs));
 	}
 

@@ -6,13 +6,12 @@
 
 namespace game {
 
-	TriangleStrip::TriangleStrip(const int numberOfTriangles)  {
-		auto size = (numberOfTriangles+2)*3;
-		_verts = std::unique_ptr<GLfloat[]>(new GLfloat[size]);
-		_ins = _verts.get();
-		_end = _verts.get() + size;
-		_it = _ins;
-	}
+	TriangleStrip::TriangleStrip(const int numberOfTriangles) :
+		_verts(new GLfloat[(numberOfTriangles+2)*3]),
+		_ins(_verts.get()),
+		_end(_verts.get() + (numberOfTriangles+2)*3),
+		_it(_ins)
+	{}
 	void TriangleStrip::push_back(const GLfloat& x, const GLfloat& y, const GLfloat& z) {
 		if (_ins >= _end)
 			throw std::runtime_error("strip past is capacity");
@@ -26,9 +25,7 @@ namespace game {
 	}
 
 	SphereCamera::SphereCamera(int drawOrder, double y, double r)
-	: GameObject(drawOrder), _circleY(y), _circleRadius(r), _theta(0) {
-		_delta =  0;
-	}
+	: GameObject(drawOrder), _circleY(y), _circleRadius(r), _theta(0), _delta(0) {}
 
 	void SphereCamera::update(const UpdateContext& ctx) {
 		const static double a360 = 3.14 * 2.0;

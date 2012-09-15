@@ -19,9 +19,9 @@ namespace game {
 			void draw() const {glVertex3fv(_it);_it+=3;}
 		private:
 			std::unique_ptr<GLfloat []> _verts;
-			mutable GLfloat * _it;
 			GLfloat * _ins;
 			GLfloat * _end;
+			mutable GLfloat * _it;
 	};
 
 	class SphereCamera : public GameObject {

@@ -9,7 +9,9 @@
 #define TEST template<> template<> void test_group<gamedata>::object::test
 namespace tut {
 	using namespace game;
-	struct gamedata {};
+	struct gamedata {
+	    virtual ~gamedata(){}
+    };
 	test_group<gamedata> gameTests("030 Game Subsystem");
 
 	Scalar sum_c(const Vector&c) {return c.x() + c.y() + c.z(); }

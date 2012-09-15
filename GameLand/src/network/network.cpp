@@ -6,20 +6,18 @@
 
 namespace network {
 
-	Socket::Socket() {
-		_socket_descriptor = socket(AF_INET, SOCK_STREAM, 0);
+	Socket::Socket() : _socket_descriptor(socket(AF_INET, SOCK_STREAM, 0)) {
 		ENSURE(_socket_descriptor != 0,"could not create socket");
 	}
 
 
-	Socket::Socket(SOCKET socket) {
-		_socket_descriptor = socket;
+	Socket::Socket(SOCKET socket): _socket_descriptor(socket) {
 		ENSURE(_socket_descriptor != 0,"invalid socket descriptor");
 	}
 
 
 	void Socket::connect(const char * ip_address, const u_short port_number) {
-		// TODO 100 implement connect
+		// TODO 900 implement connect
 		auto address = inet_addr(ip_address);
 		if (address == INADDR_NONE)
 			throw systemex::runtime_error_ex("could not parse IP address: '%s'", ip_address);
@@ -43,6 +41,7 @@ namespace network {
 		result = ::listen(_socket_descriptor,5);
 		ENSURE(result == 0,"could not listen");
 	}
+
 
 	Socket Socket::accept() {
 		SOCKET result = ::accept(_socket_descriptor,0,0);

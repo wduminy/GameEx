@@ -2,7 +2,6 @@
  * Copyright 2012 Willem Duminy
  * See LICENCE.txt
  */
-#ifdef TEST
 #include <tut/tut.hpp>
 #include <tut/tut_reporter.hpp>
 #include <stdio.h>
@@ -41,15 +40,13 @@ int main( int , char* [] ) {
 	try {
 		cout << "RUNNING TESTS";
 		run_tests();
-		cout << "STOP";
 	} catch (std::exception &e) {
 		cout << "Error --- " << e.what();
 	} catch (...) {
 		cout << "unexpected error occurred";
 	}
+	cout.flush();
 	return EXIT_SUCCESS;
 }
-
-#endif
 
 
