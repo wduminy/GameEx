@@ -31,7 +31,7 @@ public:
 	Arena() : _strip(2),_program_p(),_tex_p() {};
 
 	void initialise(const ResourceContext &ctx, const DrawContext &draw) override {
-		const float arenaHalf = 2.0f;
+		const float arenaHalf = 25.0f;
 		const float floorLevl = 0.0f;
 		static GLfloat leftBack[] = { -arenaHalf, floorLevl, -arenaHalf };
 		static GLfloat rightBack[] = { +arenaHalf, floorLevl, -arenaHalf };
@@ -44,13 +44,13 @@ public:
 		_program_p = ShaderProgram::u_ptr(new ShaderProgram(draw.gl()));
 		_program_p->bind(ctx.load_text("arena.vert"), ctx.load_text("arena.frag"));
 		_tex_p = Texture::u_ptr(new Texture(draw.gl()));
-		_tex_p->copy_from(*ctx.load_BMP("../test.bmp"));
-        _tex_p->activate(GL_TEXTURE0);
+		_tex_p->copy_from(*ctx.load_BMP("../cracked_tiles.bmp"));
+        _tex_p->activate(GL_TEXTURE1);
 	}
 
 	void draw(const DrawContext& draw) override {
         _program_p->begin();
-        _program_p->arg("tex",0);
+        _program_p->arg("tex",1);
 		glBegin(GL_TRIANGLE_STRIP);
 		drawTriangles(_strip);
 		glEnd();
@@ -66,7 +66,7 @@ private:
 
 DualityScene::DualityScene() : MainObject(-100) {
 	add_part(GameObject::u_ptr(new Arena()));
-	add_part(GameObject::u_ptr(new SphereCamera(drawOrder() + 1)));
+	add_part(GameObject::u_ptr(new SphereCamera(drawOrder() + 1,35.0,35.0)));
 }
 
 

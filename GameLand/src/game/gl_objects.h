@@ -42,13 +42,8 @@ namespace game {
 		private:
 			// NB: terminate arg list with NULL
 			bool hasExtensions(const char * extension, ...);
-			void updatePerspective();
-			GLdouble _nearView;
-			GLdouble _farView;
-			GLfloat _width;
-			GLfloat _height;
 		public:
-			Glex(int width, int height);
+			Glex();
 			typedef std::unique_ptr<Glex> u_ptr;
 	};
 

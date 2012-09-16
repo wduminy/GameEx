@@ -7,6 +7,7 @@
 
 namespace game {
 using systemex::runtime_error;
+using systemex::runtime_error_ex;
 bool gl_initialised = false;
 
 void init_opengl() {
@@ -47,14 +48,6 @@ bool Glex::hasExtensions(const char * extension, ...) {
 	} while (ext != NULL);
 	va_end(args);
 	return result;
-}
-
-void Glex::updatePerspective() {
-	if (_height < 0.0f)
-		throw std::runtime_error("height has not been set");
-	float ratio = _width / _height;
-	glLoadIdentity(); // load identity because we want to 'reset' the perspective
-	gluPerspective(60.0, ratio, _nearView, _farView);
 }
 
 void Glex::check_error() {
@@ -98,7 +91,7 @@ void Glex::check_error() {
 	throw systemex::runtime_error_ex("%s (%d)", error, code);
 }
 
-Glex::Glex(int width, int height)
+Glex::Glex()
 	: glGenFramebuffersEXT((PFNGLGENFRAMEBUFFERSEXTPROC) getGLProc("glGenFramebuffersEXT"))
 	, glBindFramebufferEXT ((PFNGLBINDFRAMEBUFFEREXTPROC) getGLProc("glBindFramebufferEXT"))
 	, glFramebufferTexture2DEXT ((PFNGLFRAMEBUFFERTEXTURE2DEXTPROC) getGLProc("glFramebufferTexture2DEXT"))
@@ -118,34 +111,7 @@ Glex::Glex(int width, int height)
 	, glActiveTexture ((PFNGLACTIVETEXTUREPROC) getGLProc("glActiveTexture"))
 	, glGetUniformLocation	((PFNGLGETUNIFORMLOCATIONPROC) getGLProc("glGetUniformLocation"))
 	, glUniform1i ((PFNGLUNIFORM1IPROC) getGLProc("glUniform1i"))
-	, _nearView(1.0f)
-	, _farView(50.0f)
-	, _width(width)
-	, _height(height)
 {
-	/* Our shading model--Gouraud (smooth). */
-	glShadeModel(GL_SMOOTH);
-	/* Culling. */
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
-	/* Set the clear color. */
-	glClearColor(0.15, 0.15, 0.3, 0);
-	/* Setup our viewport. */
-	glViewport(0, 0, width, height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	updatePerspective();
-
-}
-
-void Glex::setViewRange(const float& nearV, const float& farV) {
-	if (farV <= nearV)
-		throw std::runtime_error("near must be smaller than far");
-	_nearView = nearV;
-	_farView = farV;
-	updatePerspective();
 }
 
 Texture::Texture(Glex& context) : _context(context), _texture(0)  {}
@@ -170,15 +136,17 @@ void Texture::copy_from(SDL_Surface& surface) {
 		else
 			texture_format = GL_BGR;
 	} else
-		throw std::runtime_error("surface is not true colour");
+		throw runtime_error_ex("surface has invalid bytes per pixel: %d",bpp);
 	glGenTextures(1, &_texture);
 	glBindTexture(GL_TEXTURE_2D, _texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 	glTexImage2D(GL_TEXTURE_2D, 0, bpp, surface.w, surface.h, 0,
 			texture_format, GL_UNSIGNED_BYTE, surface.pixels);
+    _context.check_error();
 }
 
 void Texture::activate(const GLenum texture) {

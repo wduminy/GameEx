@@ -65,16 +65,19 @@ namespace game {
 			DrawContext(const bool fullscreen, const int width, const int height);
 			~DrawContext();
 			Glex& gl() const;
+			int width() const {return _width;}
+			int height() const {return _height;}
 		private:
 			Glex::u_ptr instance_p;
+			int _width;
+			int _height;
 	};
 
 	class GameObject {
 		public:
-			GameObject(int drawOrder = 0) :	_drawOrder(drawOrder) {}
-			;
-			virtual void initialise(const ResourceContext & rctx, const DrawContext& dctx) {}
-			;
+			GameObject(int drawOrder = 0) :	_drawOrder(drawOrder) {};
+			/** initialise this and initialise children */
+			virtual void initialise(const ResourceContext & rctx, const DrawContext& dctx) {};
 			/** draw only this, not children */
 			virtual void draw(const DrawContext& gc) = 0;
 			/** update this and update children */
@@ -121,8 +124,8 @@ namespace game {
 	class MainObject: public GameObjectWithParts {
 		public:
 			MainObject(int drawOrder) :
-					GameObjectWithParts(drawOrder), running(true) {}
-			;
+					GameObjectWithParts(drawOrder), running(true) {};
+            void initialise(const ResourceContext & rctx, const DrawContext& dctx) override;
 			void exit() {
 				running = false;
 			}
@@ -141,7 +144,6 @@ namespace game {
 	};
 
 	class Game {
-		PREVENT_COPY(Game)
 		public:
 			// the game owns these 'pointers'
 			Game(MainObject::u_ptr primaryPart,

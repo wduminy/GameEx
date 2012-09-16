@@ -13,7 +13,7 @@ int main( int , char* [] ) {
 		game::Game g(
 				MainObject::u_ptr(new DualityScene()),
 				new game::UpdateContext(2),
-				new game::DrawContext(false,640,480),
+				new game::DrawContext(false,800,600),
 				new game::ResourceContext("duality/")
 		);
 		g.run();

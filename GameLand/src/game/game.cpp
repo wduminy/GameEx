@@ -27,18 +27,20 @@ namespace game {
 		int flags = SDL_OPENGL;
 		if (fullscreen)
 			flags |= SDL_FULLSCREEN;
-		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
-		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
-		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
+		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		check(SDL_SetVideoMode(w, h, bpp, flags));
-		return new Glex(w,h);
+		return new Glex();
     }
 
 
-	DrawContext::DrawContext(const bool fullscreen, const int width,
-			const int height) : instance_p(glexAfterInit(fullscreen,width, height)) {}
+	DrawContext::DrawContext(const bool fullscreen, const int width, const int height)
+			: instance_p(glexAfterInit(fullscreen,width, height))
+			, _width(width)
+			, _height(height) {}
 
 	Glex& DrawContext::gl() const {
 		return *instance_p;
@@ -138,6 +140,27 @@ namespace game {
 			}
 			update_ctx->tick();
 		};
+	}
+
+     void MainObject::initialise(const ResourceContext & rctx, const DrawContext& dctx) {
+		/* Our shading model--Gouraud (smooth). */
+        glShadeModel(GL_SMOOTH);
+        /* Culling. */
+        glCullFace(GL_BACK);
+        glFrontFace(GL_CCW);
+        glEnable(GL_CULL_FACE);
+        glEnable(GL_DEPTH_TEST);
+        /* Set the clear color. */
+        glClearColor(0.15, 0.15, 0.3, 0);
+        /* Setup our viewport. */
+        // TODO user screen width and height
+        glViewport(0, 0, dctx.width(), dctx.height());
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        float ratio = (float) dctx.width() /  (float) dctx.height();
+        glLoadIdentity(); // load identity because we want to 'reset' the perspective
+        gluPerspective(60.0, ratio, 1.0, 100.0);
+        GameObjectWithParts::initialise(rctx,dctx);
 	}
 
 	void MainObject::update(const UpdateContext& ctx) {
