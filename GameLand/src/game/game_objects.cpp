@@ -35,13 +35,15 @@ namespace game {
 
 	void SphereCamera::update(const UpdateContext& ctx) {
 		const static double a360 = 3.14 * 2.0;
-		const static double inc = a360 / 360.0 / 10;
+		const static double degrees_per_second = 90;
+		const static double rads_per_second = a360 * degrees_per_second / 360.0;
+		const static double rads_per_update = ctx.secondsPerUpdate() * rads_per_second;
 		switch (ctx.keyDown()) {
 			case SDLK_LEFT:
-				_delta = -inc;
+				_delta = -rads_per_update;
 				break;
 			case SDLK_RIGHT:
-				_delta = +inc;
+				_delta = +rads_per_update;
 				break;
 			default:
 				break;

@@ -63,14 +63,18 @@ namespace game {
 
 
 	/// targetUpdateDelay : milliseconds to update
-	UpdateContext::UpdateContext(time targetUpdateDelay, time drawUpdateDelay) :
+	UpdateContext::UpdateContext(unsigned int targetUpdatesPerSecond, unsigned int targetFramesPerSecond) :
             event(),
-			elapsed_target(targetUpdateDelay),
-			draw_target(drawUpdateDelay),
-            next_update(SDL_GetTicks() + targetUpdateDelay),
-            next_draw(0),
+			_update_interval(1000 / targetUpdatesPerSecond),
+			_draw_interval(1000 / targetFramesPerSecond),
+			_first_tick(SDL_GetTicks()),
+            next_update(_first_tick + _update_interval),
+            next_draw(_first_tick + _draw_interval),
             update(false),
-            draw(false)
+            draw(false),
+            _tick_time(_first_tick),
+            _draws(0),
+            _updates(0)
              {}
 
 	SDLKey UpdateContext::keyDown() const {
@@ -88,58 +92,70 @@ namespace game {
 	}
 
 	void UpdateContext::tick() {
-		auto newTime = SDL_GetTicks();
-		if (newTime >= next_update) {
+		_tick_time = SDL_GetTicks();
+		if (_tick_time >= next_update) {
 			update = true;
 			//this could be a problem ... events on SDL is queued and will be
 			//processed one at a time of the update loop. so, if the input seems
 			//jittery, it could be that the SDL events must be processed in a different
 			//way -- maybe an 'input context' would be a good idea
 			SDL_PollEvent(&event);
-			unsigned int delta = newTime - next_update;
-			next_update = newTime + elapsed_target - delta;
+			unsigned int delta = _tick_time - next_update;
+			next_update = _tick_time + _update_interval - delta;
+			_updates++;
 		} else
 			update = false;
-		if (newTime >= next_draw) {
+		if (_tick_time >= next_draw) {
 			draw = true;
-			next_draw = newTime + draw_target;
+			next_draw = _tick_time + _draw_interval;
+			_draws++;
 		} else
 			draw = false;
 	}
 
-	Game::Game(MainObject::u_ptr primaryPart, UpdateContext * update,
-			DrawContext * draw, ResourceContext * resource) :
-			primary(std::move(primaryPart)), update_ctx(update), draw_ctx(draw), resource_ctx(
-					resource) {
+	void UpdateContext::logStats() const {
+		auto elapsed =  _tick_time - _first_tick;
+		LOG << "Run time (seconds): " << elapsed / 1000.0
+		    << "\n\t FPS: " << _draws * 1000.0 / elapsed
+		    << "\n\t UPS: " << _updates * 1000.0 / elapsed;
 	}
+
+	Game::Game(MainObject::u_ptr primaryPart, UpdateContext::u_ptr update,
+			DrawContext * draw, ResourceContext * resource)
+				: _primary(std::move(primaryPart))
+	            , _update(std::move(update))
+	            , draw_ctx(draw)
+	            , resource_ctx(resource)
+	{}
 
 	Game::~Game() {
 		delete resource_ctx;
-		delete update_ctx;
 		delete draw_ctx;
 	}
+
 	void Game::run() {
-		primary->initialise(*resource_ctx, *draw_ctx);
+		_primary->initialise(*resource_ctx, *draw_ctx);
 		std::deque<GameObject *> objects;
-		primary->collect(objects);
+		_primary->collect(objects);
 		// to fix draw order, sort the object
 		std::sort(objects.begin(), objects.end(),
 				[](const GameObject * a, const GameObject * b) {
 					return a->drawOrder() < b->drawOrder();});
-		update_ctx->tick();
+		_update->tick();
 		bool isRunning = true;
 		while (isRunning) {
-			if (update_ctx->isUpdate()) {
-				primary->update(*update_ctx);
-				isRunning = primary->isAlive();
+			if (_update->isUpdate()) {
+				_primary->update(*_update);
+				isRunning = _primary->isAlive();
 			}
-			if (update_ctx->isDraw()) {
+			if (_update->isDraw()) {
 				for (auto it = objects.begin(); it != objects.end(); it++)
 					(*it)->draw(*draw_ctx);
 				SDL_GL_SwapBuffers();
 			}
-			update_ctx->tick();
+			_update->tick();
 		};
+		_update->logStats();
 	}
 
      void MainObject::initialise(const ResourceContext & rctx, const DrawContext& dctx) {
@@ -211,3 +227,5 @@ namespace game {
 		return systemex::string_from_file(fullname.c_str());
 	}
 }
+
+

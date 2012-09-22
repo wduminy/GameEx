@@ -34,6 +34,7 @@
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1981517696" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__GXX_EXPERIMENTAL_CXX__"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.other.other.1019440579" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -Weffc++" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.276866265" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.debug.2105707836" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.debug">
@@ -64,11 +65,11 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="cdt.managedbuild.config.gnu.mingw.exe.debug.1445902212.2052821086" name="test_main.cpp" rcbsApplicability="disable" resourcePath="src/testex/test_main.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.exe.debug.144360367.1503897081">
-						<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.exe.debug.144360367.1503897081" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.exe.debug.144360367"/>
+					<fileInfo id="cdt.managedbuild.config.gnu.mingw.exe.debug.1445902212.734593545" name="network_test.cpp" rcbsApplicability="disable" resourcePath="src/network/network_test.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.exe.debug.144360367.1194833968">
+						<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.exe.debug.144360367.1194833968" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.exe.debug.144360367"/>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="testex/test_main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="network/network_test.cpp|testex/test_main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -102,9 +103,10 @@
 									<listOptionValue builtIn="false" value="c:\Development\cpp\libraries\SDL-1.2.15"/>
 									<listOptionValue builtIn="false" value="&quot;C:\development\cpp\libraries\SDL-1.2.15\include&quot;"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.preprocessor.def.319804365" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
+								<option id="gnu.cpp.compiler.option.preprocessor.def.319804365" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__GXX_EXPERIMENTAL_CXX__"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.other.other.1047574604" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -Weffc++" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1022406101" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.release.669457841" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.release">
@@ -170,9 +172,10 @@
 									<listOptionValue builtIn="false" value="c:\Development\cpp\libraries\SDL-1.2.15\include"/>
 									<listOptionValue builtIn="false" value="&quot;C:\development\cpp\libraries\SDL-1.2.15\include&quot;"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.preprocessor.def.1661512877" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
+								<option id="gnu.cpp.compiler.option.preprocessor.def.1661512877" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__GXX_EXPERIMENTAL_CXX__"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.other.other.417403901" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -Weffc++" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1266520297" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.debug.1195266467" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.debug">

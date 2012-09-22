@@ -30,34 +30,30 @@ namespace game {
 	};
 
 	class UpdateContext {
-		PREVENT_COPY(UpdateContext)
 		public:
-			UpdateContext(time targetUpdateDelay, time drawUpdateDelay = 30);
-			unsigned int get_elapsed_milliseconds() const {
-				return elapsed_target;
-			}
-			;
-			bool isUpdate() {
-				return update;
-			}
-			;
-			bool isDraw() {
-				return draw;
-			}
-			;
+			UpdateContext(unsigned int targetUpdatesPerSecond, unsigned int targetFramesPerSecond);
+			bool isUpdate() {return update;}
+			bool isDraw() {return draw;}
+			unsigned int updateInterval() const {return _update_interval; }
+			double updatesPerSecond() const { return 1000.0 / _update_interval; }
+			double secondsPerUpdate() const { return 1.0 / updatesPerSecond();}
 			void tick();
 			SDLKey keyUp() const;
 			SDLKey keyDown() const;
 			SDL_Event event;
-		protected:
-
+			void logStats() const;
 		private:
-			const unsigned int elapsed_target;
-			const unsigned int draw_target;
+			const unsigned int _update_interval;
+			const unsigned int _draw_interval;
+			const Uint32 _first_tick;
 			time next_update;
 			time next_draw;
 			bool update;
 			bool draw;
+			Uint32 _tick_time;
+			unsigned int _draws, _updates;
+		public:
+			typedef std::unique_ptr<UpdateContext> u_ptr;
 	};
 
 	class DrawContext {
@@ -145,18 +141,19 @@ namespace game {
 	};
 
 	class Game {
+		PREVENT_COPY(Game)
 		public:
 			// the game owns these 'pointers'
 			Game(MainObject::u_ptr primaryPart,
-				UpdateContext * update = new UpdateContext(100),
+				UpdateContext::u_ptr update,
 				DrawContext * draw = new DrawContext(false, 640, 480),
 				ResourceContext * resource = new ResourceContext(""));
 			// the game runs until primary is dead
 			void run();
 			~Game();
 		private:
-			MainObject::u_ptr primary;
-			UpdateContext * update_ctx;
+			MainObject::u_ptr _primary;
+			UpdateContext::u_ptr _update;
 			DrawContext * draw_ctx;
 			ResourceContext * resource_ctx;
 	};

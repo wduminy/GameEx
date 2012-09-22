@@ -9,8 +9,7 @@
  */
 namespace tut {
 	using namespace systemex;
-	struct data {
-	};
+	struct data { virtual ~data(){} };
 	test_group<data> systemTests("010 System Tests");
 
 	template<> template<> void test_group<data>::object::test<1>() {
