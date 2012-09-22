@@ -24,6 +24,12 @@ namespace game {
 		push_back(xyz[0],xyz[1],xyz[2]);
 	}
 
+	void TriangleStrip::draw() const {
+		reset();
+		while (!at_end())
+			draw_step();
+	}
+
 	SphereCamera::SphereCamera(int drawOrder, double y, double r)
 	: GameObject(drawOrder), _circleY(y), _circleRadius(r), _theta(0), _delta(0) {}
 

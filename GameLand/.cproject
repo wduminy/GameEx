@@ -31,7 +31,7 @@
 									<listOptionValue builtIn="false" value="c:\Development\cpp\libraries\SDL-1.2.15"/>
 									<listOptionValue builtIn="false" value="&quot;C:\development\cpp\libraries\SDL-1.2.15\include&quot;"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.preprocessor.def.1981517696" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
+								<option id="gnu.cpp.compiler.option.preprocessor.def.1981517696" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__GXX_EXPERIMENTAL_CXX__"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.276866265" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -64,8 +64,11 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="cdt.managedbuild.config.gnu.mingw.exe.debug.1445902212.2052821086" name="test_main.cpp" rcbsApplicability="disable" resourcePath="src/testex/test_main.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.exe.debug.144360367.1503897081">
+						<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.exe.debug.144360367.1503897081" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.exe.debug.144360367"/>
+					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="testex/test_main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

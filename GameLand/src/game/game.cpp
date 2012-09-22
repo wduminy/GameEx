@@ -151,15 +151,14 @@ namespace game {
         glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
         /* Set the clear color. */
-        glClearColor(0.15, 0.15, 0.3, 0);
+        glClearColor(0.0, 0.0, 0.0, 0);
         /* Setup our viewport. */
-        // TODO user screen width and height
         glViewport(0, 0, dctx.width(), dctx.height());
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         float ratio = (float) dctx.width() /  (float) dctx.height();
         glLoadIdentity(); // load identity because we want to 'reset' the perspective
-        gluPerspective(60.0, ratio, 1.0, 100.0);
+        gluPerspective(45.0, ratio, _nearest, _farest);
         GameObjectWithParts::initialise(rctx,dctx);
 	}
 

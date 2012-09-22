@@ -123,20 +123,21 @@ namespace game {
 
 	class MainObject: public GameObjectWithParts {
 		public:
-			MainObject(int drawOrder) :
-					GameObjectWithParts(drawOrder), running(true) {};
+			MainObject(int drawOrder, GLdouble nearest, GLdouble farest)
+				: GameObjectWithParts(drawOrder) , _running(true), _nearest(nearest), _farest(farest) {};
             void initialise(const ResourceContext & rctx, const DrawContext& dctx) override;
 			void exit() {
-				running = false;
+				_running = false;
 			}
 			void update(const UpdateContext& ctx);
 			bool isAlive() const {
-				return running;
+				return _running;
 			}
 			;
 			void draw(const DrawContext&);
 		private:
-			bool running;
+			bool _running;
+			GLdouble _nearest, _farest;
 
 		public:
 			typedef std::unique_ptr<MainObject> u_ptr;

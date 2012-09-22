@@ -16,7 +16,8 @@ namespace game {
 			void push_back3f(const GLfloat* xyz);
 			void reset() const {_it = _verts.get();}
 			bool at_end() const {return _it >= _ins;}
-			void draw() const {glVertex3fv(_it);_it+=3;}
+			void draw_step() const {glVertex3fv(_it);_it+=3;}
+			void draw() const;
 		private:
 			std::unique_ptr<GLfloat []> _verts;
 			GLfloat * _ins;
