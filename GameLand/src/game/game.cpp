@@ -64,7 +64,7 @@ namespace game {
 
 	/// targetUpdateDelay : milliseconds to update
 	UpdateContext::UpdateContext(unsigned int targetUpdatesPerSecond, unsigned int targetFramesPerSecond) :
-            event(),
+            _event(),
 			_update_interval(1000 / targetUpdatesPerSecond),
 			_draw_interval(1000 / targetFramesPerSecond),
 			_first_tick(SDL_GetTicks()),
@@ -77,18 +77,18 @@ namespace game {
             _updates(0)
              {}
 
-	SDLKey UpdateContext::keyDown() const {
-		if (event.type != SDL_KEYDOWN)
+	SDLKey UpdateContext::key_down() const {
+		if (_event.type != SDL_KEYDOWN)
 			return SDLK_UNKNOWN;
 		else
-			return event.key.keysym.sym;
+			return _event.key.keysym.sym;
 	}
 
-	SDLKey UpdateContext::keyUp() const {
-		if (event.type != SDL_KEYUP)
+	SDLKey UpdateContext::key_up() const {
+		if (_event.type != SDL_KEYUP)
 			return SDLK_UNKNOWN;
 		else
-			return event.key.keysym.sym;
+			return _event.key.keysym.sym;
 	}
 
 	void UpdateContext::tick() {
@@ -99,7 +99,7 @@ namespace game {
 			//processed one at a time of the update loop. so, if the input seems
 			//jittery, it could be that the SDL events must be processed in a different
 			//way -- maybe an 'input context' would be a good idea
-			SDL_PollEvent(&event);
+			SDL_PollEvent(&_event);
 			unsigned int delta = _tick_time - next_update;
 			next_update = _tick_time + _update_interval - delta;
 			_updates++;
@@ -113,7 +113,7 @@ namespace game {
 			draw = false;
 	}
 
-	void UpdateContext::logStats() const {
+	void UpdateContext::log_statistics() const {
 		auto elapsed =  _tick_time - _first_tick;
 		LOG << "Run time (seconds): " << elapsed / 1000.0
 		    << "\n\t FPS: " << _draws * 1000.0 / elapsed
@@ -121,41 +121,37 @@ namespace game {
 	}
 
 	Game::Game(MainObject::u_ptr primaryPart, UpdateContext::u_ptr update,
-			DrawContext * draw, ResourceContext * resource)
+			DrawContext::u_ptr draw, ResourceContext::u_ptr resource)
 				: _primary(std::move(primaryPart))
 	            , _update(std::move(update))
-	            , draw_ctx(draw)
-	            , resource_ctx(resource)
+	            , _draw(std::move(draw))
+	            , _resource(std::move(resource))
 	{}
 
-	Game::~Game() {
-		delete resource_ctx;
-		delete draw_ctx;
-	}
 
 	void Game::run() {
-		_primary->initialise(*resource_ctx, *draw_ctx);
+		_primary->initialise(*_resource, *_draw);
 		std::deque<GameObject *> objects;
 		_primary->collect(objects);
 		// to fix draw order, sort the object
 		std::sort(objects.begin(), objects.end(),
 				[](const GameObject * a, const GameObject * b) {
-					return a->drawOrder() < b->drawOrder();});
+					return a->draw_order() < b->draw_order();});
 		_update->tick();
 		bool isRunning = true;
 		while (isRunning) {
-			if (_update->isUpdate()) {
+			if (_update->is_update_step()) {
 				_primary->update(*_update);
-				isRunning = _primary->isAlive();
+				isRunning = _primary->is_alive();
 			}
-			if (_update->isDraw()) {
+			if (_update->is_draw_step()) {
 				for (auto it = objects.begin(); it != objects.end(); it++)
-					(*it)->draw(*draw_ctx);
+					(*it)->draw(*_draw);
 				SDL_GL_SwapBuffers();
 			}
 			_update->tick();
 		};
-		_update->logStats();
+		_update->log_statistics();
 	}
 
      void MainObject::initialise(const ResourceContext & rctx, const DrawContext& dctx) {
@@ -180,9 +176,9 @@ namespace game {
 
 	void MainObject::update(const UpdateContext& ctx) {
 		GameObjectWithParts::update(ctx);
-		switch (ctx.event.type) {
+		switch (ctx.event().type) {
 		case SDL_KEYDOWN:
-			switch (ctx.event.key.keysym.sym) {
+			switch (ctx.event().key.keysym.sym) {
 			case SDLK_ESCAPE:
 				exit();
 				break;
@@ -199,7 +195,7 @@ namespace game {
 	}
 
 	void MainObject::draw(const DrawContext&) {
-		/* Clear the color and depth buffers. */
+		/* Clear the colour and depth buffers. */
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		/* We don't want to modify the projection matrix. */

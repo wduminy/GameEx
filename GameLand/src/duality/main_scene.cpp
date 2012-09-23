@@ -52,7 +52,7 @@ private:
 DualityScene::DualityScene() : MainObject(-100,NEAREST,FAREST) {
 	add_part(GameObject::u_ptr(new Arena()));
 	add_part(
-			GameObject::u_ptr(new SphereCamera(drawOrder() + 1, CAM_Y, CAM_RADIUS)));
+			GameObject::u_ptr(new SphereCamera(draw_order() + 1, CAM_Y, CAM_RADIUS)));
 }
 
 

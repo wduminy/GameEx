@@ -108,7 +108,7 @@ namespace tut {
 	TEST<8>() {
 		set_test_name("load bmp");
 		ResourceContext ctx;
-		ctx.load_BMP("test.BMP");
+		ctx.load_BMP("cracked_tiles.BMP");
 	}
 
 	TEST<9>() {
@@ -121,7 +121,7 @@ namespace tut {
 		set_test_name("load opengl surface");
 		ResourceContext ctx;
 		DrawContext dx(false,10,10);
-		auto surface = ctx.load_BMP("test.BMP");
+		auto surface = ctx.load_BMP("cracked_tiles.BMP");
 		Texture t(dx.gl());
 		t.copy_from(*surface);
 	}

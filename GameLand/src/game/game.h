@@ -27,22 +27,25 @@ namespace game {
 		string load_text(const char * filename) const;
 	private:
 		const string _root_directory;
+	public:
+		typedef std::unique_ptr<ResourceContext> u_ptr;
 	};
 
 	class UpdateContext {
 		public:
 			UpdateContext(unsigned int targetUpdatesPerSecond, unsigned int targetFramesPerSecond);
-			bool isUpdate() {return update;}
-			bool isDraw() {return draw;}
-			unsigned int updateInterval() const {return _update_interval; }
-			double updatesPerSecond() const { return 1000.0 / _update_interval; }
-			double secondsPerUpdate() const { return 1.0 / updatesPerSecond();}
+			bool is_update_step() {return update;}
+			bool is_draw_step() {return draw;}
+			unsigned int update_interval() const {return _update_interval; }
+			double updates_per_second() const { return 1000.0 / _update_interval; }
+			double seconds_per_update() const { return 1.0 / updates_per_second();}
 			void tick();
-			SDLKey keyUp() const;
-			SDLKey keyDown() const;
-			SDL_Event event;
-			void logStats() const;
+			SDLKey key_up() const;
+			SDLKey key_down() const;
+			SDL_Event event() const { return _event;}
+			void log_statistics() const;
 		private:
+			SDL_Event _event;
 			const unsigned int _update_interval;
 			const unsigned int _draw_interval;
 			const Uint32 _first_tick;
@@ -67,30 +70,24 @@ namespace game {
 			Glex::u_ptr instance_p;
 			int _width;
 			int _height;
+		public:
+			typedef std::unique_ptr<DrawContext> u_ptr;
 	};
 
 	class GameObject {
 		public:
-			GameObject(int drawOrder = 0) :	_drawOrder(drawOrder) {};
+			GameObject(int drawOrder = 0) :	_draw_order(drawOrder) {};
 			/** initialise this and initialise children */
 			virtual void initialise(const ResourceContext & rctx, const DrawContext& dctx) {};
 			/** draw only this, not children */
 			virtual void draw(const DrawContext& gc) = 0;
 			/** update this and update children */
-			virtual void update(const UpdateContext &) {
-			}
-			virtual void collect(std::deque<GameObject *> &c) {
-				c.push_back(this);
-			}
-			;
-			int drawOrder() const {
-				return _drawOrder;
-			}
-			;
-			virtual ~GameObject() {
-			}
+			virtual void update(const UpdateContext &) {}
+			virtual void collect(std::deque<GameObject *> &c) {c.push_back(this);}
+			int draw_order() const {return _draw_order;}
+			virtual ~GameObject() {}
 		private:
-			const int _drawOrder;
+			const int _draw_order;
 		public:
 			typedef std::unique_ptr<GameObject> u_ptr;
 	};
@@ -98,9 +95,7 @@ namespace game {
 	class GameObjectWithParts: public GameObject {
 		public:
 			GameObjectWithParts(const int drawOrder) :
-					GameObject(drawOrder), _parts() {
-			}
-			;
+					GameObject(drawOrder), _parts() {}
 			// initialises all the parts
 			virtual void initialise(const ResourceContext &rctx, const DrawContext& dctx) override {
 				for_each(p,_parts) (*p)->initialise(rctx,dctx);
@@ -122,40 +117,31 @@ namespace game {
 			MainObject(int drawOrder, GLdouble nearest, GLdouble farest)
 				: GameObjectWithParts(drawOrder) , _running(true), _nearest(nearest), _farest(farest) {};
             void initialise(const ResourceContext & rctx, const DrawContext& dctx) override;
-			void exit() {
-				_running = false;
-			}
+			void exit() { _running = false;}
 			void update(const UpdateContext& ctx);
-			bool isAlive() const {
-				return _running;
-			}
-			;
+			bool is_alive() const {return _running;}
 			void draw(const DrawContext&);
 		private:
 			bool _running;
 			GLdouble _nearest, _farest;
-
 		public:
 			typedef std::unique_ptr<MainObject> u_ptr;
-
 	};
 
 	class Game {
-		PREVENT_COPY(Game)
 		public:
 			// the game owns these 'pointers'
 			Game(MainObject::u_ptr primaryPart,
 				UpdateContext::u_ptr update,
-				DrawContext * draw = new DrawContext(false, 640, 480),
-				ResourceContext * resource = new ResourceContext(""));
+				DrawContext::u_ptr draw,
+				ResourceContext::u_ptr resource);
 			// the game runs until primary is dead
 			void run();
-			~Game();
 		private:
 			MainObject::u_ptr _primary;
 			UpdateContext::u_ptr _update;
-			DrawContext * draw_ctx;
-			ResourceContext * resource_ctx;
+			DrawContext::u_ptr _draw;
+			ResourceContext::u_ptr _resource;
 	};
 
 }

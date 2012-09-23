@@ -37,8 +37,8 @@ namespace game {
 		const static double a360 = 3.14 * 2.0;
 		const static double degrees_per_second = 90;
 		const static double rads_per_second = a360 * degrees_per_second / 360.0;
-		const static double rads_per_update = ctx.secondsPerUpdate() * rads_per_second;
-		switch (ctx.keyDown()) {
+		const static double rads_per_update = ctx.seconds_per_update() * rads_per_second;
+		switch (ctx.key_down()) {
 			case SDLK_LEFT:
 				_delta = -rads_per_update;
 				break;
@@ -48,7 +48,7 @@ namespace game {
 			default:
 				break;
 		}
-		switch (ctx.keyUp()) {
+		switch (ctx.key_up()) {
 			case SDLK_LEFT:
 			case SDLK_RIGHT:
 				_delta = 0;

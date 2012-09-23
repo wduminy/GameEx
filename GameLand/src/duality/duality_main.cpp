@@ -13,8 +13,8 @@ int main( int , char* [] ) {
 		game::Game g(
 				MainObject::u_ptr(new DualityScene()),
 				UpdateContext::u_ptr(new UpdateContext(48,24)),
-				new game::DrawContext(false,800,600),
-				new game::ResourceContext("duality/")
+				DrawContext::u_ptr(new DrawContext(false,800,600)),
+				ResourceContext::u_ptr(new ResourceContext("duality/"))
 		);
 		g.run();
 	} catch (std::exception &e) {

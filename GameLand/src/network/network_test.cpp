@@ -9,7 +9,7 @@
 namespace tut {
 	using namespace network;
 
-	struct networkdata { virtaul ~networkdata(){};};
+	struct networkdata { virtual ~networkdata(){};};
 	test_group<networkdata> networkTests("020 Network Subsystem");
 
 	TEST<1>() {
