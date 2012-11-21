@@ -21,14 +21,16 @@ namespace game {
 	extern const Scalar unity;
 	extern const Scalar pi;   // pi is 180 degrees
 	extern const Scalar piX2; // pi times two
+	extern const Scalar degrees45;
 
 	inline Scalar sqr(const Scalar& v) {return v * v;}
-
+	inline bool scalar_equals(const Scalar& a, const Scalar& b) {return fabs(a-b) < 0.00001f;}
 	/**
-	 * Note that positive z points out of the screen - towards the operator
+	 * Note that positive z points out of the screen - towards you
 	 */
 	class Vector {
 		public:
+			Vector();
 			Vector(const Vector &source);
 			Vector(const Scalar& x, const Scalar & y, const Scalar &z);
 			Scalar x() const {return _data[0];}
@@ -45,10 +47,16 @@ namespace game {
 			friend Scalar dot_product(const Vector& a, const Vector &b);
 			friend Vector cross_product(const Vector& a, const Vector &b);
 			friend ostream& operator<<(ostream& out, const Vector &m);
+			static const Vector origin;
+			static const Vector north;
+			bool operator==(const Vector& other) const;
+			bool operator!=(const Vector& other) const;
 		private:
 			Vector(const valarray<Scalar>& d);
 			valarray<Scalar> _data;
 	};
+
+
 
 	class MatrixOp {
 			PREVENT_COPY(MatrixOp);
@@ -89,4 +97,20 @@ namespace game {
 			valarray<Scalar> _data;
 	};
 
+	/**
+	 * An integer that 'rotates' from 0 to maxValue
+	 */
+	class RotateInt {
+	public:
+		RotateInt(const int maxValue, const int value);
+		RotateInt& operator++();
+		RotateInt& operator--();
+		operator int() const {return _value;}
+		int max() const {return _max_value;}
+	private:
+		const int _max_value;
+		int _value;
+	};
+
+	int operator-(const RotateInt& a, const RotateInt& b);
 }

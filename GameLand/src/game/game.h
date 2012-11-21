@@ -118,9 +118,9 @@ namespace game {
 				: GameObjectWithParts(drawOrder) , _running(true), _nearest(nearest), _farest(farest) {};
             void initialise(const ResourceContext & rctx, const DrawContext& dctx) override;
 			void exit() { _running = false;}
-			void update(const UpdateContext& ctx);
+			void update(const UpdateContext& ctx) override;
 			bool is_alive() const {return _running;}
-			void draw(const DrawContext&);
+			void draw(const DrawContext&) override;
 		private:
 			bool _running;
 			GLdouble _nearest, _farest;

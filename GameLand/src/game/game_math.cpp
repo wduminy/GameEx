@@ -7,15 +7,36 @@
 #include "../systemex/log.h"
 
 namespace game {
+	const Vector Vector::origin(0,0,0);
+	const Vector Vector::north(0,1,0);
 	const Scalar unity = 1.0f;
-	const Scalar pi = asin(1) * 2.0f;
-	const Scalar piX2 = pi * 2.0f;
+	const auto degrees90 = asin(1);
+	const Scalar pi = degrees90 * 2.0f;
+	const Scalar piX2 = degrees90 * 2.0f;
+	const Scalar degrees45 = degrees90 / 2.0f;
+
+    Vector::Vector() : _data(3) {
+    	_data[0] = _data[1] = _data[2] = 0;
+    }
 
 	Vector::Vector(const Scalar& x, const Scalar & y, const Scalar &z) : _data(3) {
 		_data[0] = x;
 		_data[1] = y;
 		_data[2] = z;
 	}
+
+	bool Vector::operator ==(const Vector& other) const {
+		return scalar_equals(_data[0], other._data[0]) &&
+			   scalar_equals(_data[1], other._data[1]) &&
+			   scalar_equals(_data[2], other._data[2]);
+	}
+
+	bool Vector::operator !=(const Vector& other) const {
+		return  !scalar_equals(_data[0], other._data[0]) ||
+				!scalar_equals(_data[1], other._data[1]) ||
+				!scalar_equals(_data[2], other._data[2]);
+	}
+
 
 	Vector::Vector(const valarray<Scalar>& d): _data(d) {
 	}
@@ -157,4 +178,35 @@ namespace game {
 		}
 		return out;
 	}
+
+	RotateInt::RotateInt(const int maxValue, const int value) : _max_value(maxValue), _value(value) {
+		ENSURE((value >= 0) && (value <= _max_value), "range error" );
+	}
+
+	RotateInt& RotateInt::operator ++() {
+		_value++;
+		if (_value == _max_value)
+			_value = 0;
+		return *this;
+	}
+
+	RotateInt& RotateInt::operator --() {
+		--_value;
+		if (_value == -1)
+			_value = _max_value;
+		return *this;
+	}
+
+#define ENSURE_COMPATIBLE(a,b) ENSURE(a.max() == b.max(), "rotate integer values not compatible")
+
+	int operator -(const RotateInt& a, const RotateInt& b) {
+		ENSURE_COMPATIBLE(a,b);
+		const auto ia = (int) a;
+		const auto ib = (int) b;
+		if (ia >= ib)
+			return ia - ib;
+		else
+			return (b.max() - ib + 1) + ia;
+	}
+
 }

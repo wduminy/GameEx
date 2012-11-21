@@ -17,7 +17,6 @@ namespace network {
 
 
 	void Socket::connect(const char * ip_address, const u_short port_number) {
-		// TODO 900 implement connect
 		auto address = inet_addr(ip_address);
 		if (address == INADDR_NONE)
 			throw systemex::runtime_error_ex("could not parse IP address: '%s'", ip_address);
