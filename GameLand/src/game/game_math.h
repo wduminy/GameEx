@@ -26,7 +26,7 @@ namespace game {
 	inline Scalar sqr(const Scalar& v) {return v * v;}
 	inline bool scalar_equals(const Scalar& a, const Scalar& b) {return fabs(a-b) < 0.00001f;}
 	/**
-	 * Note that positive z points out of the screen - towards you
+	 * Coordinate system: x - increase to right, y increases up, z increases towards you
 	 */
 	class Vector {
 		public:
@@ -49,14 +49,15 @@ namespace game {
 			friend ostream& operator<<(ostream& out, const Vector &m);
 			static const Vector origin;
 			static const Vector north;
+			static const Vector west;
+			static const Vector east;
+			static const Vector south;
 			bool operator==(const Vector& other) const;
 			bool operator!=(const Vector& other) const;
 		private:
 			Vector(const valarray<Scalar>& d);
 			valarray<Scalar> _data;
 	};
-
-
 
 	class MatrixOp {
 			PREVENT_COPY(MatrixOp);
@@ -107,6 +108,7 @@ namespace game {
 		RotateInt& operator--();
 		operator int() const {return _value;}
 		int max() const {return _max_value;}
+		bool operator != (RotateInt& other) const {return _value != other._value;};
 	private:
 		const int _max_value;
 		int _value;

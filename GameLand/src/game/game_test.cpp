@@ -128,7 +128,7 @@ namespace tut {
 
 	TEST<11>() {
 		set_test_name("translation of a point");
-		Vector pointToTranslate(0,1,0);
+		Vector pointToTranslate(Vector::north);
 		Matrix xlator(MatrixOp::translate, Vector::north * 2.0f);
 		auto newPoint = xlator * pointToTranslate;
 		ensure_equals(pointToTranslate * 3.0f, newPoint);

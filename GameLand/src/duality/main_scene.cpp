@@ -4,6 +4,8 @@
  */
 #include "../game/game_objects.h"
 #include "main_scene.h"
+#include "snake.h"
+
 namespace duality {
 using namespace game;
 const float ARENA_HALF = 3.0f;
@@ -51,8 +53,8 @@ private:
 
 DualityScene::DualityScene() : MainObject(-100,NEAREST,FAREST) {
 	add_part(GameObject::u_ptr(new Arena()));
-	add_part(
-			GameObject::u_ptr(new SphereCamera(draw_order() + 1, CAM_Y, CAM_RADIUS)));
+	add_part(GameObject::u_ptr(new SphereCamera(draw_order() + 1, CAM_Y, CAM_RADIUS)));
+	add_part(GameObject::u_ptr(new SnakeObject()));
 }
 
 

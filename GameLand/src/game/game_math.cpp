@@ -8,7 +8,10 @@
 
 namespace game {
 	const Vector Vector::origin(0,0,0);
-	const Vector Vector::north(0,1,0);
+	const Vector Vector::north(0,0,-1);
+	const Vector Vector::south = Vector::north * -1.0f;
+	const Vector Vector::west(-1,0,0);
+	const Vector Vector::east = Vector::west * -1.0f;
 	const Scalar unity = 1.0f;
 	const auto degrees90 = asin(1);
 	const Scalar pi = degrees90 * 2.0f;
@@ -157,7 +160,7 @@ namespace game {
 	}
 
 	Vector operator*(const Matrix& a, const Vector &b) {
-		Scalar result[3] = {0,0,0};
+		Scalar result[4] = {0,0,0};
 		Scalar sum;
 		for (int row = 0; row < 4; row++) {
 			sum = 0;
