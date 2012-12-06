@@ -25,6 +25,7 @@ namespace duality {
 	public:
 		Snake(const Vector& startingPoint = Vector::origin,
 				const Vector& lookingAt = Vector::north,
+				const int updatesPerSegment = 5,
 				const Scalar& distancePerMove = 0.02,
 				const Scalar& radiansPerTurn = degrees45 / 10.0f,
 				const int initialGrowth = 200);
@@ -47,6 +48,7 @@ namespace duality {
 		const Scalar _radians_per_move;
 		const Vector _translation_vector;
 		unsigned int _remaining_growth;
+		CountDownCounter _segment_counter;
 	};
 
 	class SnakeObject : public GameObject, private Snake {

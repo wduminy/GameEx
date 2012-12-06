@@ -11,27 +11,27 @@ namespace tut {
 	#define SNAKE_TEST(number) template<> template<> void test_group<Snakedata>::object::test<number>()
 
 	SNAKE_TEST(1) {
-		Snake s(Vector::origin, Vector::north);
+		Snake s(Vector::origin, Vector::north, 1);
 		s.move();
 		ensure_equals(s.size(),1U);
 	}
 
 	SNAKE_TEST(2) {
-		Snake s(Vector::origin, Vector::north);
+		Snake s(Vector::origin, Vector::north, 1);
 		ensure_equals(s.head(),s.tail());
 		s.move();
 		ensure("head and tail must be different after move",s.head() != s.tail());
 	}
 
 	SNAKE_TEST(3) {
-		Snake s(Vector::origin, Vector::north,unity);
+		Snake s(Vector::origin, Vector::north,unity,1);
 		s.move();
 		s.move();
 		ensure_equals("move is not two steps forward",(Vector::north * 2.0f), s.head());
 	}
 
 	SNAKE_TEST(4) {
-		Snake s(Vector::origin, Vector::north,unity,degrees45 * 2.0f);
+		Snake s(Vector::origin, Vector::north,1,unity,degrees45 * 2.0f);
 		s.move();
 		ensure_equals("forward end up at wrong place", s.head(),Vector::north );
 		s.move(Left);
@@ -43,7 +43,7 @@ namespace tut {
 	}
 
 	SNAKE_TEST(5) {
-		Snake s(Vector::origin, Vector::north,unity,degrees45 * 2.0f);
+		Snake s(Vector::origin, Vector::north,1,unity,degrees45 * 2.0f);
 		s.move();
 		s.move(Right);
 		ensure_equals("f-r end up at wrong place", s.head(), Vector::north + Vector::east );

@@ -99,6 +99,21 @@ namespace game {
 	};
 
 	/**
+	 * An resetable integer that counts down from a starting value to zero
+	 */
+	class CountDownCounter {
+	public:
+		CountDownCounter(int startValue) : _start_value(startValue), _value(_start_value) {}
+		bool count() {
+			if (--_value == 0)
+				_value = _start_value;
+			return _value == _start_value;
+		}
+	private:
+		const int _start_value;
+		int _value;
+	};
+	/**
 	 * An integer that 'rotates' from 0 to maxValue
 	 */
 	class RotateInt {

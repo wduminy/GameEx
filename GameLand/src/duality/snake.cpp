@@ -11,9 +11,11 @@ namespace duality {
 
 Snake::Snake(const Vector& startingPoint,
 		const Vector& lookingAt,
+		const int updatesPerGrow,
 		const Scalar& distancePerMove,
 		const Scalar& radiansPerTurn,
-		const int initialGrowth) :
+		const int initialGrowth
+		) :
 		_points(),
 		_head(SNAKE_MEM_SIZE-1,0),
 		_tail(SNAKE_MEM_SIZE-1,0),
@@ -21,7 +23,8 @@ Snake::Snake(const Vector& startingPoint,
 		_rotation_angle(0.0f),
 		_radians_per_move(radiansPerTurn),
 		_translation_vector(_move_vector),
-		_remaining_growth(initialGrowth)
+		_remaining_growth(initialGrowth),
+		_segment_counter(updatesPerGrow)
 	{
 		_points[_head] = startingPoint;
 	}
@@ -41,11 +44,14 @@ void Snake::move(const SteerDirection& dir) {
 		break;
 	}
 	const auto newPoint = _points[_head] + _move_vector;
-	_points[--_head] = newPoint;
-	if (is_growing())
-		_remaining_growth--;
-	else
-		-- _tail;
+	if (_segment_counter.count()) {
+		_points[--_head] = newPoint;
+		if (is_growing())
+			_remaining_growth--;
+		else
+			-- _tail;
+	} else
+		_points[_head] = newPoint;
 }
 
 void Snake::grow(const unsigned int sizeIncrement) {
@@ -56,7 +62,7 @@ void Snake::grow(const unsigned int sizeIncrement) {
 
 void SnakeObject::draw(const DrawContext& gc) {
 	// TODO 100 implement draw method for snake
-	glPointSize(3); // pixels
+	glPointSize(10); // pixels
 	glBegin(GL_POINTS);
 	for (auto index = tail_index(); index != head_index(); --index)
 		glVertex3fv(points()[index].c_elems());
