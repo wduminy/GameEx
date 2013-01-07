@@ -9,6 +9,28 @@
 
 namespace duality {
 
+SpinePoint::SpinePoint() : _topMiddle(), _bottomLeft(), _bottomRight() {};
+
+void SpinePoint::assign(const Vector& topMiddlePoint) {
+	_topMiddle = _bottomLeft = _bottomRight = topMiddlePoint;
+};
+
+void SpinePoint::assign(const Vector& topMiddlePoint, const Vector& previousPoint) {
+	_topMiddle = topMiddlePoint;
+	Vector point_dir = topMiddlePoint - previousPoint;
+	auto n = point_dir.norm();
+	if (n == 0)
+		assign(topMiddlePoint);
+	else {
+		point_dir /= n;
+		Vector dir(-point_dir.z(),0,point_dir.x());
+		_bottomLeft = _topMiddle + (dir * SNAKE_WIDTH_HALF);
+		_bottomLeft.set_y(SNAKE_BOTTOM);
+		_bottomRight = _topMiddle - (dir * SNAKE_WIDTH_HALF);
+		_bottomRight.set_y(SNAKE_BOTTOM);
+	}
+}
+
 Snake::Snake(const Vector& startingPoint,
 		const Vector& lookingAt,
 		const int updatesPerGrow,
@@ -17,16 +39,18 @@ Snake::Snake(const Vector& startingPoint,
 		const int initialGrowth
 		) :
 		_points(),
-		_head(SNAKE_MEM_SIZE-1,0),
-		_tail(SNAKE_MEM_SIZE-1,0),
+		_head(SNAKE_MEM_SIZE-1,1),
+		_tail(SNAKE_MEM_SIZE-1,1),
 		_move_vector(lookingAt * distancePerMove),
 		_rotation_angle(0.0f),
 		_radians_per_move(radiansPerTurn),
 		_translation_vector(_move_vector),
 		_remaining_growth(initialGrowth),
-		_segment_counter(updatesPerGrow)
+		_segment_counter(updatesPerGrow),
+		_previous_head(0)
 	{
-		_points[_head] = startingPoint;
+		_points[_head].assign(startingPoint);
+		_points[0].assign(lookingAt * -1.0);
 	}
 
 void Snake::move(const SteerDirection& dir) {
@@ -43,15 +67,18 @@ void Snake::move(const SteerDirection& dir) {
 		// do nothing
 		break;
 	}
-	const auto newPoint = _points[_head] + _move_vector;
+	const auto newPoint = _points[_head].topMiddle() + _move_vector;
 	if (_segment_counter.count()) {
-		_points[--_head] = newPoint;
+		const int rem_head =  _head;
+		-- _head;
+		_points[_head].assign(newPoint, _points[_previous_head].topMiddle());
 		if (is_growing())
 			_remaining_growth--;
 		else
 			-- _tail;
+		_previous_head = rem_head;
 	} else
-		_points[_head] = newPoint;
+		_points[_head].assign(newPoint, _points[_previous_head].topMiddle());
 }
 
 void Snake::grow(const unsigned int sizeIncrement) {
@@ -61,12 +88,41 @@ void Snake::grow(const unsigned int sizeIncrement) {
 }
 
 void SnakeObject::draw(const DrawContext& gc) {
-	// TODO 100 implement draw method for snake
-	glPointSize(10); // pixels
-	glBegin(GL_POINTS);
-	for (auto index = tail_index(); index != head_index(); --index)
-		glVertex3fv(points()[index].c_elems());
+	glLineWidth(3); // pixels
+	glColor3b(110,110,110);
+	glBegin(GL_TRIANGLE_STRIP);
+	auto index = tail_index();
+	int previous_point = index;
+	--index;
+	const auto firstPoint = points()[previous_point];
+	glVertex3fv(firstPoint.bottomRight().c_elems());
+	for (; index != head_index(); --index) {
+		const auto p = points()[previous_point];
+		const auto q = points()[index];
+		glVertex3fv(p.topMiddle().c_elems());
+		glVertex3fv(q.bottomRight().c_elems());
+		previous_point = index;
+	}
+	const auto lastPoint = points()[previous_point];
+	glVertex3fv(lastPoint.topMiddle().c_elems());
 	glEnd();
+
+	glColor3b(50,50,50);
+	glBegin(GL_TRIANGLE_STRIP);
+	auto index2 = tail_index();
+	previous_point = index2;
+	--index2;
+	glVertex3fv(firstPoint.topMiddle().c_elems());
+	for (; index2 != head_index(); --index2) {
+		const auto p = points()[previous_point];
+		const auto q = points()[index2];
+		glVertex3fv(p.bottomLeft().c_elems());
+		glVertex3fv(q.topMiddle().c_elems());
+		previous_point = index2;
+	}
+	glVertex3fv(lastPoint.bottomLeft().c_elems());
+	glEnd();
+
 }
 
 SnakeObject::SnakeObject() : _left_key_down(false), _right_key_down(false) {

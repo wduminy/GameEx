@@ -12,6 +12,8 @@ namespace game {
 	const Vector Vector::south = Vector::north * -1.0f;
 	const Vector Vector::west(-1,0,0);
 	const Vector Vector::east = Vector::west * -1.0f;
+	const Vector Vector::up(0,1,0);
+	const Vector Vector::down = Vector::up * -1.0f;
 	const Scalar unity = 1.0f;
 	const auto degrees90 = asin(1);
 	const Scalar pi = degrees90 * 2.0f;
@@ -26,6 +28,15 @@ namespace game {
 		_data[0] = x;
 		_data[1] = y;
 		_data[2] = z;
+	}
+
+	void Vector::normalise() {
+		const auto n = norm();
+		if (n == 0)
+			throw std::runtime_error("cannot normalise - will casue a division by zero");
+		_data[0] /= n;
+		_data[1] /= n;
+		_data[2] /= n;
 	}
 
 	bool Vector::operator ==(const Vector& other) const {

@@ -36,10 +36,15 @@ namespace game {
 			Scalar x() const {return _data[0];}
 			Scalar y() const {return _data[1];}
 			Scalar z() const {return _data[2];}
+			void set_x(Scalar v) {_data[0] = v;}
+			void set_y(Scalar v) {_data[1] = v;}
+			void set_z(Scalar v) {_data[2] = v;}
 			Scalar norm() const {return sqrt(sqr(x()) + sqr(y()) + sqr(z()));}
+			void normalise();
 			const Scalar& operator()(const size_t& i) const {if (i > 2) return unity; else return _data[i];}
 			// this exposes the internal data for use by OPENGL (use only there)
 			Scalar* c_elems() const { return const_cast<Scalar*> (&_data[0]); };
+			void operator /= (const Scalar& v) {_data /= v;}
 		public:
 			friend Vector operator+(const Vector& a, const Vector &b);
 			friend Vector operator-(const Vector& a, const Vector &b);
@@ -52,8 +57,11 @@ namespace game {
 			static const Vector west;
 			static const Vector east;
 			static const Vector south;
+			static const Vector up;
+			static const Vector down;
 			bool operator==(const Vector& other) const;
 			bool operator!=(const Vector& other) const;
+			virtual ~Vector(){}
 		private:
 			Vector(const valarray<Scalar>& d);
 			valarray<Scalar> _data;

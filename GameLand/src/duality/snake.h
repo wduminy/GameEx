@@ -13,17 +13,35 @@ namespace duality {
 	using namespace game;
 
 	const size_t SNAKE_MEM_SIZE = 1000;
+	const Scalar SNAKE_BOTTOM = 0.0f;
+	const Scalar SNAKE_WIDTH_HALF = 0.07f;
+	const Scalar SNAKE_WIDTH = SNAKE_WIDTH_HALF * 2.0f;
+
 	enum SteerDirection : int {
 		Left,
 		Forward,
 		Right
 	};
 
-	typedef std::array<Vector,SNAKE_MEM_SIZE> SnakeArray;
+	class SpinePoint {
+	public:
+		SpinePoint();
+		void assign(const Vector& topMiddlePoint);
+		void assign(const Vector& topMiddlePoint, const Vector& previousPoint);
+		const Vector& topMiddle() const {return _topMiddle;}
+		const Vector& bottomLeft() const {return _bottomLeft;}
+		const Vector& bottomRight() const {return _bottomRight;}
+	private:
+		Vector _topMiddle;
+		Vector _bottomLeft;
+		Vector _bottomRight;
+	};
+
+	typedef std::array<SpinePoint,SNAKE_MEM_SIZE> SnakeArray;
 
 	class Snake {
 	public:
-		Snake(const Vector& startingPoint = Vector::origin,
+		Snake(const Vector& startingPoint = Vector::origin + (Vector::up * (SNAKE_WIDTH_HALF)),
 				const Vector& lookingAt = Vector::north,
 				const int updatesPerSegment = 5,
 				const Scalar& distancePerMove = 0.02,
@@ -33,8 +51,8 @@ namespace duality {
 		size_t size() const {return (_tail-_head);};
 		void grow(const unsigned int sizeIncrement);
 		bool is_growing() const {return _remaining_growth;}
-		const Vector& head() const {return _points[_head];};
-		const Vector& tail() const {return _points[_tail];};
+		const SpinePoint& head() const {return _points[_head];};
+		const SpinePoint& tail() const {return _points[_tail];};
 		virtual ~Snake(){};
 	protected:
 		const RotateInt& head_index() const {return _head;};
@@ -49,6 +67,7 @@ namespace duality {
 		const Vector _translation_vector;
 		unsigned int _remaining_growth;
 		CountDownCounter _segment_counter;
+		int _previous_head;
 	};
 
 	class SnakeObject : public GameObject, private Snake {
