@@ -25,6 +25,15 @@ namespace game {
 		ResourceContext(const string& subDirectory = "");
 		SDL_Surface_u_ptr load_BMP(const char * filename) const;
 		string load_text(const char * filename) const;
+		ShaderProgram::u_ptr load_program(Glex& gl, const char * filePrefix) const;
+		/**
+		 *
+		 * @param gl
+		 * @param filename
+		 * @param textureIndex zero based index where 0 implies
+		 * @return
+		 */
+		Texture::u_ptr load_texture_bmp(Glex& gl, const char * filename, const int textureIndex) const;
 	private:
 		const string _root_directory;
 	public:

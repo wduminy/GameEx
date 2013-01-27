@@ -48,15 +48,16 @@ namespace game {
 	};
 
 	class Texture {
-		PREVENT_COPY(Texture)
 	public:
 		Texture(Glex &context);
 		void copy_from(SDL_Surface& surface);
-		void activate(const GLenum gl_texture);
+		void activate(const int textureIndex);
+		int index() const;
 		~Texture();
 	private:
         Glex& _context;
 		GLuint _texture;
+		int _texture_index;
     public:
         typedef std::unique_ptr<Texture> u_ptr;
 	};

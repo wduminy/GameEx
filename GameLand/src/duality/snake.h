@@ -73,10 +73,14 @@ namespace duality {
 	class SnakeObject : public GameObject, private Snake {
 	public:
 		SnakeObject();
+		void initialise(const ResourceContext &ctx, const DrawContext &draw) override;
 		void draw(const DrawContext& gc) override;
 		void update(const UpdateContext & uc) override;
 		virtual ~SnakeObject(){}
+
 	private:
 		bool _left_key_down, _right_key_down;
+		ShaderProgram::u_ptr _program_p;
+		Texture::u_ptr _tex_p;
 	};
 }

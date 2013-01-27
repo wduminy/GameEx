@@ -114,7 +114,7 @@ Glex::Glex()
 {
 }
 
-Texture::Texture(Glex& context) : _context(context), _texture(0)  {}
+Texture::Texture(Glex& context) : _context(context), _texture(0), _texture_index(-1)  {}
 
 void Texture::copy_from(SDL_Surface& surface) {
 	if ((surface.w & (surface.w - 1)) != 0)
@@ -149,9 +149,16 @@ void Texture::copy_from(SDL_Surface& surface) {
     _context.check_error();
 }
 
-void Texture::activate(const GLenum texture) {
-    _context.glActiveTexture(texture);
+void Texture::activate(const int textureIndex) {
+    _context.glActiveTexture(GL_TEXTURE0 + textureIndex);
     glBindTexture(GL_TEXTURE_2D,_texture);
+    _texture_index = textureIndex;
+}
+
+int Texture::index() const {
+	if (_texture_index == -1)
+		throw runtime_error("texture has not been activated yet");
+	return _texture_index;
 }
 
 Texture::~Texture() {

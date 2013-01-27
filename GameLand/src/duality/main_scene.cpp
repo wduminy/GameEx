@@ -11,7 +11,7 @@ using namespace game;
 const float ARENA_HALF = 3.0f;
 const float FLOOR_Y = 0.0f;
 static const double CAM_Y = ARENA_HALF * 1.5;
-static const double CAM_RADIUS = ARENA_HALF * 1.8;
+static const double CAM_RADIUS = ARENA_HALF * 1.5;
 static const GLdouble NEAREST = ARENA_HALF / 10.0;
 static const GLdouble FAREST = CAM_RADIUS * 2;
 
@@ -28,16 +28,14 @@ public:
 		_strip.push_back3f(rightFront);
 		_strip.push_back3f(leftBack);
 		_strip.push_back3f(rightBack);
-		_program_p = ShaderProgram::u_ptr(new ShaderProgram(draw.gl()));
-		_program_p->bind(ctx.load_text("arena.vert"), ctx.load_text("arena.frag"));
-		_tex_p = Texture::u_ptr(new Texture(draw.gl()));
-		_tex_p->copy_from(*ctx.load_BMP("../cracked_tiles.bmp"));
-        _tex_p->activate(GL_TEXTURE1);
+		_program_p = ctx.load_program(draw.gl(),"arena");
+		_tex_p = ctx.load_texture_bmp(draw.gl(),"../cracked_tiles.bmp",0);
 	}
 
 	void draw(const DrawContext& draw) override {
+	    _tex_p->activate(_tex_p->index());
         _program_p->begin();
-        _program_p->arg("tex",1);
+        _program_p->arg("tex",_tex_p->index());
 		glBegin(GL_TRIANGLE_STRIP);
 		_strip.draw();
 		glEnd();

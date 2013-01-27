@@ -7,6 +7,8 @@
 #include <windows.h>
 
 namespace game {
+	using systemex::string_from_file;
+
 	void check(int sdl_result) {
 		if (sdl_result != 0)
 			throw systemex::runtime_error_ex("SDL call returned %d, error:%s",
@@ -220,8 +222,25 @@ namespace game {
 
 	string ResourceContext::load_text(const char * filename) const {
 		auto fullname = _root_directory + filename;
-		return systemex::string_from_file(fullname.c_str());
+		return string_from_file(fullname.c_str());
 	}
+
+	ShaderProgram::u_ptr ResourceContext::load_program(Glex& gl, const char * filePrefix) const {
+		ShaderProgram::u_ptr result(new ShaderProgram(gl));
+		auto full_prefix = _root_directory + filePrefix;
+		result->bind(
+				string_from_file((full_prefix + ".vert").c_str()),
+				string_from_file((full_prefix + ".frag").c_str()));
+		return result;
+	}
+
+	Texture::u_ptr ResourceContext::load_texture_bmp(Glex& gl, const char* filename, const int textureIndex) const {
+		Texture::u_ptr result(new Texture(gl));
+		result->copy_from(*load_BMP(filename));
+	    result->activate(textureIndex);
+	    return result;
+	}
+
 }
 
 

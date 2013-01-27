@@ -88,8 +88,11 @@ void Snake::grow(const unsigned int sizeIncrement) {
 }
 
 void SnakeObject::draw(const DrawContext& gc) {
+    _program_p->begin();
+    _program_p->arg("snakeSkin",_tex_p->index());
+    // i am not sure why this call to activate is needed
+    _tex_p->activate(_tex_p->index());
 	glLineWidth(3); // pixels
-	glColor3b(110,110,110);
 	glBegin(GL_TRIANGLE_STRIP);
 	auto index = tail_index();
 	int previous_point = index;
@@ -99,15 +102,17 @@ void SnakeObject::draw(const DrawContext& gc) {
 	for (; index != head_index(); --index) {
 		const auto p = points()[previous_point];
 		const auto q = points()[index];
+		glTexCoord2d(previous_point,0);
 		glVertex3fv(p.topMiddle().c_elems());
+		glTexCoord2d(index,1.0);
 		glVertex3fv(q.bottomRight().c_elems());
 		previous_point = index;
 	}
 	const auto lastPoint = points()[previous_point];
+	glTexCoord2d(index,1.0);
 	glVertex3fv(lastPoint.topMiddle().c_elems());
 	glEnd();
 
-	glColor3b(50,50,50);
 	glBegin(GL_TRIANGLE_STRIP);
 	auto index2 = tail_index();
 	previous_point = index2;
@@ -116,16 +121,29 @@ void SnakeObject::draw(const DrawContext& gc) {
 	for (; index2 != head_index(); --index2) {
 		const auto p = points()[previous_point];
 		const auto q = points()[index2];
+		glTexCoord2d(previous_point,1.0);
 		glVertex3fv(p.bottomLeft().c_elems());
+		glTexCoord2d(index2,0);
 		glVertex3fv(q.topMiddle().c_elems());
 		previous_point = index2;
 	}
+	glTexCoord2d(index2,0);
 	glVertex3fv(lastPoint.bottomLeft().c_elems());
 	glEnd();
+	_program_p->end();
 
 }
 
-SnakeObject::SnakeObject() : _left_key_down(false), _right_key_down(false) {
+SnakeObject::SnakeObject() :
+		_left_key_down(false),
+		_right_key_down(false),
+		_program_p(),
+		_tex_p() {}
+
+void SnakeObject::initialise(const ResourceContext& ctx,
+		const DrawContext& draw) {
+	_program_p = ctx.load_program(draw.gl(),"snake");
+	_tex_p = ctx.load_texture_bmp(draw.gl(),"snakeskin.bmp",1);
 }
 
 void SnakeObject::update(const UpdateContext& uc) {
