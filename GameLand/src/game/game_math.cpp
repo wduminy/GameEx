@@ -14,11 +14,38 @@ namespace game {
 	const Vector Vector::east = Vector::west * -1.0f;
 	const Vector Vector::up(0,1,0);
 	const Vector Vector::down = Vector::up * -1.0f;
+	const Vector2 Vector2::origin(zero,zero);
 	const Scalar unity = 1.0f;
+	const Scalar zero = 0.0f;
 	const auto degrees90 = asin(1);
 	const Scalar pi = degrees90 * 2.0f;
 	const Scalar piX2 = degrees90 * 2.0f;
 	const Scalar degrees45 = degrees90 / 2.0f;
+
+	Vector2 operator-(const Vector2& a, const Vector2 &b) {
+			auto result = a._data - b._data;
+			return Vector2(result[0],result[1]);
+	}
+
+	Vector2 operator+(const Vector2& a, const Vector2 &b) {
+		auto result = a._data + b._data;
+		return Vector2(result[0],result[1]);
+	}
+
+	Vector2 operator*(const Vector2& a, const Scalar s) {
+		auto result = a._data * s;
+		return Vector2(result[0],result[1]);
+	}
+
+	Vector2 operator/(const Vector2& a, const Scalar s) {
+		auto result = a._data / s;
+		return Vector2(result[0],result[1]);
+	}
+
+	ostream& operator<<(ostream& out, const Vector2 &m) {
+			out << "(" << m.x() << "," << m.y() << ")";
+			return out;
+	}
 
     Vector::Vector() : _data(3) {
     	_data[0] = _data[1] = _data[2] = 0;
@@ -70,7 +97,7 @@ namespace game {
 		return Vector(a._data * b);
 	}
 
-	Scalar dot_product(const Vector& a, const Vector &b) {
+	Scalar dot(const Vector& a, const Vector &b) {
 		return a.x() * b.x() + a.y() * b.y() + a.z() * b.z();
 	}
 

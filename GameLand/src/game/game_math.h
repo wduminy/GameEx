@@ -11,20 +11,61 @@
 #include <cmath>
 #include <ostream>
 #include <iomanip>
-
+#include <array>
 namespace game {
 	using std::valarray;
 	using std::runtime_error;
 	using std::ostream;
+	using std::array;
 
 	typedef GLfloat Scalar;
+	extern const Scalar zero;
 	extern const Scalar unity;
 	extern const Scalar pi;   // pi is 180 degrees
 	extern const Scalar piX2; // pi times two
 	extern const Scalar degrees45;
 
 	inline Scalar sqr(const Scalar& v) {return v * v;}
+	inline bool overlap(const Scalar& a1, const Scalar& a2, const Scalar& b1, const Scalar& b2) {
+		return (b1 <= a2 && b1 >= a1)
+				|| (b2 <= a2 && b2 >= a1)
+				|| (b1 <= a1 && b2 >= a2);
+	}
 	inline bool scalar_equals(const Scalar& a, const Scalar& b) {return fabs(a-b) < 0.00001f;}
+
+	class Range {
+	public:
+		Range(const Scalar from, const Scalar to) : _from(from), _to(to) {};
+		Scalar from() const { return _from; }
+		Scalar to() const {return _to; }
+		bool overlaps(const Range& v) const { return overlap(_from,_to,v._from,v._to); }
+	private:
+		Scalar _from, _to;
+	};
+
+	class Vector2  {
+		public:
+			Vector2(Scalar x, Scalar y) : _data(2) { _data[0] = x; _data[1] = y;}
+			Vector2() : Vector2(zero,zero) {}
+			explicit Vector2(Scalar s) : Vector2(s,s) {};
+			Scalar x() const {return _data[0];}
+			Scalar y() const {return _data[1];}
+			void set_x(Scalar v) {_data[0] = v;}
+			void set_y(Scalar v) {_data[1] = v;}
+			Vector2 perpendicular() const {return Vector2(-y(),x());}
+			Scalar dot(const Vector2 &v) const {return x() * v.x() + y() * v.y();}
+		private:
+		 	 valarray<Scalar> _data;
+		public:
+		 	friend Vector2 operator+(const Vector2& a, const Vector2 &b);
+		 	friend Vector2 operator-(const Vector2& a, const Vector2 &b);
+		 	friend Vector2 operator/(const Vector2& a, const Scalar s);
+		 	friend Vector2 operator*(const Vector2& a, const Scalar s);
+		 	friend ostream& operator<<(ostream& out, const Vector2 &m);
+		 	static const Vector2 origin;
+	};
+
+
 	/**
 	 * Coordinate system: x - increase to right, y increases up, z increases towards you
 	 */
@@ -49,7 +90,7 @@ namespace game {
 			friend Vector operator+(const Vector& a, const Vector &b);
 			friend Vector operator-(const Vector& a, const Vector &b);
 			friend Vector operator*(const Vector& a, const Scalar &b);
-			friend Scalar dot_product(const Vector& a, const Vector &b);
+			friend Scalar dot(const Vector& a, const Vector &b);
 			friend Vector cross_product(const Vector& a, const Vector &b);
 			friend ostream& operator<<(ostream& out, const Vector &m);
 			static const Vector origin;

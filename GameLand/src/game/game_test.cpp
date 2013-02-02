@@ -47,7 +47,7 @@ namespace tut {
 		set_test_name("vector calculations");
 		const Vector a(10,2,30);
 		const Vector b(3,9,4);
-		ensure_equalsf("dot incorrect",168, dot_product(a,b));
+		ensure_equalsf("dot incorrect",168, dot(a,b));
 		ensure_equalsf("cross incorrect", sum_c(cross_product(a,b)), -sum_c(cross_product(b,a)));
 		ensure_equalsf("cross of parallels", sum_c(cross_product(a,a)),0);
 		ensure_equalsf("4th must be one",1,b(4));
