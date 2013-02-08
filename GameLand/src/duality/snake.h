@@ -13,7 +13,7 @@ namespace duality {
 	using namespace game;
 
 	const size_t SNAKE_MEM_SIZE = 1000;
-	const Scalar SNAKE_BOTTOM = 0.0f;
+	const Scalar SNAKE_FLOOR = 0.0f;
 	const Scalar SNAKE_WIDTH_HALF = 0.07f;
 	const Scalar SNAKE_WIDTH = SNAKE_WIDTH_HALF * 2.0f;
 

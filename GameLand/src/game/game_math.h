@@ -12,6 +12,7 @@
 #include <ostream>
 #include <iomanip>
 #include <array>
+#include <assert.h>
 namespace game {
 	using std::valarray;
 	using std::runtime_error;
@@ -43,19 +44,39 @@ namespace game {
 		Scalar _from, _to;
 	};
 
-	class Vector2  {
+	class ScalarValueArray {
+	public:
+		Scalar operator()(const size_t& i) const {return get(i);}
+		// this exposes the internal data for use by OPENGL (use only there)
+		Scalar* c_elems() const { return const_cast<Scalar*> (&_data[0]); };
+	 	virtual ~ScalarValueArray(){}
+		void operator /= (const Scalar& v) {_data /= v;}
+		virtual Scalar norm() const = 0;
+		void normalise();
+		const valarray<Scalar> & data() const {return _data;}
+	protected:
+		 explicit ScalarValueArray(const valarray<Scalar>& source) : _data(source) {}
+		 explicit ScalarValueArray(size_t size) : _data(size) {}
+		 void set(size_t i, Scalar v) {_data[i] = v;};
+		 Scalar get(size_t i) const {assert(i < _data.size()); return _data[i];}
+	private:
+	 	 valarray<Scalar> _data;
+	};
+
+	class Vector2 : public ScalarValueArray  {
 		public:
-			Vector2(Scalar x, Scalar y) : _data(2) { _data[0] = x; _data[1] = y;}
+			Vector2(Scalar x, Scalar y) : ScalarValueArray(2) {set(0,x); set(1,y);}
 			Vector2() : Vector2(zero,zero) {}
-			explicit Vector2(Scalar s) : Vector2(s,s) {};
-			Scalar x() const {return _data[0];}
-			Scalar y() const {return _data[1];}
-			void set_x(Scalar v) {_data[0] = v;}
-			void set_y(Scalar v) {_data[1] = v;}
+			Scalar x() const {return get(0);}
+			Scalar y() const {return get(1);}
+			void set_x(Scalar v) {set(0,v);}
+			void set_y(Scalar v) {set(1,v);}
 			Vector2 perpendicular() const {return Vector2(-y(),x());}
 			Scalar dot(const Vector2 &v) const {return x() * v.x() + y() * v.y();}
-		private:
-		 	 valarray<Scalar> _data;
+			Scalar norm() const {return sqrt(sqr(x()) + sqr(y()));}
+		protected:
+			explicit Vector2(size_t s) : ScalarValueArray(s) {};
+			explicit Vector2(const valarray<Scalar>& source) : ScalarValueArray(source) {assert(data().size() > 1);};
 		public:
 		 	friend Vector2 operator+(const Vector2& a, const Vector2 &b);
 		 	friend Vector2 operator-(const Vector2& a, const Vector2 &b);
@@ -67,25 +88,16 @@ namespace game {
 
 
 	/**
-	 * Coordinate system: x - increase to right, y increases up, z increases towards you
+	 * Coordinate system: x - increase to west, y increases north, z increases up you
+	 * Vector objects has 4 elements
 	 */
-	class Vector {
+	class Vector : public Vector2 {
 		public:
-			Vector();
 			Vector(const Vector &source);
-			Vector(const Scalar& x, const Scalar & y, const Scalar &z);
-			Scalar x() const {return _data[0];}
-			Scalar y() const {return _data[1];}
-			Scalar z() const {return _data[2];}
-			void set_x(Scalar v) {_data[0] = v;}
-			void set_y(Scalar v) {_data[1] = v;}
-			void set_z(Scalar v) {_data[2] = v;}
-			Scalar norm() const {return sqrt(sqr(x()) + sqr(y()) + sqr(z()));}
-			void normalise();
-			const Scalar& operator()(const size_t& i) const {if (i > 2) return unity; else return _data[i];}
-			// this exposes the internal data for use by OPENGL (use only there)
-			Scalar* c_elems() const { return const_cast<Scalar*> (&_data[0]); };
-			void operator /= (const Scalar& v) {_data /= v;}
+			Vector(const Scalar& x = zero, const Scalar & y = zero, const Scalar &z = zero);
+			Scalar z() const {return get(2);}
+			void set_z(Scalar v) {set(2,v);}
+			Scalar norm() const override {return sqrt(sqr(x()) + sqr(y()) + sqr(z()));}
 		public:
 			friend Vector operator+(const Vector& a, const Vector &b);
 			friend Vector operator-(const Vector& a, const Vector &b);
@@ -105,7 +117,6 @@ namespace game {
 			virtual ~Vector(){}
 		private:
 			Vector(const valarray<Scalar>& d);
-			valarray<Scalar> _data;
 	};
 
 	class MatrixOp {

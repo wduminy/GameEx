@@ -8,11 +8,11 @@
 
 namespace game {
 	const Vector Vector::origin(0,0,0);
-	const Vector Vector::north(0,0,-1);
+	const Vector Vector::north(0,1,0);
 	const Vector Vector::south = Vector::north * -1.0f;
 	const Vector Vector::west(-1,0,0);
 	const Vector Vector::east = Vector::west * -1.0f;
-	const Vector Vector::up(0,1,0);
+	const Vector Vector::up(0,0,1);
 	const Vector Vector::down = Vector::up * -1.0f;
 	const Vector2 Vector2::origin(zero,zero);
 	const Scalar unity = 1.0f;
@@ -23,22 +23,22 @@ namespace game {
 	const Scalar degrees45 = degrees90 / 2.0f;
 
 	Vector2 operator-(const Vector2& a, const Vector2 &b) {
-			auto result = a._data - b._data;
+			auto result = a.data() - b.data();
 			return Vector2(result[0],result[1]);
 	}
 
 	Vector2 operator+(const Vector2& a, const Vector2 &b) {
-		auto result = a._data + b._data;
+		auto result = a.data() + b.data();
 		return Vector2(result[0],result[1]);
 	}
 
 	Vector2 operator*(const Vector2& a, const Scalar s) {
-		auto result = a._data * s;
+		auto result = a.data() * s;
 		return Vector2(result[0],result[1]);
 	}
 
 	Vector2 operator/(const Vector2& a, const Scalar s) {
-		auto result = a._data / s;
+		auto result = a.data() / s;
 		return Vector2(result[0],result[1]);
 	}
 
@@ -47,54 +47,49 @@ namespace game {
 			return out;
 	}
 
-    Vector::Vector() : _data(3) {
-    	_data[0] = _data[1] = _data[2] = 0;
-    }
-
-	Vector::Vector(const Scalar& x, const Scalar & y, const Scalar &z) : _data(3) {
-		_data[0] = x;
-		_data[1] = y;
-		_data[2] = z;
+	Vector::Vector(const Scalar& x, const Scalar & y, const Scalar &z) : Vector2(4) {
+		set_x(x);
+		set_y(y);
+		set_z(z);
+		set(3,1);
 	}
 
-	void Vector::normalise() {
+	void ScalarValueArray::normalise() {
 		const auto n = norm();
 		if (n == 0)
-			throw std::runtime_error("cannot normalise - will casue a division by zero");
-		_data[0] /= n;
-		_data[1] /= n;
-		_data[2] /= n;
+			throw std::runtime_error("cannot normalise - will cause a division by zero");
+		_data /= n;
 	}
 
 	bool Vector::operator ==(const Vector& other) const {
-		return scalar_equals(_data[0], other._data[0]) &&
-			   scalar_equals(_data[1], other._data[1]) &&
-			   scalar_equals(_data[2], other._data[2]);
+		return scalar_equals(data()[0], other.data()[0]) &&
+			   scalar_equals(data()[1], other.data()[1]) &&
+			   scalar_equals(data()[2], other.data()[2]);
 	}
 
 	bool Vector::operator !=(const Vector& other) const {
-		return  !scalar_equals(_data[0], other._data[0]) ||
-				!scalar_equals(_data[1], other._data[1]) ||
-				!scalar_equals(_data[2], other._data[2]);
+		return  !scalar_equals(data()[0], other.data()[0]) ||
+				!scalar_equals(data()[1], other.data()[1]) ||
+				!scalar_equals(data()[2], other.data()[2]);
 	}
 
 
-	Vector::Vector(const valarray<Scalar>& d): _data(d) {
+	Vector::Vector(const valarray<Scalar>& d): Vector2(d) {
+		assert(d.size() == 4);
 	}
 
-	Vector::Vector(const Vector& source) : _data(source._data) {
-	}
+	Vector::Vector(const Vector& source) :  Vector(source.data()) { }
 
 	Vector operator+(const Vector& a, const Vector &b) {
-		return Vector(a._data + b._data);
+		return Vector(a.data() + b.data());
 	}
 
 	Vector operator-(const Vector& a, const Vector &b) {
-		return Vector(a._data - b._data);
+		return Vector(a.data() - b.data());
 	}
 
 	Vector operator*(const Vector& a, const Scalar& b) {
-		return Vector(a._data * b);
+		return Vector(a.data() * b);
 	}
 
 	Scalar dot(const Vector& a, const Vector &b) {

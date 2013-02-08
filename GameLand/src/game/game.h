@@ -107,7 +107,7 @@ namespace game {
 					GameObject(drawOrder), _parts() {}
 			// initialises all the parts
 			virtual void initialise(const ResourceContext &rctx, const DrawContext& dctx) override {
-				for_each(p,_parts) (*p)->initialise(rctx,dctx);
+				for (auto p = _parts.begin(); p != _parts.end(); p++) (*p)->initialise(rctx,dctx);
 			}
 			;
 			void update(const UpdateContext &context);

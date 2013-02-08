@@ -27,11 +27,11 @@ namespace game {
 
 	class SphereCamera : public GameObject {
 		public:
-			SphereCamera(int drawOrder, double circleY = 5, double circleRadius = 5);
+			SphereCamera(int drawOrder, double circleZ = 5, double circleRadius = 5);
 			void update(const UpdateContext& ctx);
 			void draw(const DrawContext& ctx);
 		private:
-			const double _circleY;
+			double _circleZ;
 			const double _circleRadius;
 			double _theta;
 			double _delta;

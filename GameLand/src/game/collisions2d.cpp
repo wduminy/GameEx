@@ -19,7 +19,9 @@ void Polygon::add_relative(const Vector2& value) {
 }
 
 bool axis_overlap(const Polygon &p1, const Polygon &p2) {
-	for_each(axis,p1.axes()) {
+	auto axlist = p1.axes();
+	for(auto axis = axlist.begin(); axis != axlist.end(); axis++) {
+		assert(axis->data().size() == 2);
 		const Range pp1 = p1.project(*axis);
 		const Range pp2 = p2.project(*axis);
 		if (!pp1.overlaps(pp2))
@@ -75,7 +77,8 @@ vector<Vector2> Polygon::axes() const {
 	for (auto i = 0U; i < size; i++) {
 		const Vector2& a = _points[previous_index];
 		const Vector2& b = _points[i];
-		result.push_back((b-a).perpendicular());
+		auto r = (b-a).perpendicular();
+		result.push_back(r);
 		previous_index = i;
 	}
 	return result;
@@ -83,6 +86,8 @@ vector<Vector2> Polygon::axes() const {
 
 Range Polygon::project(const Vector2& axis) const {
 	if (_points.size() == 0) return Range(zero,zero);
+	assert(axis.data().size() == 2);
+	assert(_points[0].data().size() == 2);
 	auto min = axis.dot(_points[0]);
 	auto max = min;
 	for (auto i = 1U; i < _points.size(); i++) {

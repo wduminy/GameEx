@@ -104,4 +104,5 @@ namespace systemex {
 	template <class T> inline void delete_all(std::list<T> coll) {for_all(coll,deleteF<T>);}
 
 }
+// note : do not call the second argument of this macro as a function
 #define for_each(I,C) for(auto I = C.begin(); I != C.end(); ++I)

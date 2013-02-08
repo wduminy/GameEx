@@ -9,7 +9,7 @@
 namespace duality {
 using namespace game;
 const float ARENA_HALF = 3.0f;
-const float FLOOR_Y = 0.0f;
+const float FLOOR_Z = 0.0f;
 static const double CAM_Y = ARENA_HALF * 1.5;
 static const double CAM_RADIUS = ARENA_HALF * 1.5;
 static const GLdouble NEAREST = ARENA_HALF / 10.0;
@@ -20,13 +20,13 @@ public:
 	Arena() : _strip(2),_program_p(),_tex_p() {};
 
 	void initialise(const ResourceContext &ctx, const DrawContext &draw) override {
-		static GLfloat leftBack[] = { -ARENA_HALF, FLOOR_Y, -ARENA_HALF };
-		static GLfloat rightBack[] = { +ARENA_HALF, FLOOR_Y, -ARENA_HALF };
-		static GLfloat rightFront[] = { +ARENA_HALF, FLOOR_Y, +ARENA_HALF };
-		static GLfloat leftFront[] = { -ARENA_HALF, FLOOR_Y, +ARENA_HALF };
+		static GLfloat leftBack[] =   { -ARENA_HALF,  -ARENA_HALF, FLOOR_Z };
+		static GLfloat rightBack[] =  { +ARENA_HALF,  -ARENA_HALF, FLOOR_Z };
+		static GLfloat rightFront[] = { +ARENA_HALF,  +ARENA_HALF, FLOOR_Z };
+		static GLfloat leftFront[] =  { -ARENA_HALF,  +ARENA_HALF, FLOOR_Z };
 		_strip.push_back3f(leftFront);
-		_strip.push_back3f(rightFront);
 		_strip.push_back3f(leftBack);
+		_strip.push_back3f(rightFront);
 		_strip.push_back3f(rightBack);
 		_program_p = ctx.load_program(draw.gl(),"arena");
 		_tex_p = ctx.load_texture_bmp(draw.gl(),"../cracked_tiles.bmp",0);

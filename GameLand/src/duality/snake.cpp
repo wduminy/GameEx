@@ -23,11 +23,11 @@ void SpinePoint::assign(const Vector& topMiddlePoint, const Vector& previousPoin
 		assign(topMiddlePoint);
 	else {
 		point_dir /= n;
-		Vector dir(-point_dir.z(),0,point_dir.x());
-		_bottomLeft = _topMiddle + (dir * SNAKE_WIDTH_HALF);
-		_bottomLeft.set_y(SNAKE_BOTTOM);
-		_bottomRight = _topMiddle - (dir * SNAKE_WIDTH_HALF);
-		_bottomRight.set_y(SNAKE_BOTTOM);
+		Vector perpendicular(point_dir.y(),-point_dir.x(),0);
+		_bottomLeft = _topMiddle + (perpendicular * SNAKE_WIDTH_HALF);
+		_bottomLeft.set_z(SNAKE_FLOOR);
+		_bottomRight = _topMiddle - (perpendicular * SNAKE_WIDTH_HALF);
+		_bottomRight.set_z(SNAKE_FLOOR);
 	}
 }
 
@@ -56,12 +56,12 @@ Snake::Snake(const Vector& startingPoint,
 void Snake::move(const SteerDirection& dir) {
 	switch (dir) {
 	case Left:
-		_rotation_angle -= _radians_per_move;
-		_move_vector = Matrix(MatrixOp::rotateY, _rotation_angle) * _translation_vector;
+		_rotation_angle += _radians_per_move;
+		_move_vector = Matrix(MatrixOp::rotateZ, _rotation_angle) * _translation_vector;
 		break;
 	case Right:
-		_rotation_angle +=  _radians_per_move;
-		_move_vector = Matrix(MatrixOp::rotateY, _rotation_angle) * _translation_vector;
+		_rotation_angle -=  _radians_per_move;
+		_move_vector = Matrix(MatrixOp::rotateZ, _rotation_angle) * _translation_vector;
 		break;
 	case Forward:
 		// do nothing

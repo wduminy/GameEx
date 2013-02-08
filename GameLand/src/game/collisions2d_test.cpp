@@ -29,7 +29,7 @@ namespace tut {
 		collision2ddata(): mgr() {};
 		CollisionManager mgr;
 		virtual ~collision2ddata(){}
-		Vector2 diag_one = Vector2(unity);
+		Vector2 diag_one = Vector2(unity,unity);
 		BoundedBox2 box(const Vector2& leftTop) {
 			return BoundedBox2(leftTop, leftTop + diag_one);
 		}
