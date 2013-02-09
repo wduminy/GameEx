@@ -5,7 +5,9 @@
 #pragma once
 #include "game_math.h"
 #include <vector>
+#include <list>
 namespace game {
+	using std::list;
 	using std::vector;
 /**
  * A bounded box has a left-top and a right-bottom location
@@ -21,6 +23,7 @@ public:
 	bool is_valid() const;
 protected:
 	void adjust_box(const Vector2& p);
+	void clear_box() {_lt = Vector2::origin; _rb = Vector2::origin;}
 private:
 	const Scalar left() const {return _lt.x();}
 	const Scalar right() const {return _rb.x();}
@@ -38,7 +41,8 @@ public:
 class Polygon {
 public:
 	Polygon(const Vector2& start) : _points() {add(start);}
-	virtual void add(const Vector2& value);
+	void add(const Vector2& value);
+	void set_start(const Vector2& start) {_points.clear();on_clear();add(start);}
 	void add_relative(const Vector2& value);
 	/**
 	 * This method assumes both polygons are convex.
@@ -51,11 +55,14 @@ public:
 	 * Note the the resulting vectors are not normalised
 	 * @return
 	 */
-	vector<Vector2> axes() const;
+	list<Vector2> axes() const;
 	Range project(const Vector2 &axis) const;
 	virtual ~Polygon() {}
 private:
 	vector<Vector2> _points;
+protected:
+	virtual void on_add(const Vector2& value) {}
+	virtual void on_clear() {}
 public:
 	friend ostream& operator<<(ostream& s, const Polygon& v);
 };
@@ -65,14 +72,42 @@ public:
  */
 class CollidablePolygon : public BoundedBox2, public Polygon {
 public:
-	CollidablePolygon(const Vector2& start);
-	void add(const Vector2& value) override;
+	CollidablePolygon(const unsigned char type, const Vector2& start);
 	bool collides_with(const CollidablePolygon& other) const;
+	unsigned char type() const {return _type;}
 	virtual ~CollidablePolygon() {}
+protected:
+	void on_add(const Vector2& value) override;
+	void on_clear() override;
+private:
+	const unsigned char _type;
+public:
+	typedef std::unique_ptr<CollidablePolygon> u_ptr;
+};
+
+class CollisionListener {
+public:
+	virtual void on_collide(CollidablePolygon &a, CollidablePolygon &b) = 0;
+	virtual ~CollisionListener() {}
+public:
+	typedef std::unique_ptr<CollisionListener> u_ptr;
 };
 
 class CollisionManager {
-
+public:
+	CollisionManager(CollisionListener::u_ptr listener);
+	/**
+	 * Adds a new polygon if no collision is detected
+	 * @param collidable
+	 * @return true if the polygon is added
+	 */
+	bool add_if_not_collide(CollidablePolygon * collidable);
+	void remove(CollidablePolygon * collidable);
+private:
+	CollisionListener::u_ptr _listener;
+public:
+	typedef std::unique_ptr<CollisionManager> u_ptr;
+	std::list<CollidablePolygon *> _items;
 };
 
 }

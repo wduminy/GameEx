@@ -7,17 +7,24 @@
 #include "../systemex/log.h"
 
 
+
 namespace duality {
 
-SpinePoint::SpinePoint() : _topMiddle(), _bottomLeft(), _bottomRight() {};
+const unsigned char SPINE = 0;
+
+SpinePoint::SpinePoint() :
+		_topMiddle(), _bottomLeft(), _bottomRight(),
+		_polygon(SPINE,Vector2::origin), _poly_is_dirty(true),
+		_previous(0) {};
 
 void SpinePoint::assign(const Vector& topMiddlePoint) {
 	_topMiddle = _bottomLeft = _bottomRight = topMiddlePoint;
+	_poly_is_dirty = true;
 };
 
-void SpinePoint::assign(const Vector& topMiddlePoint, const Vector& previousPoint) {
+void SpinePoint::assign(const Vector& topMiddlePoint, const SpinePoint* prev) {
 	_topMiddle = topMiddlePoint;
-	Vector point_dir = topMiddlePoint - previousPoint;
+	Vector point_dir = topMiddlePoint - prev->topMiddle();
 	auto n = point_dir.norm();
 	if (n == 0)
 		assign(topMiddlePoint);
@@ -29,6 +36,7 @@ void SpinePoint::assign(const Vector& topMiddlePoint, const Vector& previousPoin
 		_bottomRight = _topMiddle - (perpendicular * SNAKE_WIDTH_HALF);
 		_bottomRight.set_z(SNAKE_FLOOR);
 	}
+	_poly_is_dirty = true;
 }
 
 Snake::Snake(const Vector& startingPoint,
@@ -46,14 +54,17 @@ Snake::Snake(const Vector& startingPoint,
 		_radians_per_move(radiansPerTurn),
 		_translation_vector(_move_vector),
 		_remaining_growth(initialGrowth),
-		_segment_counter(updatesPerGrow),
-		_previous_head(0)
+		_time_to_grow(updatesPerGrow),
+		_previous_head(0),
+		_is_alive(true)
 	{
 		_points[_head].assign(startingPoint);
 		_points[0].assign(lookingAt * -1.0);
 	}
 
 void Snake::move(const SteerDirection& dir) {
+	if (!_is_alive)
+		return;
 	switch (dir) {
 	case Left:
 		_rotation_angle += _radians_per_move;
@@ -68,17 +79,20 @@ void Snake::move(const SteerDirection& dir) {
 		break;
 	}
 	const auto newPoint = _points[_head].topMiddle() + _move_vector;
-	if (_segment_counter.count()) {
+	if (_time_to_grow.tick()) {
 		const int rem_head =  _head;
 		-- _head;
-		_points[_head].assign(newPoint, _points[_previous_head].topMiddle());
+		_points[_head].assign(newPoint, &_points[_previous_head]);
+		on_head_added();
 		if (is_growing())
 			_remaining_growth--;
-		else
+		else {
+			before_tail_remove();
 			-- _tail;
+		}
 		_previous_head = rem_head;
 	} else
-		_points[_head].assign(newPoint, _points[_previous_head].topMiddle());
+		_points[_head].assign(newPoint, &_points[_previous_head]);
 }
 
 void Snake::grow(const unsigned int sizeIncrement) {
@@ -97,18 +111,18 @@ void SnakeObject::draw(const DrawContext& gc) {
 	auto index = tail_index();
 	int previous_point = index;
 	--index;
-	const auto firstPoint = points()[previous_point];
+	const auto &firstPoint = points()[previous_point];
 	glVertex3fv(firstPoint.bottomRight().c_elems());
 	for (; index != head_index(); --index) {
-		const auto p = points()[previous_point];
-		const auto q = points()[index];
+		const auto &p = points()[previous_point];
+		const auto &q = points()[index];
 		glTexCoord2d(previous_point,0);
 		glVertex3fv(p.topMiddle().c_elems());
 		glTexCoord2d(index,1.0);
 		glVertex3fv(q.bottomRight().c_elems());
 		previous_point = index;
 	}
-	const auto lastPoint = points()[previous_point];
+	const auto &lastPoint = points()[previous_point];
 	glTexCoord2d(index,1.0);
 	glVertex3fv(lastPoint.topMiddle().c_elems());
 	glEnd();
@@ -119,8 +133,8 @@ void SnakeObject::draw(const DrawContext& gc) {
 	--index2;
 	glVertex3fv(firstPoint.topMiddle().c_elems());
 	for (; index2 != head_index(); --index2) {
-		const auto p = points()[previous_point];
-		const auto q = points()[index2];
+		const auto &p = points()[previous_point];
+		const auto &q = points()[index2];
 		glTexCoord2d(previous_point,1.0);
 		glVertex3fv(p.bottomLeft().c_elems());
 		glTexCoord2d(index2,0);
@@ -134,11 +148,12 @@ void SnakeObject::draw(const DrawContext& gc) {
 
 }
 
-SnakeObject::SnakeObject() :
+SnakeObject::SnakeObject(CollisionManager &mgr) :
 		_left_key_down(false),
 		_right_key_down(false),
 		_program_p(),
-		_tex_p() {}
+		_tex_p(),
+		_col_mgr(mgr) {}
 
 void SnakeObject::initialise(const ResourceContext& ctx,
 		const DrawContext& draw) {
@@ -147,7 +162,6 @@ void SnakeObject::initialise(const ResourceContext& ctx,
 }
 
 void SnakeObject::update(const UpdateContext& uc) {
-	// TODO 200 implement update method for snake
 	switch (uc.key_down()) {
 	case SDLK_a:
 		_left_key_down = true;
@@ -176,6 +190,28 @@ void SnakeObject::update(const UpdateContext& uc) {
 	else
 		dir = Forward;
 	move(dir);
+}
+
+void SnakeObject::on_head_added() {
+	if (_col_mgr.add_if_not_collide(&head().polygon()) == false)
+		kill();
+}
+
+void SnakeObject::before_tail_remove() {
+	_col_mgr.remove(&tail().polygon());
+}
+
+CollidablePolygon& SpinePoint::polygon() const {
+	if (!_poly_is_dirty)
+		return _polygon;
+	_polygon.set_start(_bottomLeft);
+	if (_previous) {
+		_polygon.add(_bottomRight);
+		_polygon.add(_previous->bottomRight());
+		_polygon.add(_previous->bottomLeft());
+	}
+	_poly_is_dirty = false;
+	return _polygon;
 }
 
 }

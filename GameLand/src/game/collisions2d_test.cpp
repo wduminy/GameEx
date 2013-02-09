@@ -18,7 +18,7 @@ namespace tut {
 
 	class Diamond : public CollidablePolygon {
 	public:
-		Diamond(const Vector2 top) : CollidablePolygon(top) {
+		Diamond(const Vector2 top) : CollidablePolygon(0,top) {
 			add_relative(Vector2(1,-1));
 			add_relative(Vector2(-1,-1));
 			add_relative(Vector2(-1,1));
@@ -26,8 +26,7 @@ namespace tut {
 	};
 
 	struct collision2ddata {
-		collision2ddata(): mgr() {};
-		CollisionManager mgr;
+		collision2ddata() {};
 		virtual ~collision2ddata(){}
 		Vector2 diag_one = Vector2(unity,unity);
 		BoundedBox2 box(const Vector2& leftTop) {

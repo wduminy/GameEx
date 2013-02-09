@@ -5,7 +5,13 @@ namespace tut {
 	using namespace duality;
 	using namespace game;
 	struct Snakedata {
+		SpinePoint::u_ptr spine(const Vector& v) {
+			SpinePoint::u_ptr r(new SpinePoint());
+			r->assign(v);
+			return r;
+		};
 	    virtual ~Snakedata(){}
+
     };
 	test_group<Snakedata> snakeTests("100 Snake tests");
 	#define SNAKE_TEST(N) template<> template<> void test_group<Snakedata>::object::test<N>()
@@ -80,7 +86,8 @@ namespace tut {
 
 	SNAKE_TEST(8) {
 		SpinePoint p;
-		p.assign(Vector::origin,Vector::north);
+		auto b = spine(Vector::north);
+		p.assign(Vector::origin,b.get());
 		ensure_equals("left is not w",Vector::west*SNAKE_WIDTH_HALF,p.bottomLeft());
 		ensure_equals("right is not e",Vector::east*SNAKE_WIDTH_HALF,p.bottomRight());
 	}
@@ -88,7 +95,8 @@ namespace tut {
 	SNAKE_TEST(9) {
 		SpinePoint p;
 		Vector start = Vector::north;
-		p.assign(Vector::north,Vector::origin);
+		auto b = spine(Vector::origin);
+		p.assign(Vector::north,b.get());
 		ensure_equals("left is not e",Vector::east*SNAKE_WIDTH_HALF + start,p.bottomLeft());
 		ensure_equals("right is not w",Vector::west*SNAKE_WIDTH_HALF + start,p.bottomRight());
 	}

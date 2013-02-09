@@ -159,12 +159,16 @@ namespace game {
 	};
 
 	/**
-	 * An resetable integer that counts down from a starting value to zero
+	 * An cyclic integer counter that counts down from a starting value to 1
 	 */
 	class CountDownCounter {
 	public:
 		CountDownCounter(int startValue) : _start_value(startValue), _value(_start_value) {}
-		bool count() {
+		/**
+		 * Decrement the counter if it is zero, it resets
+		 * @return true if it it resets
+		 */
+		bool tick() {
 			if (--_value == 0)
 				_value = _start_value;
 			return _value == _start_value;
