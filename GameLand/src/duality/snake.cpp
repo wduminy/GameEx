@@ -37,6 +37,7 @@ void SpinePoint::assign(const Vector& topMiddlePoint, const SpinePoint* prev) {
 		_bottomRight.set_z(SNAKE_FLOOR);
 	}
 	_poly_is_dirty = true;
+	_previous = prev;
 }
 
 Snake::Snake(const Vector& startingPoint,
@@ -80,16 +81,16 @@ void Snake::move(const SteerDirection& dir) {
 	}
 	const auto newPoint = _points[_head].topMiddle() + _move_vector;
 	if (_time_to_grow.tick()) {
-		const int rem_head =  _head;
-		-- _head;
-		_points[_head].assign(newPoint, &_points[_previous_head]);
-		on_head_added();
 		if (is_growing())
 			_remaining_growth--;
 		else {
 			before_tail_remove();
 			-- _tail;
 		}
+		const int rem_head =  _head;
+		-- _head;
+		_points[_head].assign(newPoint, &_points[_previous_head]);
+		on_head_added();
 		_previous_head = rem_head;
 	} else
 		_points[_head].assign(newPoint, &_points[_previous_head]);
@@ -148,12 +149,11 @@ void SnakeObject::draw(const DrawContext& gc) {
 
 }
 
-SnakeObject::SnakeObject(CollisionManager &mgr) :
+SnakeObject::SnakeObject(CollisionManager &mgr) : SnakeWithCollision(mgr),
 		_left_key_down(false),
 		_right_key_down(false),
 		_program_p(),
-		_tex_p(),
-		_col_mgr(mgr) {}
+		_tex_p() {}
 
 void SnakeObject::initialise(const ResourceContext& ctx,
 		const DrawContext& draw) {
@@ -192,12 +192,12 @@ void SnakeObject::update(const UpdateContext& uc) {
 	move(dir);
 }
 
-void SnakeObject::on_head_added() {
+void SnakeWithCollision::on_head_added() {
 	if (_col_mgr.add_if_not_collide(&head().polygon()) == false)
 		kill();
 }
 
-void SnakeObject::before_tail_remove() {
+void SnakeWithCollision::before_tail_remove() {
 	_col_mgr.remove(&tail().polygon());
 }
 
@@ -205,10 +205,14 @@ CollidablePolygon& SpinePoint::polygon() const {
 	if (!_poly_is_dirty)
 		return _polygon;
 	_polygon.set_start(_bottomLeft);
-	if (_previous) {
-		_polygon.add(_bottomRight);
-		_polygon.add(_previous->bottomRight());
-		_polygon.add(_previous->bottomLeft());
+	if (!is_empty()) {
+		if (_previous != 0) {
+			_polygon.add(_bottomRight);
+			_polygon.add(_previous->bottomRight());
+			if (_previous->bottomLeft() != _previous->bottomRight()) {
+				_polygon.add(_previous->bottomLeft());
+			};
+		}
 	}
 	_poly_is_dirty = false;
 	return _polygon;

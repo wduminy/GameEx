@@ -42,16 +42,20 @@ namespace game {
 		return Vector2(result[0],result[1]);
 	}
 
-	ostream& operator<<(ostream& out, const Vector2 &m) {
-			out << "(" << m.x() << "," << m.y() << ")";
+	ostream& operator<<(ostream& out, const ScalarValueArray &m) {
+			out << "(" ; ;
+			for (size_t i = 0U; i < m.data().size(); i++ ) {
+				if (i != 0U) out << ",";
+				out << m.data()[i];
+			}
+			out << ")";
 			return out;
 	}
 
-	Vector::Vector(const Scalar& x, const Scalar & y, const Scalar &z) : Vector2(4) {
+	Vector::Vector(const Scalar& x, const Scalar & y, const Scalar &z) : Vector2(3) {
 		set_x(x);
 		set_y(y);
 		set_z(z);
-		set(3,1);
 	}
 
 	void ScalarValueArray::normalise() {
@@ -61,21 +65,16 @@ namespace game {
 		_data /= n;
 	}
 
-	bool Vector::operator ==(const Vector& other) const {
-		return scalar_equals(data()[0], other.data()[0]) &&
-			   scalar_equals(data()[1], other.data()[1]) &&
-			   scalar_equals(data()[2], other.data()[2]);
-	}
-
-	bool Vector::operator !=(const Vector& other) const {
-		return  !scalar_equals(data()[0], other.data()[0]) ||
-				!scalar_equals(data()[1], other.data()[1]) ||
-				!scalar_equals(data()[2], other.data()[2]);
+	bool ScalarValueArray::operator ==(const ScalarValueArray& other) const {
+		for (size_t i = 0U; i <_data.size(); i++ )
+			if (!scalar_equals(_data[i], other._data[i]))
+					return false;
+		return true;
 	}
 
 
 	Vector::Vector(const valarray<Scalar>& d): Vector2(d) {
-		assert(d.size() == 4);
+		assert(d.size() == 3);
 	}
 
 	Vector::Vector(const Vector& source) :  Vector(source.data()) { }
@@ -98,14 +97,6 @@ namespace game {
 
 	Vector cross_product(const Vector& a, const Vector &b) {
 		return Vector(a.y() * b.z() - b.y()*a.z(), a.z() * b.x() - b.z() * a.x(), a.x() * b.y() - b.x() * a.y());
-	}
-
-	ostream& operator<<(ostream& out, const Vector &m) {
-			out << "| ";
-			for (size_t k = 0; k < 4;k++)
-				out << std::setw(5) << m(k) << " ";
-			out << "| ";
-			return out;
 	}
 
 	const size_t diagonals[] = {0,5,10,15};
@@ -216,7 +207,7 @@ namespace game {
 	}
 
 	RotateInt::RotateInt(const int maxValue, const int value) : _max_value(maxValue), _value(value) {
-		ENSURE((value >= 0) && (value <= _max_value), "range error" );
+		ASSERT((value >= 0) && (value <= _max_value));
 	}
 
 	RotateInt& RotateInt::operator ++() {
@@ -233,10 +224,8 @@ namespace game {
 		return *this;
 	}
 
-#define ENSURE_COMPATIBLE(a,b) ENSURE(a.max() == b.max(), "rotate integer values not compatible")
-
 	int operator -(const RotateInt& a, const RotateInt& b) {
-		ENSURE_COMPATIBLE(a,b);
+		ASSERT(a.max() == b.max());
 		const auto ia = (int) a;
 		const auto ib = (int) b;
 		if (ia >= ib)

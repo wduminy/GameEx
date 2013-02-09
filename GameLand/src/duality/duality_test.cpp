@@ -5,16 +5,20 @@ namespace tut {
 	using namespace duality;
 	using namespace game;
 	struct Snakedata {
-		SpinePoint::u_ptr spine(const Vector& v) {
-			SpinePoint::u_ptr r(new SpinePoint());
-			r->assign(v);
-			return r;
-		};
+		Snakedata() : mgr(CollisionListener::u_ptr(new CollisionListener())) {}
 	    virtual ~Snakedata(){}
-
+	    CollisionManager mgr;
     };
-	test_group<Snakedata> snakeTests("100 Snake tests");
-	#define SNAKE_TEST(N) template<> template<> void test_group<Snakedata>::object::test<N>()
+	test_group<Snakedata> snakeTests("100 Duality tests");
+#define SNAKE_TEST(N) template<> template<> void test_group<Snakedata>::object::test<N>()
+#define BEGIN(Num,Name) template<> template<> void test_group<Snakedata>::object::test<Num>() {set_test_name(Name);
+#define END }
+
+	SpinePoint::u_ptr spine(const Vector& v) {
+		SpinePoint::u_ptr r(new SpinePoint());
+		r->assign(v);
+		return r;
+	};
 
 	SNAKE_TEST(1) {
 		Snake s(Vector::origin, Vector::north, 1);
@@ -100,4 +104,47 @@ namespace tut {
 		ensure_equals("left is not e",Vector::east*SNAKE_WIDTH_HALF + start,p.bottomLeft());
 		ensure_equals("right is not w",Vector::west*SNAKE_WIDTH_HALF + start,p.bottomRight());
 	}
+
+	void ensure_no_overlap(SpinePoint::u_ptr& a, SpinePoint::u_ptr& b) {
+		_ensure_not("unexpected polygon overlap: " << a->polygon() << " and " << b->polygon(),  a->polygon().overlaps_with(b->polygon()));
+	}
+
+	void ensure_overlap(SpinePoint::u_ptr& a, SpinePoint::u_ptr& b) {
+		_ensure("Expected overlap: " << a->polygon() << " and " << b->polygon(),  a->polygon().overlaps_with(b->polygon()));
+	}
+
+
+	BEGIN(10, "Consecutive spine polygons must not overlap") {
+		auto a = spine(Vector::origin);
+		auto b = spine(Vector::north);
+		b->assign(Vector::north, a.get());
+		ensure_no_overlap(a,b);
+		ensure_no_overlap(b,a);
+	} END
+
+	BEGIN(11, "Second spine must produce correct polygon") {
+		auto a = spine(Vector::origin);
+		auto b = spine(Vector::origin);
+		b->assign(Vector::north, a.get());
+		auto p = b->polygon();
+		ensure_equals(p.point_count(),3U);
+		ensure_not(p[0] == p[1]);
+	} END
+
+
+	BEGIN(12, "Third spine must produce correct polygon") {
+		auto a = spine(Vector::origin);
+		auto b = spine(Vector::origin);
+		auto c = spine(Vector::origin);
+		b->assign(Vector::north, a.get());
+		c->assign(Vector::north*2, b.get());
+		ensure_equals(c->polygon().point_count(),4U);
+	} END
+
+
+	BEGIN(13, "Snake object should move north without colliding") {
+		SnakeWithCollision o(mgr);
+		o.move(SteerDirection::Forward);
+		ensure(o.is_alive());
+	} END
 }

@@ -3,14 +3,17 @@
  * See LICENCE.txt
  */
 #include "collisions2d.h"
-#include <assert.h>
 namespace game {
 bool BoundedBox2::in_bounds_of(const BoundedBox2& other) const {
-	return overlap(left(), right(), other.left(), other.right())
-			&& overlap(top(), bottom(), other.top(), other.bottom());
+	if (is_empty() || other.is_empty())
+		return false;
+	else
+		return overlap_or_equal(left(), right(), other.left(), other.right())
+				&& overlap_or_equal(top(), bottom(), other.top(), other.bottom());
 }
 
 void Polygon::add(const Vector2& value) {
+	ASSERT(_points.size() == 0 || value != _points.back());
 	_points.push_back(value);
 	on_add(value);
 }
@@ -20,12 +23,13 @@ void Polygon::add_relative(const Vector2& value) {
 }
 
 bool axis_overlap(const Polygon &p1, const Polygon &p2) {
+	if (p1.is_empty() || p2.is_empty())
+		return false;
 	auto axlist = p1.axes();
 	for (auto axis = axlist.begin(); axis != axlist.end(); axis++) {
-		assert(axis->data().size() == 2);
 		const Range pp1 = p1.project(*axis);
 		const Range pp2 = p2.project(*axis);
-		if (!pp1.overlaps(pp2))
+		if (!pp1.overlaps_or_equal(pp2))
 			return false;
 	}
 	return true;
@@ -50,7 +54,7 @@ CollidablePolygon::CollidablePolygon(const unsigned char type,
 }
 
 bool CollidablePolygon::collides_with(const CollidablePolygon& other) const {
-	return false;
+	return in_bounds_of(other) && overlaps_with(other);
 }
 
 BoundedBox2::BoundedBox2(const Vector2& lt, const Vector2& rb) :
@@ -96,8 +100,6 @@ list<Vector2> Polygon::axes() const {
 Range Polygon::project(const Vector2& axis) const {
 	if (_points.size() == 0)
 		return Range(zero, zero);
-	assert(axis.data().size() == 2);
-	assert(_points[0].data().size() == 2);
 	auto min = axis.dot(_points[0]);
 	auto max = min;
 	for (auto i = 1U; i < _points.size(); i++) {
@@ -118,11 +120,12 @@ void CollidablePolygon::on_clear() {
 	clear_box();
 }
 std::ostream& operator <<(ostream& s, const Polygon& v) {
-	s << "{";
+	s << "{" << v._points.size() << ":";
 	for_each(p, v._points)
 	{
 		s << *p;
 	}
+	s << "}";
 	return s;
 }
 
@@ -132,11 +135,14 @@ CollisionManager::CollisionManager(CollisionListener::u_ptr listener) :
 
 
 bool CollisionManager::add_if_not_collide(CollidablePolygon* collidable) {
+	assert(collidable->point_count() > 0);
 	assert(collidable != 0);
 	for_each(e, _items) {
 		// short circuit boolean evaluation assumed
-		if ((*e)->in_bounds_of(*collidable) && (*e)->collides_with(*collidable))
+		if ((*e)->collides_with(*collidable)) {
+			_listener->on_collide(**e, *collidable);
 			return false;
+		}
 	}
 	_items.push_back(collidable);
 	return true;

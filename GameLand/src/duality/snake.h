@@ -33,6 +33,7 @@ namespace duality {
 		const Vector& topMiddle() const {return _topMiddle;}
 		const Vector& bottomLeft() const {return _bottomLeft;}
 		const Vector& bottomRight() const {return _bottomRight;}
+		bool is_empty() const {return _bottomLeft == _bottomRight;}
 		CollidablePolygon & polygon() const;
 	private:
 		Vector _topMiddle;
@@ -40,7 +41,7 @@ namespace duality {
 		Vector _bottomRight;
 		mutable CollidablePolygon _polygon;
 		mutable bool _poly_is_dirty;
-		SpinePoint * _previous;
+		const SpinePoint * _previous;
 	public:
 		typedef std::unique_ptr<SpinePoint> u_ptr;
 	};
@@ -63,6 +64,7 @@ namespace duality {
 		const SpinePoint& tail() const {return _points[_tail];};
 		virtual ~Snake(){};
 		void kill() {_is_alive = false;}
+		bool is_alive() const {return _is_alive;}
 	protected:
 		const RotateInt& head_index() const {return _head;};
 		const RotateInt& tail_index() const {return _tail;};
@@ -82,7 +84,17 @@ namespace duality {
 		bool _is_alive;
 	};
 
-	class SnakeObject : public GameObject, private Snake {
+	class SnakeWithCollision : public Snake {
+	public:
+		SnakeWithCollision(CollisionManager &mgr) : _col_mgr(mgr) {}
+	protected:
+		void on_head_added() override;
+		void before_tail_remove() override;
+	private:
+		CollisionManager& _col_mgr;
+	};
+
+	class SnakeObject : public GameObject, private SnakeWithCollision {
 	public:
 		SnakeObject(CollisionManager &mgr);
 		void initialise(const ResourceContext &ctx, const DrawContext &draw) override;
@@ -90,11 +102,8 @@ namespace duality {
 		void update(const UpdateContext & uc) override;
 		virtual ~SnakeObject(){}
 	protected:
-		void on_head_added() override;
-		void before_tail_remove() override;
 		bool _left_key_down, _right_key_down;
 		ShaderProgram::u_ptr _program_p;
 		Texture::u_ptr _tex_p;
-		CollisionManager& _col_mgr;
 	};
 }

@@ -21,6 +21,7 @@ public:
 	virtual ~BoundedBox2() {}
 	bool in_bounds_of(const BoundedBox2& other) const;
 	bool is_valid() const;
+	bool is_empty() const {return left() == right() || top() == bottom();}
 protected:
 	void adjust_box(const Vector2& p);
 	void clear_box() {_lt = Vector2::origin; _rb = Vector2::origin;}
@@ -58,6 +59,9 @@ public:
 	list<Vector2> axes() const;
 	Range project(const Vector2 &axis) const;
 	virtual ~Polygon() {}
+	size_t point_count() const {return _points.size();}
+	bool is_empty() const {return point_count() < 3; }
+	const Vector2&  operator[](size_t i) const  {return _points[i];}
 private:
 	vector<Vector2> _points;
 protected:
@@ -85,9 +89,13 @@ public:
 	typedef std::unique_ptr<CollidablePolygon> u_ptr;
 };
 
+inline ostream& operator<<(ostream& s, const CollidablePolygon& v) {
+	return s << dynamic_cast<const Polygon&> (v);
+}
+
 class CollisionListener {
 public:
-	virtual void on_collide(CollidablePolygon &a, CollidablePolygon &b) = 0;
+	virtual void on_collide(CollidablePolygon &a, CollidablePolygon &b) {};
 	virtual ~CollisionListener() {}
 public:
 	typedef std::unique_ptr<CollisionListener> u_ptr;
@@ -103,6 +111,7 @@ public:
 	 */
 	bool add_if_not_collide(CollidablePolygon * collidable);
 	void remove(CollidablePolygon * collidable);
+	const CollisionListener& listener() const {return *_listener;}
 private:
 	CollisionListener::u_ptr _listener;
 public:

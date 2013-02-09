@@ -27,7 +27,12 @@ namespace game {
 	extern const Scalar degrees45;
 
 	inline Scalar sqr(const Scalar& v) {return v * v;}
-	inline bool overlap(const Scalar& a1, const Scalar& a2, const Scalar& b1, const Scalar& b2) {
+	inline bool overlap_proper(const Scalar& a1, const Scalar& a2, const Scalar& b1, const Scalar& b2) {
+		return (b1 < a2 && b1 > a1)
+				|| (b2 < a2 && b2 > a1)
+				|| (b1 < a1 && b2 > a2);
+	}
+	inline bool overlap_or_equal(const Scalar& a1, const Scalar& a2, const Scalar& b1, const Scalar& b2) {
 		return (b1 <= a2 && b1 >= a1)
 				|| (b2 <= a2 && b2 >= a1)
 				|| (b1 <= a1 && b2 >= a2);
@@ -39,29 +44,35 @@ namespace game {
 		Range(const Scalar from, const Scalar to) : _from(from), _to(to) {};
 		Scalar from() const { return _from; }
 		Scalar to() const {return _to; }
-		bool overlaps(const Range& v) const { return overlap(_from,_to,v._from,v._to); }
+		bool overlaps_proper(const Range& v) const { return overlap_proper(_from,_to,v._from,v._to); }
+		bool overlaps_or_equal(const Range& v) const { return overlap_or_equal(_from,_to,v._from,v._to); }
 	private:
 		Scalar _from, _to;
 	};
 
 	class ScalarValueArray {
 	public:
-		Scalar operator()(const size_t& i) const {return get(i);}
+		Scalar operator()(const size_t& i) const {
+			return (i < _data.size()) ? get(i) : unity;}
 		// this exposes the internal data for use by OPENGL (use only there)
 		Scalar* c_elems() const { return const_cast<Scalar*> (&_data[0]); };
 	 	virtual ~ScalarValueArray(){}
 		void operator /= (const Scalar& v) {_data /= v;}
 		virtual Scalar norm() const = 0;
 		void normalise();
-		const valarray<Scalar> & data() const {return _data;}
+		bool operator==(const ScalarValueArray& other) const;
+	 	friend ostream& operator<<(ostream& out, const ScalarValueArray &m);
 	protected:
 		 explicit ScalarValueArray(const valarray<Scalar>& source) : _data(source) {}
 		 explicit ScalarValueArray(size_t size) : _data(size) {}
-		 void set(size_t i, Scalar v) {_data[i] = v;};
+		 void set(size_t i, Scalar v) {assert(i < _data.size()); _data[i] = v;};
 		 Scalar get(size_t i) const {assert(i < _data.size()); return _data[i];}
+  		 const valarray<Scalar> & data() const {return _data;}
 	private:
 	 	 valarray<Scalar> _data;
 	};
+
+	inline bool operator!=(const ScalarValueArray& a, const ScalarValueArray& b) {return !(a == b); }
 
 	class Vector2 : public ScalarValueArray  {
 		public:
@@ -76,20 +87,19 @@ namespace game {
 			Scalar norm() const {return sqrt(sqr(x()) + sqr(y()));}
 		protected:
 			explicit Vector2(size_t s) : ScalarValueArray(s) {};
-			explicit Vector2(const valarray<Scalar>& source) : ScalarValueArray(source) {assert(data().size() > 1);};
+			explicit Vector2(const valarray<Scalar>& source)
+			: ScalarValueArray(source) {};
 		public:
 		 	friend Vector2 operator+(const Vector2& a, const Vector2 &b);
 		 	friend Vector2 operator-(const Vector2& a, const Vector2 &b);
 		 	friend Vector2 operator/(const Vector2& a, const Scalar s);
 		 	friend Vector2 operator*(const Vector2& a, const Scalar s);
-		 	friend ostream& operator<<(ostream& out, const Vector2 &m);
 		 	static const Vector2 origin;
 	};
 
 
 	/**
 	 * Coordinate system: x - increase to west, y increases north, z increases up you
-	 * Vector objects has 4 elements
 	 */
 	class Vector : public Vector2 {
 		public:
@@ -104,7 +114,6 @@ namespace game {
 			friend Vector operator*(const Vector& a, const Scalar &b);
 			friend Scalar dot(const Vector& a, const Vector &b);
 			friend Vector cross_product(const Vector& a, const Vector &b);
-			friend ostream& operator<<(ostream& out, const Vector &m);
 			static const Vector origin;
 			static const Vector north;
 			static const Vector west;
@@ -112,8 +121,6 @@ namespace game {
 			static const Vector south;
 			static const Vector up;
 			static const Vector down;
-			bool operator==(const Vector& other) const;
-			bool operator!=(const Vector& other) const;
 			virtual ~Vector(){}
 		private:
 			Vector(const valarray<Scalar>& d);
