@@ -50,6 +50,8 @@ namespace game {
 		Scalar _from, _to;
 	};
 
+	inline std::ostream& operator<<(std::ostream& s, const Range& v) {s << "[" << v.from() << "," << v.to() << "]"; return s;}
+
 	class ScalarValueArray {
 	public:
 		Scalar operator()(const size_t& i) const {
@@ -62,6 +64,7 @@ namespace game {
 		void normalise();
 		bool operator==(const ScalarValueArray& other) const;
 	 	friend ostream& operator<<(ostream& out, const ScalarValueArray &m);
+	 	bool is_zero() const;
 	protected:
 		 explicit ScalarValueArray(const valarray<Scalar>& source) : _data(source) {}
 		 explicit ScalarValueArray(size_t size) : _data(size) {}
@@ -77,14 +80,16 @@ namespace game {
 	class Vector2 : public ScalarValueArray  {
 		public:
 			Vector2(Scalar x, Scalar y) : ScalarValueArray(2) {set(0,x); set(1,y);}
+			Vector2(const Vector2& source) : ScalarValueArray(2) {set(0,source.x());set(1,source.y());}
 			Vector2() : Vector2(zero,zero) {}
 			Scalar x() const {return get(0);}
 			Scalar y() const {return get(1);}
 			void set_x(Scalar v) {set(0,v);}
 			void set_y(Scalar v) {set(1,v);}
 			Vector2 perpendicular() const {return Vector2(-y(),x());}
-			Scalar dot(const Vector2 &v) const {return x() * v.x() + y() * v.y();}
+			Scalar dot2(const Vector2 &v) const {return x() * v.x() + y() * v.y();}
 			Scalar norm() const {return sqrt(sqr(x()) + sqr(y()));}
+			Vector2 towards(const Vector2& other, Scalar fraction) const { return *this + ((other - *this) * fraction); }
 		protected:
 			explicit Vector2(size_t s) : ScalarValueArray(s) {};
 			explicit Vector2(const valarray<Scalar>& source)

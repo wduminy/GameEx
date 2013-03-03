@@ -3,9 +3,10 @@
  * See LICENCE.txt
  */
 #include "collisions2d.h"
+#include "../systemex/log.h"
 namespace game {
 bool BoundedBox2::in_bounds_of(const BoundedBox2& other) const {
-	if (is_empty() || other.is_empty())
+	if (is_empty_box() || other.is_empty_box())
 		return false;
 	else
 		return overlap_or_equal(left(), right(), other.left(), other.right())
@@ -54,7 +55,10 @@ CollidablePolygon::CollidablePolygon(const unsigned char type,
 }
 
 bool CollidablePolygon::collides_with(const CollidablePolygon& other) const {
-	return in_bounds_of(other) && overlaps_with(other);
+	if (in_bounds_of(other))
+		return overlaps_with(other);
+	else
+		return false;
 }
 
 BoundedBox2::BoundedBox2(const Vector2& lt, const Vector2& rb) :
@@ -72,8 +76,8 @@ void BoundedBox2::adjust_box(const Vector2& p) {
 		_rb.set_x(p.x());
 	if (p.y() < _lt.y())
 		_lt.set_y(p.y());
-	if (p.y() > _rb.x())
-		_rb.set_x(p.y());
+	if (p.y() > _rb.y())
+		_rb.set_y(p.y());
 }
 
 std::ostream& operator <<(ostream& s, const BoundedBox2& v) {
@@ -100,10 +104,10 @@ list<Vector2> Polygon::axes() const {
 Range Polygon::project(const Vector2& axis) const {
 	if (_points.size() == 0)
 		return Range(zero, zero);
-	auto min = axis.dot(_points[0]);
+	auto min = axis.dot2(_points[0]);
 	auto max = min;
 	for (auto i = 1U; i < _points.size(); i++) {
-		auto r = axis.dot(_points.at(i));
+		auto r = axis.dot2(_points.at(i));
 		if (r < min)
 			min = r;
 		if (r > max)
@@ -135,20 +139,25 @@ CollisionManager::CollisionManager(CollisionListener::u_ptr listener) :
 
 
 bool CollisionManager::add_if_not_collide(CollidablePolygon* collidable) {
-	assert(collidable->point_count() > 0);
-	assert(collidable != 0);
+	ASSERT(collidable->point_count() > 0);
+	ASSERT(collidable != 0);
 	for_each(e, _items) {
 		// short circuit boolean evaluation assumed
+
 		if ((*e)->collides_with(*collidable)) {
+			TRACE << "collidable    " << collidable << " " <<  *collidable;
+			TRACE << "collides with " << *e << " " <<  *(*e);
 			_listener->on_collide(**e, *collidable);
 			return false;
 		}
 	}
+	TRACE << "Added to colmgr " << collidable << *collidable;
 	_items.push_back(collidable);
 	return true;
 }
 
 void CollisionManager::remove(CollidablePolygon* collidable) {
+	TRACE << "Removed from colmgr " << collidable << *collidable;
 	_items.remove(collidable);
 }
 

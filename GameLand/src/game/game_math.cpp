@@ -23,30 +23,28 @@ namespace game {
 	const Scalar degrees45 = degrees90 / 2.0f;
 
 	Vector2 operator-(const Vector2& a, const Vector2 &b) {
-			auto result = a.data() - b.data();
-			return Vector2(result[0],result[1]);
+			return Vector2(a.data() - b.data());
 	}
 
 	Vector2 operator+(const Vector2& a, const Vector2 &b) {
-		auto result = a.data() + b.data();
-		return Vector2(result[0],result[1]);
+		return Vector2(a.data() + b.data());
 	}
 
 	Vector2 operator*(const Vector2& a, const Scalar s) {
-		auto result = a.data() * s;
-		return Vector2(result[0],result[1]);
+		return Vector2(a.data() * s);
 	}
 
 	Vector2 operator/(const Vector2& a, const Scalar s) {
-		auto result = a.data() / s;
-		return Vector2(result[0],result[1]);
+		return Vector2(a.data() / s);
 	}
 
 	ostream& operator<<(ostream& out, const ScalarValueArray &m) {
-			out << "(" ; ;
+			out << "(" ;
 			for (size_t i = 0U; i < m.data().size(); i++ ) {
 				if (i != 0U) out << ",";
-				out << m.data()[i];
+				out.width(6);
+				out.precision(3);
+				out << m._data[i];
 			}
 			out << ")";
 			return out;
@@ -63,6 +61,13 @@ namespace game {
 		if (n == 0)
 			throw std::runtime_error("cannot normalise - will cause a division by zero");
 		_data /= n;
+	}
+
+	bool ScalarValueArray::is_zero() const {
+		for (size_t i = 0U; i <_data.size(); i++ )
+			if (!scalar_equals(_data[i],zero))
+				return false;
+		return true;
 	}
 
 	bool ScalarValueArray::operator ==(const ScalarValueArray& other) const {

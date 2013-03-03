@@ -23,27 +23,22 @@ namespace tut {
 	SNAKE_TEST(1) {
 		Snake s(Vector::origin, Vector::north, 1);
 		s.move();
-		ensure_equals(s.size(),1U);
+		ensure_equals(s.size(),2U);
 	}
 
 	SNAKE_TEST(2) {
 		Snake s(Vector::origin, Vector::north, 1);
-		ensure_equals(s.head().topMiddle(),s.tail().topMiddle());
-		s.move();
-		ensure("head and tail must be different after move",s.head().topMiddle() != s.tail().topMiddle());
+		ensure("head and tail must be different after create",s.head().topMiddle() != s.tail().topMiddle());
 	}
 
 	SNAKE_TEST(3) {
 		Snake s(Vector::origin, Vector::north,unity,1);
-		s.move();
 		s.move();
 		ensure_equals("move is not two steps forward",(Vector::north * 2.0f), s.head().topMiddle());
 	}
 
 	SNAKE_TEST(4) {
 		Snake s(Vector::origin, Vector::north,1,unity,degrees45 * 2.0f);
-		s.move();
-		ensure_equals("forward end up at wrong place", s.head().topMiddle(),Vector::north );
 		s.move(Left);
 		ensure_equals("f-l end up at wrong place", s.head().topMiddle(), Vector::north + Vector::west );
 		s.move();
@@ -54,7 +49,6 @@ namespace tut {
 
 	SNAKE_TEST(5) {
 		Snake s(Vector::origin, Vector::north,1,unity,degrees45 * 2.0f);
-		s.move();
 		s.move(Right);
 		ensure_equals("f-r end up at wrong place", s.head().topMiddle(), Vector::north + Vector::east );
 		s.move();
@@ -127,7 +121,7 @@ namespace tut {
 		auto b = spine(Vector::origin);
 		b->assign(Vector::north, a.get());
 		auto p = b->polygon();
-		ensure_equals(p.point_count(),3U);
+		ensure_not(p.is_empty());
 		ensure_not(p[0] == p[1]);
 	} END
 
@@ -138,13 +132,28 @@ namespace tut {
 		auto c = spine(Vector::origin);
 		b->assign(Vector::north, a.get());
 		c->assign(Vector::north*2, b.get());
-		ensure_equals(c->polygon().point_count(),4U);
+		ensure_not(c->polygon().is_empty());
 	} END
 
 
 	BEGIN(13, "Snake object should move north without colliding") {
 		SnakeWithCollision o(mgr);
 		o.move(SteerDirection::Forward);
+		ensure(o.is_alive());
+	} END
+
+	BEGIN(14, "Snake object that runs in a circle must collide") {
+		SnakeWithCollision o(mgr);
+		for (int i=0;i<100;i++)
+			o.move(SteerDirection::Right);
+		ensure(!o.is_alive());
+	} END
+
+	BEGIN(15, "Snake object should move south without colliding") {
+		SnakeWithCollision o(mgr,Vector::north + (Vector::up * (SNAKE_WIDTH_HALF)),
+				             Vector::south);
+		for (int i=0;i<100;i++)
+			o.move(SteerDirection::Forward);
 		ensure(o.is_alive());
 	} END
 }

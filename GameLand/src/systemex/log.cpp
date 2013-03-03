@@ -14,6 +14,7 @@ namespace systemex {
 
 	Log::Log(const std::string& filename) : _file(filename.c_str()), _start(0), _last(0) {
 		time(&_start);
+		_file.setf(std::ostream::fixed,std::ostream::floatfield);
 		LOG << "*** START";
 	}
 

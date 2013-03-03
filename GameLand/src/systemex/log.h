@@ -9,6 +9,8 @@
 #include "systemex.h"
 
 #define LOG ::systemex::Log::instance().record()
+#define TRACE (::systemex::Log::instance().record() << __FILE__ << "(" << __LINE__ << "):")
+
 namespace systemex {
 
 	class Log {

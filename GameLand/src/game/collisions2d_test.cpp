@@ -124,5 +124,31 @@ namespace tut {
 		ensure_not_overlap(a,b);
 	} END
 
+	BEGIN(10, "this specific case must overlap") {
+		// 7:> adding {4:(0.13547,0.00201677,0)(0.234465,-0.0969783,0)(0.319318,-0.0121256,0)(0.220323,0.0868695,0)} <:
+		CollidablePolygon a(0,Vector(0.13547,0.00201677,0));
+		a.add(Vector(0.234465,-0.0969783,0));
+		a.add(Vector(0.319318,-0.0121256,0));
+		a.add(Vector(0.220323, 0.0868695,0));
+		// 7:> collides with {4:(0.206181,0.0727274,0)(0.305176,-0.0262677,0)(0.390029,0.058585,0)(0.291034,0.15758,0)} <:
+		CollidablePolygon b(0,Vector(0.206181,0.0727274,0));
+		b.add(Vector(0.305176,-0.0262677,0));
+		b.add(Vector(0.390029, 0.058585,0));
+		b.add(Vector(0.291034, 0.15758,0));
+		ensure_overlap_bounds(a,b);
+		ensure_overlap(a,b);
+	} END
 
+	BEGIN(11, "this specific case must overlap") {
+		CollidablePolygon a(0,Vector(-0.070,-0.200, 0.000));
+		a.add(Vector( 0.070,-0.200, 0.000));
+		a.add(Vector( 0.070,-0.080, 0.000));
+		a.add(Vector(-0.070,-0.080, 0.000));
+		CollidablePolygon b(0,Vector(-0.070,-0.100, 0.000));
+		b.add(Vector( 0.070,-0.100, 0.000));
+		b.add(Vector( 0.070, 0.020, 0.000));
+		b.add(Vector(-0.070, 0.020, 0.000));
+		ensure_overlap_bounds(a,b);
+		ensure_overlap(a,b);
+	} END
 }

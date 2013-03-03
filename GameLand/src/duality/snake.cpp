@@ -6,8 +6,6 @@
 #include "snake.h"
 #include "../systemex/log.h"
 
-
-
 namespace duality {
 
 const unsigned char SPINE = 0;
@@ -26,16 +24,14 @@ void SpinePoint::assign(const Vector& topMiddlePoint, const SpinePoint* prev) {
 	_topMiddle = topMiddlePoint;
 	Vector point_dir = topMiddlePoint - prev->topMiddle();
 	auto n = point_dir.norm();
-	if (n == 0)
-		assign(topMiddlePoint);
-	else {
-		point_dir /= n;
-		Vector perpendicular(point_dir.y(),-point_dir.x(),0);
-		_bottomLeft = _topMiddle + (perpendicular * SNAKE_WIDTH_HALF);
-		_bottomLeft.set_z(SNAKE_FLOOR);
-		_bottomRight = _topMiddle - (perpendicular * SNAKE_WIDTH_HALF);
-		_bottomRight.set_z(SNAKE_FLOOR);
-	}
+	ASSERT(n != 0);
+	point_dir /= n;
+	Vector perpendicular(point_dir.y(),-point_dir.x(),0);
+	auto sideMovement = perpendicular * SNAKE_WIDTH_HALF;
+	_bottomLeft = _topMiddle + sideMovement;
+	_bottomLeft.set_z(SNAKE_FLOOR);
+	_bottomRight = _topMiddle - sideMovement;
+	_bottomRight.set_z(SNAKE_FLOOR);
 	_poly_is_dirty = true;
 	_previous = prev;
 }
@@ -48,7 +44,7 @@ Snake::Snake(const Vector& startingPoint,
 		const int initialGrowth
 		) :
 		_points(),
-		_head(SNAKE_MEM_SIZE-1,1),
+		_head(SNAKE_MEM_SIZE-1,0),
 		_tail(SNAKE_MEM_SIZE-1,1),
 		_move_vector(lookingAt * distancePerMove),
 		_rotation_angle(0.0f),
@@ -56,11 +52,12 @@ Snake::Snake(const Vector& startingPoint,
 		_translation_vector(_move_vector),
 		_remaining_growth(initialGrowth),
 		_time_to_grow(updatesPerGrow),
-		_previous_head(0),
+		_previous_head(1),
 		_is_alive(true)
 	{
-		_points[_head].assign(startingPoint);
-		_points[0].assign(lookingAt * -1.0);
+		_points[_tail].assign(startingPoint);
+		ASSERT(_move_vector.norm() > 0);
+		_points[_head].assign(startingPoint + _move_vector, &_points[_tail]);
 	}
 
 void Snake::move(const SteerDirection& dir) {
@@ -79,6 +76,8 @@ void Snake::move(const SteerDirection& dir) {
 		// do nothing
 		break;
 	}
+	if (_move_vector.is_zero())
+		return;
 	const auto newPoint = _points[_head].topMiddle() + _move_vector;
 	if (_time_to_grow.tick()) {
 		if (is_growing())
@@ -91,6 +90,7 @@ void Snake::move(const SteerDirection& dir) {
 		-- _head;
 		_points[_head].assign(newPoint, &_points[_previous_head]);
 		on_head_added();
+		ASSERT(rem_head != _previous_head);
 		_previous_head = rem_head;
 	} else
 		_points[_head].assign(newPoint, &_points[_previous_head]);
@@ -146,7 +146,6 @@ void SnakeObject::draw(const DrawContext& gc) {
 	glVertex3fv(lastPoint.bottomLeft().c_elems());
 	glEnd();
 	_program_p->end();
-
 }
 
 SnakeObject::SnakeObject(CollisionManager &mgr) : SnakeWithCollision(mgr),
@@ -204,15 +203,15 @@ void SnakeWithCollision::before_tail_remove() {
 CollidablePolygon& SpinePoint::polygon() const {
 	if (!_poly_is_dirty)
 		return _polygon;
-	_polygon.set_start(_bottomLeft);
-	if (!is_empty()) {
-		if (_previous != 0) {
-			_polygon.add(_bottomRight);
-			_polygon.add(_previous->bottomRight());
-			if (_previous->bottomLeft() != _previous->bottomRight()) {
-				_polygon.add(_previous->bottomLeft());
-			};
-		}
+	if (is_empty() || !_previous)
+		_polygon.set_start(_bottomLeft);
+	else {
+		Vector2 bl(_bottomLeft),
+				br(_bottomRight);
+		_polygon.set_start(bl);
+		_polygon.add(br);
+		_polygon.add(br.towards(_previous->base(),0.5));
+		ASSERT(!_polygon.collides_with(_previous->polygon()));
 	}
 	_poly_is_dirty = false;
 	return _polygon;

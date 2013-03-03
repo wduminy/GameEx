@@ -21,7 +21,7 @@ public:
 	virtual ~BoundedBox2() {}
 	bool in_bounds_of(const BoundedBox2& other) const;
 	bool is_valid() const;
-	bool is_empty() const {return left() == right() || top() == bottom();}
+    bool is_empty_box() const {return left() == right() || top() == bottom();}
 protected:
 	void adjust_box(const Vector2& p);
 	void clear_box() {_lt = Vector2::origin; _rb = Vector2::origin;}

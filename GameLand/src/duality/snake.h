@@ -33,6 +33,7 @@ namespace duality {
 		const Vector& topMiddle() const {return _topMiddle;}
 		const Vector& bottomLeft() const {return _bottomLeft;}
 		const Vector& bottomRight() const {return _bottomRight;}
+		Vector2 base() const {return Vector2(_bottomLeft).towards(_bottomRight,0.5f);}
 		bool is_empty() const {return _bottomLeft == _bottomRight;}
 		CollidablePolygon & polygon() const;
 	private:
@@ -86,7 +87,10 @@ namespace duality {
 
 	class SnakeWithCollision : public Snake {
 	public:
-		SnakeWithCollision(CollisionManager &mgr) : _col_mgr(mgr) {}
+		SnakeWithCollision(CollisionManager &mgr,
+				const Vector& startingPoint = Vector::origin + (Vector::up * (SNAKE_WIDTH_HALF)),
+				const Vector& lookingAt = Vector::north) :
+					Snake(startingPoint, lookingAt), _col_mgr(mgr) {}
 	protected:
 		void on_head_added() override;
 		void before_tail_remove() override;

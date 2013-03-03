@@ -132,4 +132,12 @@ namespace tut {
 		auto newPoint = xlator * pointToTranslate;
 		ensure_equals(pointToTranslate * 3.0f, newPoint);
 	}
+
+	TEST<12>() {
+		Vector2 a(1,0),b(0,0);
+		Vector2 c = a.towards(b,0.9f);
+		Vector2 d = b.towards(a,0.9f);
+		ensure_equals(c,Vector2(0.1,0));
+		ensure_equals(d,Vector2(0.9,0));
+	}
 }
