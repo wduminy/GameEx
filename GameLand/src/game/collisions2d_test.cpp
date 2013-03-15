@@ -43,7 +43,7 @@ namespace tut {
 		CollisionData() : mgr(CollisionListener::u_ptr(new TestListener())) {};
 		virtual ~CollisionData(){}
 		const TestListener& listener() const { return (TestListener&)  mgr.listener();}
-		CollisionManager mgr;
+		SimpleCollisionManager mgr;
 
 	};
 

@@ -12,7 +12,8 @@ int main( int , char* [] ) {
 	try {
 		game::Game g(
 				MainObject::u_ptr(new DualityScene()),
-				UpdateContext::u_ptr(new UpdateContext(48,18)),
+				UpdateContext::u_ptr(new UpdateContext(10000,10)), // to check performance
+				//UpdateContext::u_ptr(new UpdateContext(50,20)),
 				DrawContext::u_ptr(new DrawContext(false,800,600)),
 				ResourceContext::u_ptr(new ResourceContext("duality/"))
 		);

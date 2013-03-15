@@ -64,7 +64,11 @@ namespace game {
 	}
 
 
-	/// targetUpdateDelay : milliseconds to update
+	/**
+	 *
+	 * @param targetUpdatesPerSecond - anything more than 1000 means ASAP
+	 * @param targetFramesPerSecond - anything more than 1000 means ASAP
+	 */
 	UpdateContext::UpdateContext(unsigned int targetUpdatesPerSecond, unsigned int targetFramesPerSecond) :
             _event(),
 			_update_interval(1000 / targetUpdatesPerSecond),

@@ -7,7 +7,7 @@ namespace tut {
 	struct Snakedata {
 		Snakedata() : mgr(CollisionListener::u_ptr(new CollisionListener())) {}
 	    virtual ~Snakedata(){}
-	    CollisionManager mgr;
+	    SimpleCollisionManager mgr;
     };
 	test_group<Snakedata> snakeTests("100 Duality tests");
 #define SNAKE_TEST(N) template<> template<> void test_group<Snakedata>::object::test<N>()

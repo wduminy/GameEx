@@ -10,7 +10,8 @@ bool BoundedBox2::in_bounds_of(const BoundedBox2& other) const {
 		return false;
 	else
 		return overlap_or_equal(left(), right(), other.left(), other.right())
-				&& overlap_or_equal(top(), bottom(), other.top(), other.bottom());
+				&& overlap_or_equal(top(), bottom(), other.top(),
+						other.bottom());
 }
 
 void Polygon::add(const Vector2& value) {
@@ -134,31 +135,45 @@ std::ostream& operator <<(ostream& s, const Polygon& v) {
 }
 
 CollisionManager::CollisionManager(CollisionListener::u_ptr listener) :
-		_listener(std::move(listener)),
-		_items() {}
-
-
-bool CollisionManager::add_if_not_collide(CollidablePolygon* collidable) {
-	ASSERT(collidable->point_count() > 0);
-	ASSERT(collidable != 0);
-	for_each(e, _items) {
-		// short circuit boolean evaluation assumed
-
-		if ((*e)->collides_with(*collidable)) {
-			TRACE << "collidable    " << collidable << " " <<  *collidable;
-			TRACE << "collides with " << *e << " " <<  *(*e);
-			_listener->on_collide(**e, *collidable);
-			return false;
-		}
-	}
-	TRACE << "Added to colmgr " << collidable << *collidable;
-	_items.push_back(collidable);
-	return true;
+		_listener(std::move(listener)) {
 }
 
-void CollisionManager::remove(CollidablePolygon* collidable) {
+SimpleCollisionManager::SimpleCollisionManager(
+		CollisionListener::u_ptr listener) :
+		CollisionManager(std::move(listener)), _items() {
+}
+
+bool SimpleCollisionManager::add_if_not_collide(CollidablePolygon* collidable) {
+	auto other = _items.collide_with_or_null(collidable);
+	if (other != 0) {
+		_listener->on_collide(*other, *collidable);
+		return false;
+	} else {
+		_items.push_back(collidable);
+		return true;
+	}
+}
+
+void SimpleCollisionManager::remove(CollidablePolygon* collidable) {
 	TRACE << "Removed from colmgr " << collidable << *collidable;
 	_items.remove(collidable);
+}
+
+CollisionManagerWithRectangles::CollisionManagerWithRectangles(
+		CollisionListener::u_ptr listener, const Vector2& leftTop,
+		const Vector2& rightBottom, const int numberOfSegments) :
+		CollisionManager(std::move(listener)) {
+}
+
+CollidablePolygon* CollidablePolygonPList::collide_with_or_null(
+		CollidablePolygon* collidable) {
+	ASSERT(collidable->point_count() > 0);
+	ASSERT(collidable != 0);
+	for_each(e, (*this)) {
+		if ((*e)->collides_with(*collidable))
+			return *e;
+	}
+	return 0;
 }
 
 }

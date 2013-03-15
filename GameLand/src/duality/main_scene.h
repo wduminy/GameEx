@@ -8,13 +8,13 @@
 #include "../game/collisions2d.h"
 
 namespace duality {
-	using game::CollisionManager;
+	using game::SimpleCollisionManager;
 
 	class DualityScene: public game::MainObject {
 	public:
 		DualityScene();
 	private:
-		CollisionManager _col_mgr;
+		SimpleCollisionManager _col_mgr;
 };
 
 }

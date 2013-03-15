@@ -109,14 +109,37 @@ public:
 	 * @param collidable
 	 * @return true if the polygon is added
 	 */
-	bool add_if_not_collide(CollidablePolygon * collidable);
-	void remove(CollidablePolygon * collidable);
+	virtual bool add_if_not_collide(CollidablePolygon * collidable) = 0;
+	virtual void remove(CollidablePolygon * collidable) = 0;
 	const CollisionListener& listener() const {return *_listener;}
-private:
+	virtual ~CollisionManager(){}
+protected:
 	CollisionListener::u_ptr _listener;
 public:
 	typedef std::unique_ptr<CollisionManager> u_ptr;
-	std::list<CollidablePolygon *> _items;
+};
+
+class CollidablePolygonPList : public std::list<CollidablePolygon *> {
+public:
+	CollidablePolygon * collide_with_or_null(CollidablePolygon * collidable);
+	virtual ~CollidablePolygonPList(){}
+};
+
+class SimpleCollisionManager : public CollisionManager {
+public:
+	SimpleCollisionManager(CollisionListener::u_ptr listener);
+	bool add_if_not_collide(CollidablePolygon * collidable) override;
+	void remove(CollidablePolygon * collidable) override;
+private:
+	CollidablePolygonPList _items;
+
+};
+
+class CollisionManagerWithRectangles : public CollisionManager {
+public:
+	CollisionManagerWithRectangles(CollisionListener::u_ptr listener, const Vector2& leftTop, const Vector2& rightBottom, const int numberOfSegments);
+private:
+
 };
 
 }
