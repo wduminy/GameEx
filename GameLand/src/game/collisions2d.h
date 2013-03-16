@@ -77,6 +77,7 @@ public:
 class CollidablePolygon : public BoundedBox2, public Polygon {
 public:
 	CollidablePolygon(const unsigned char type, const Vector2& start);
+	CollidablePolygon(const unsigned char type, const Vector2& start,  const vector<Vector2> &path);
 	bool collides_with(const CollidablePolygon& other) const;
 	unsigned char type() const {return _type;}
 	virtual ~CollidablePolygon() {}
@@ -101,35 +102,37 @@ public:
 	typedef std::unique_ptr<CollisionListener> u_ptr;
 };
 
+class CollidablePolygonPList : public std::list<CollidablePolygon *> {
+public:
+	CollidablePolygon * collider_or_null(CollidablePolygon * collidable);
+	virtual ~CollidablePolygonPList(){}
+};
+
 class CollisionManager {
 public:
 	CollisionManager(CollisionListener::u_ptr listener);
-	/**
-	 * Adds a new polygon if no collision is detected
-	 * @param collidable
-	 * @return true if the polygon is added
-	 */
-	virtual bool add_if_not_collide(CollidablePolygon * collidable) = 0;
+	bool check_and_add(CollidablePolygon * collidable, const bool ignoreIfCollide = false);
+	virtual void add(CollidablePolygon * collidable) = 0;
 	virtual void remove(CollidablePolygon * collidable) = 0;
 	const CollisionListener& listener() const {return *_listener;}
 	virtual ~CollisionManager(){}
 protected:
+	virtual CollidablePolygon * collider_or_null(CollidablePolygon * collidable) = 0;
+private:
 	CollisionListener::u_ptr _listener;
 public:
 	typedef std::unique_ptr<CollisionManager> u_ptr;
 };
 
-class CollidablePolygonPList : public std::list<CollidablePolygon *> {
-public:
-	CollidablePolygon * collide_with_or_null(CollidablePolygon * collidable);
-	virtual ~CollidablePolygonPList(){}
-};
+
 
 class SimpleCollisionManager : public CollisionManager {
 public:
 	SimpleCollisionManager(CollisionListener::u_ptr listener);
-	bool add_if_not_collide(CollidablePolygon * collidable) override;
+	void add(CollidablePolygon * collidable) override;
 	void remove(CollidablePolygon * collidable) override;
+protected:
+	CollidablePolygon * collider_or_null(CollidablePolygon * collidable) override;
 private:
 	CollidablePolygonPList _items;
 

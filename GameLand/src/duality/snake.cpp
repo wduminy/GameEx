@@ -107,7 +107,7 @@ void SnakeObject::draw(const DrawContext& gc) {
     _program_p->arg("snakeSkin",_tex_p->index());
     // i am not sure why this call to activate is needed
     _tex_p->activate(_tex_p->index());
-	glLineWidth(3); // pixels
+	//glLineWidth(3); // pixels
 	glBegin(GL_TRIANGLE_STRIP);
 	auto index = tail_index();
 	int previous_point = index;
@@ -146,6 +146,7 @@ void SnakeObject::draw(const DrawContext& gc) {
 	glVertex3fv(lastPoint.bottomLeft().c_elems());
 	glEnd();
 	_program_p->end();
+
 }
 
 SnakeObject::SnakeObject(CollisionManager &mgr) : SnakeWithCollision(mgr),
@@ -192,7 +193,7 @@ void SnakeObject::update(const UpdateContext& uc) {
 }
 
 void SnakeWithCollision::on_head_added() {
-	if (_col_mgr.add_if_not_collide(&head().polygon()) == false)
+	if (_col_mgr.check_and_add(&head().polygon()) == false)
 		kill();
 }
 

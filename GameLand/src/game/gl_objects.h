@@ -8,6 +8,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "../systemex/systemex.h"
+typedef const GLfloat* GLfloat_ptr;
 
 namespace game {
 	using std::string;

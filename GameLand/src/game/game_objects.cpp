@@ -3,7 +3,7 @@
  * See LICENCE.txt
  */
 #include "game_objects.h"
-
+#include <type_traits>
 namespace game {
 	const static double a360 = 3.14 * 2.0;
 	const static double degrees_per_second = 90;
@@ -25,6 +25,18 @@ namespace game {
 
 	void TriangleStrip::push_back3f(const GLfloat* xyz) {
 		push_back(xyz[0],xyz[1],xyz[2]);
+	}
+
+	void TriangleStrip::push_back(const vector<const GLfloat*> &points) {
+		for_each(e,points) {
+				push_back3f(*e);
+		}
+	}
+
+	void TriangleStrip::push_back_reverse(const vector<const GLfloat*> &points) {
+		for (auto e = points.rbegin(); e != points.rend(); e++) {
+				push_back3f(*e);
+		}
 	}
 
 	void TriangleStrip::draw() const {

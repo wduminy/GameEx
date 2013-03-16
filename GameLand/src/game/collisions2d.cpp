@@ -55,6 +55,14 @@ CollidablePolygon::CollidablePolygon(const unsigned char type,
 		BoundedBox2(start, start), Polygon(start), _type(type) {
 }
 
+CollidablePolygon::CollidablePolygon(const unsigned char type,
+		const Vector2& start, const vector<Vector2> &path) :
+		BoundedBox2(start, start), Polygon(start), _type(type) {
+		for_each(e,path) {
+			add(*e);
+		}
+}
+
 bool CollidablePolygon::collides_with(const CollidablePolygon& other) const {
 	if (in_bounds_of(other))
 		return overlaps_with(other);
@@ -138,25 +146,36 @@ CollisionManager::CollisionManager(CollisionListener::u_ptr listener) :
 		_listener(std::move(listener)) {
 }
 
+bool CollisionManager::check_and_add(CollidablePolygon* collidable, const bool ignoreIfCollide) {
+	auto other = collider_or_null(collidable);
+	if (other != 0) {
+		_listener->on_collide(*other, *collidable);
+		if (!ignoreIfCollide)
+			add(collidable);
+		return false;
+	} else {
+		add(collidable);
+		return true;
+	}
+}
+
+
 SimpleCollisionManager::SimpleCollisionManager(
 		CollisionListener::u_ptr listener) :
 		CollisionManager(std::move(listener)), _items() {
 }
 
-bool SimpleCollisionManager::add_if_not_collide(CollidablePolygon* collidable) {
-	auto other = _items.collide_with_or_null(collidable);
-	if (other != 0) {
-		_listener->on_collide(*other, *collidable);
-		return false;
-	} else {
-		_items.push_back(collidable);
-		return true;
-	}
-}
 
 void SimpleCollisionManager::remove(CollidablePolygon* collidable) {
-	TRACE << "Removed from colmgr " << collidable << *collidable;
 	_items.remove(collidable);
+}
+
+void SimpleCollisionManager::add(CollidablePolygon* collidable) {
+	_items.push_back(collidable);
+}
+
+CollidablePolygon * SimpleCollisionManager::collider_or_null(CollidablePolygon * collidable) {
+	return _items.collider_or_null(collidable);
 }
 
 CollisionManagerWithRectangles::CollisionManagerWithRectangles(
@@ -165,7 +184,7 @@ CollisionManagerWithRectangles::CollisionManagerWithRectangles(
 		CollisionManager(std::move(listener)) {
 }
 
-CollidablePolygon* CollidablePolygonPList::collide_with_or_null(
+CollidablePolygon* CollidablePolygonPList::collider_or_null(
 		CollidablePolygon* collidable) {
 	ASSERT(collidable->point_count() > 0);
 	ASSERT(collidable != 0);

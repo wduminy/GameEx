@@ -4,8 +4,10 @@
  */
 #include "game.h"
 #include <array>
+#include <vector>
 #pragma once
 namespace game {
+	using std::vector;
 
   // triangles are specified anti-clockwise
 	class TriangleStrip {
@@ -14,6 +16,8 @@ namespace game {
 			TriangleStrip(const int numberOfTriangles);
 			void push_back(const GLfloat& x, const GLfloat& y, const GLfloat& z);
 			void push_back3f(const GLfloat* xyz);
+			void push_back(const vector<const GLfloat*> &points);
+			void push_back_reverse(const vector<const GLfloat*> &points);
 			void reset() const {_it = _verts.get();}
 			bool at_end() const {return _it >= _ins;}
 			void draw_step() const {glVertex3fv(_it);_it+=3;}
