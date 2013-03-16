@@ -6,6 +6,7 @@
 #include "game_math.h"
 #include <vector>
 #include <list>
+
 namespace game {
 	using std::list;
 	using std::vector;
@@ -22,14 +23,14 @@ public:
 	bool in_bounds_of(const BoundedBox2& other) const;
 	bool is_valid() const;
     bool is_empty_box() const {return left() == right() || top() == bottom();}
-protected:
-	void adjust_box(const Vector2& p);
-	void clear_box() {_lt = Vector2::origin; _rb = Vector2::origin;}
-private:
 	const Scalar left() const {return _lt.x();}
 	const Scalar right() const {return _rb.x();}
 	const Scalar bottom() const {return _rb.y();}
 	const Scalar top() const {return _lt.y();}
+protected:
+	void adjust_box(const Vector2& p);
+	void clear_box() {_lt = Vector2::origin; _rb = Vector2::origin;}
+private:
 	Vector2 _lt;
 	Vector2 _rb;
 public:
@@ -134,15 +135,39 @@ public:
 protected:
 	CollidablePolygon * collider_or_null(CollidablePolygon * collidable) override;
 private:
+	std::tuple<int,int> box_of(CollidablePolygon * collidable);
 	CollidablePolygonPList _items;
 
 };
 
-class CollisionManagerWithRectangles : public CollisionManager {
+class BoxRange {
 public:
-	CollisionManagerWithRectangles(CollisionListener::u_ptr listener, const Vector2& leftTop, const Vector2& rightBottom, const int numberOfSegments);
-private:
+	BoxRange(int xs, int xe, int ys, int ye) :
+		_xs(xs), _xe(xe), _ys(ys), _ye(ye) {}
+	const int _xs;
+	const int _xe;
+	const int _ys;
+	const int _ye;
+};
 
+
+class CollisionManagerWithBoxes : public CollisionManager {
+public:
+	CollisionManagerWithBoxes(CollisionListener::u_ptr listener, const BoundedBox2 & bounds, const unsigned int division_count);
+	void add(CollidablePolygon * collidable) override;
+	void remove(CollidablePolygon * collidable) override;
+protected:
+	CollidablePolygon * collider_or_null(CollidablePolygon * collidable) override;
+	CollidablePolygonPList& list_at(int x, int y) {return _boxes[y * _division_count + x]; }
+	void modify_boxes(CollidablePolygon * collidable, const bool do_add);
+private:
+	int box_x(const Scalar x) { return (x - _bounds.left()) / _division_count; }
+	int box_y(const Scalar y) { return (y - _bounds.top()) / _division_count; }
+	BoxRange range_from(CollidablePolygon * p);
+	vector<CollidablePolygonPList> _boxes;
+	CollidablePolygonPList _outside_items;
+	const BoundedBox2 _bounds;
+	const unsigned int _division_count;
 };
 
 }

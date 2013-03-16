@@ -109,8 +109,8 @@ namespace tut {
 
 	BEGIN(8, "overlapping diamonds must collide") {
 		Diamond d1(Vector2(0,0)), d2(Vector2(0,0.9));
-		ensure("d1 not added", mgr.add_if_not_collide(&d1));
-		ensure("d2 added", !mgr.add_if_not_collide(&d2));
+		ensure("d1 not collided", mgr.check_and_add(&d1));
+		ensure("d2 collided", !mgr.check_and_add(&d2));
 		ensure(listener().collide_count == 1);
 	} END
 

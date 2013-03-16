@@ -58,9 +58,10 @@ CollidablePolygon::CollidablePolygon(const unsigned char type,
 CollidablePolygon::CollidablePolygon(const unsigned char type,
 		const Vector2& start, const vector<Vector2> &path) :
 		BoundedBox2(start, start), Polygon(start), _type(type) {
-		for_each(e,path) {
-			add(*e);
-		}
+	for_each(e,path)
+	{
+		add(*e);
+	}
 }
 
 bool CollidablePolygon::collides_with(const CollidablePolygon& other) const {
@@ -146,7 +147,8 @@ CollisionManager::CollisionManager(CollisionListener::u_ptr listener) :
 		_listener(std::move(listener)) {
 }
 
-bool CollisionManager::check_and_add(CollidablePolygon* collidable, const bool ignoreIfCollide) {
+bool CollisionManager::check_and_add(CollidablePolygon* collidable,
+		const bool ignoreIfCollide) {
 	auto other = collider_or_null(collidable);
 	if (other != 0) {
 		_listener->on_collide(*other, *collidable);
@@ -159,12 +161,10 @@ bool CollisionManager::check_and_add(CollidablePolygon* collidable, const bool i
 	}
 }
 
-
 SimpleCollisionManager::SimpleCollisionManager(
 		CollisionListener::u_ptr listener) :
 		CollisionManager(std::move(listener)), _items() {
 }
-
 
 void SimpleCollisionManager::remove(CollidablePolygon* collidable) {
 	_items.remove(collidable);
@@ -174,25 +174,93 @@ void SimpleCollisionManager::add(CollidablePolygon* collidable) {
 	_items.push_back(collidable);
 }
 
-CollidablePolygon * SimpleCollisionManager::collider_or_null(CollidablePolygon * collidable) {
+CollidablePolygon * SimpleCollisionManager::collider_or_null(
+		CollidablePolygon * collidable) {
 	return _items.collider_or_null(collidable);
-}
-
-CollisionManagerWithRectangles::CollisionManagerWithRectangles(
-		CollisionListener::u_ptr listener, const Vector2& leftTop,
-		const Vector2& rightBottom, const int numberOfSegments) :
-		CollisionManager(std::move(listener)) {
 }
 
 CollidablePolygon* CollidablePolygonPList::collider_or_null(
 		CollidablePolygon* collidable) {
 	ASSERT(collidable->point_count() > 0);
 	ASSERT(collidable != 0);
-	for_each(e, (*this)) {
+	for_each(e, (*this))
+	{
 		if ((*e)->collides_with(*collidable))
 			return *e;
 	}
 	return 0;
 }
 
+CollisionManagerWithBoxes::CollisionManagerWithBoxes(
+		CollisionListener::u_ptr listener, const BoundedBox2 & bounds,
+		const unsigned int division_count) :
+		CollisionManager(std::move(listener)), _bounds(bounds), _boxes(
+				division_count * division_count), _division_count(
+				division_count) {
+
 }
+
+void CollisionManagerWithBoxes::remove(CollidablePolygon* collidable) {
+	modify_boxes(collidable, false);
+}
+
+void CollisionManagerWithBoxes::add(CollidablePolygon* collidable) {
+	modify_boxes(collidable, true);
+}
+
+void CollisionManagerWithBoxes::modify_boxes(CollidablePolygon* collidable,
+		const bool do_add) {
+	const auto range = range_from(collidable);
+	bool out_of_bounds = false;
+	for (int x = range._xs; x <= range._xe; x++) {
+		if (x < 0 || x >= _division_count)
+			out_of_bounds = true;
+		else
+			for (int y = range._ys; y <= range._ye; y++)
+				if (y < 0 || y >= _division_count)
+					out_of_bounds = true;
+				else {
+					if (do_add)
+						list_at(x, y).push_back(collidable);
+					else
+						list_at(x, y).remove(collidable);
+				}
+	}
+	if (out_of_bounds) {
+		if (do_add)
+			_outside_items.push_back(collidable);
+		else
+			_outside_items.remove(collidable);
+	}
+}
+
+BoxRange CollisionManagerWithBoxes::range_from(CollidablePolygon* collidable) {
+	return BoxRange(box_x(collidable->left()), box_x(collidable->right()),
+			box_y(collidable->top()), box_y(collidable->bottom()));
+}
+
+CollidablePolygon * CollisionManagerWithBoxes::collider_or_null(
+		CollidablePolygon * collidable) {
+	const auto range = range_from(collidable);
+	bool out_of_bounds = false;
+	for (int x = range._xs; x <= range._xe; x++) {
+		if (x < 0 || x >= _division_count)
+			out_of_bounds = true;
+		else
+			for (int y = range._ys; y <= range._ye; y++)
+				if (y < 0 || y >= _division_count)
+					out_of_bounds = true;
+				else {
+					auto result = list_at(x, y).collider_or_null(collidable);
+					if (result)
+						return result;
+				}
+	}
+	if (out_of_bounds)
+		return _outside_items.collider_or_null(collidable);
+	else
+		return 0;
+}
+
+}
+

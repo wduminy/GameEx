@@ -108,7 +108,7 @@ public:
 };
 
 DualityScene::DualityScene() : MainObject(-100,NEAREST,FAREST),
-		_col_mgr(CollisionListener::u_ptr(new DualityListener())) {
+		_col_mgr(CollisionListener::u_ptr(new DualityListener()), BoundedBox2(toVec(leftBack), toVec(rightFront)),5) {
 	add_part(GameObject::u_ptr(new Arena()));
 	add_part(GameObject::u_ptr(new SphereCamera(draw_order() + 1, CAM_Y, CAM_RADIUS)));
 	add_part(GameObject::u_ptr(new SnakeObject(_col_mgr)));
