@@ -2,7 +2,7 @@
  * Copyright 2012 Willem Duminy
  * See LICENCE.txt
  */
-#include "main_scene.h"
+#include "controller.h"
 #include "../systemex/log.h"
 #include <iostream>
 using namespace duality;
@@ -11,7 +11,7 @@ using namespace game;
 int main( int , char* [] ) {
 	try {
 		game::Game g(
-				MainObject::u_ptr(new DualityScene()),
+				MainObject::u_ptr(new DualityController()),
 				//UpdateContext::u_ptr(new UpdateContext(10000,10)), // to check performance
 				UpdateContext::u_ptr(new UpdateContext(50,20)),
 				DrawContext::u_ptr(new DrawContext(false,800,600)),

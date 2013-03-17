@@ -8,13 +8,19 @@
 #include "../game/collisions2d.h"
 
 namespace duality {
-	using game::CollisionManagerWithBoxes;
+using game::CollisionManagerWithBoxes;
 
-	class DualityScene: public game::MainObject {
-	public:
-		DualityScene();
-	private:
-		CollisionManagerWithBoxes _col_mgr;
+/**
+ * The scene where the game is played
+ */
+class DualityScene : public game::GameObjectWithParts {
+public:
+	DualityScene();
+private:
+	CollisionManagerWithBoxes _col_mgr;
+public:
+	static const GLdouble NEAREST;
+	static const GLdouble FAREST;
 };
 
 }

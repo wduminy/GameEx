@@ -10,22 +10,22 @@ namespace duality {
 using namespace game;
 const float ARENA_HALF = 3.0f;
 const float FLOOR_Z = 0.0f;
-static const double CAM_Y = ARENA_HALF * 1.5;
-static const double CAM_RADIUS = ARENA_HALF * 1.5;
-static const GLdouble NEAREST = ARENA_HALF / 10.0;
-static const GLdouble FAREST = CAM_RADIUS * 3;
-static const GLfloat FENCE_Z =  FLOOR_Z + ARENA_HALF / 10.0f;
-static const unsigned char FENCE_TYPE = 1;
+const double CAM_Y = ARENA_HALF * 1.5;
+const double CAM_RADIUS = ARENA_HALF * 1.5;
+const GLdouble DualityScene::NEAREST = ARENA_HALF / 10.0;
+const GLdouble DualityScene::FAREST = CAM_RADIUS * 3;
+const GLfloat FENCE_Z =  FLOOR_Z + ARENA_HALF / 10.0f;
+const unsigned char FENCE_TYPE = 1;
 
-static const GLfloat leftBack[] =   { -ARENA_HALF,  -ARENA_HALF, FLOOR_Z };
-static const GLfloat rightBack[] =  { +ARENA_HALF,  -ARENA_HALF, FLOOR_Z };
-static const GLfloat rightFront[] = { +ARENA_HALF,  +ARENA_HALF, FLOOR_Z };
-static const GLfloat leftFront[] =  { -ARENA_HALF,  +ARENA_HALF, FLOOR_Z };
+const GLfloat leftBack[] =   { -ARENA_HALF,  -ARENA_HALF, FLOOR_Z };
+const GLfloat rightBack[] =  { +ARENA_HALF,  -ARENA_HALF, FLOOR_Z };
+const GLfloat rightFront[] = { +ARENA_HALF,  +ARENA_HALF, FLOOR_Z };
+const GLfloat leftFront[] =  { -ARENA_HALF,  +ARENA_HALF, FLOOR_Z };
 
-static const GLfloat leftBackT[] =   { -ARENA_HALF,  -ARENA_HALF, FENCE_Z };
-static const GLfloat rightBackT[] =  { +ARENA_HALF,  -ARENA_HALF, FENCE_Z };
-static const GLfloat rightFrontT[] = { +ARENA_HALF,  +ARENA_HALF, FENCE_Z };
-static const GLfloat leftFrontT[] =  { -ARENA_HALF,  +ARENA_HALF, FENCE_Z };
+const GLfloat leftBackT[] =   { -ARENA_HALF,  -ARENA_HALF, FENCE_Z };
+const GLfloat rightBackT[] =  { +ARENA_HALF,  -ARENA_HALF, FENCE_Z };
+const GLfloat rightFrontT[] = { +ARENA_HALF,  +ARENA_HALF, FENCE_Z };
+const GLfloat leftFrontT[] =  { -ARENA_HALF,  +ARENA_HALF, FENCE_Z };
 
 Vector2 toVec(const GLfloat v[]) {return Vector2(v[0],v[1]);}
 Vector2 toVec(const GLfloat v[], const Vector2 &displace) {return Vector2(v[0] + displace.x(),v[1] + displace.y());}
@@ -102,15 +102,14 @@ private:
 
 class DualityListener : public CollisionListener {
 public:
-	void on_collide(CollidablePolygon &a, CollidablePolygon &b) {
-
-	}
+	void on_collide(CollidablePolygon &a, CollidablePolygon &b) {}
 };
 
-DualityScene::DualityScene() : MainObject(-100,NEAREST,FAREST),
-		_col_mgr(CollisionListener::u_ptr(new DualityListener()), BoundedBox2(toVec(leftBack), toVec(rightFront)),5) {
+DualityScene::DualityScene() :
+		_col_mgr(CollisionListener::u_ptr(new DualityListener()),
+		BoundedBox2(toVec(leftBack), toVec(rightFront)),5) {
+	add_part(GameObject::u_ptr(new SphereCamera(-1, CAM_Y, CAM_RADIUS)));
 	add_part(GameObject::u_ptr(new Arena()));
-	add_part(GameObject::u_ptr(new SphereCamera(draw_order() + 1, CAM_Y, CAM_RADIUS)));
 	add_part(GameObject::u_ptr(new SnakeObject(_col_mgr)));
 	add_part(GameObject::u_ptr(new Fence(_col_mgr)));
 }

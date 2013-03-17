@@ -22,6 +22,9 @@ namespace game {
 
     Glex * glexAfterInit(const bool fullscreen, const int w, const int h) {
 		check(SDL_Init(SDL_INIT_VIDEO));
+		atexit(SDL_Quit);
+		check(TTF_Init());
+		atexit(TTF_Quit);
 		auto version = SDL_Linked_Version();
 		LOG << "Using SDL version " << (int) version->major << "." << (int) version->minor << "." << (int) version->patch;
 		auto info = SDL_GetVideoInfo();
@@ -59,8 +62,10 @@ namespace game {
 	}
 
 	void GameObjectWithParts::update(const UpdateContext &context) {
-		for_each(it,_parts)
-			(*it)->update(context);
+		for_each(it,_parts) {
+			if ((*it)->is_active())
+				(*it)->update(context);
+		}
 	}
 
 
@@ -144,15 +149,15 @@ namespace game {
 				[](const GameObject * a, const GameObject * b) {
 					return a->draw_order() < b->draw_order();});
 		_update->tick();
-		bool isRunning = true;
-		while (isRunning) {
+		while (_primary->is_active()) {
 			if (_update->is_update_step()) {
 				_primary->update(*_update);
-				isRunning = _primary->is_alive();
 			}
 			if (_update->is_draw_step()) {
-				for (auto it = objects.begin(); it != objects.end(); it++)
-					(*it)->draw(*_draw);
+				for (auto it = objects.begin(); it != objects.end(); it++) {
+					if ((*it)->is_visible())
+						(*it)->draw(*_draw);
+				}
 				SDL_GL_SwapBuffers();
 			}
 			_update->tick();
@@ -186,14 +191,14 @@ namespace game {
 		case SDL_KEYDOWN:
 			switch (ctx.event().key.keysym.sym) {
 			case SDLK_ESCAPE:
-				exit();
+				deactivate();
 				break;
 			default:
 				break;
 			}
 			break;
 		case SDL_QUIT:
-			exit();
+			deactivate();
 			break;
 		default:
 			break;
@@ -244,6 +249,20 @@ namespace game {
 	    result->activate(textureIndex);
 	    return result;
 	}
+
+void GameObjectWithParts::set_hidden(const bool value) {
+	GameObject::set_hidden(value);
+	for_each(e,_parts) {
+		(*e)->set_hidden(value);
+	}
+}
+
+void GameObjectWithParts::set_active(const bool value) {
+	GameObject::set_active(value);
+	for_each(e,_parts) {
+		(*e)->set_active(value);
+	}
+}
 
 }
 

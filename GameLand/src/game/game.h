@@ -85,7 +85,7 @@ namespace game {
 
 	class GameObject {
 		public:
-			GameObject(int drawOrder = 0) :	_draw_order(drawOrder) {};
+			GameObject(int drawOrder = 0) :	_draw_order(drawOrder), _is_hidden(false), _is_active(true) {};
 			/** initialise this and initialise children */
 			virtual void initialise(const ResourceContext & rctx, const DrawContext& dctx) {};
 			/** draw only this, not children */
@@ -94,29 +94,45 @@ namespace game {
 			virtual void update(const UpdateContext &) {}
 			virtual void collect(std::deque<GameObject *> &c) {c.push_back(this);}
 			int draw_order() const {return _draw_order;}
+			void hide() {set_hidden(true);}
+			void show() {set_hidden(false);}
+			bool is_hidden() const {return _is_hidden;}
+			bool is_visible() const {return !_is_hidden;}
+			void activate() {set_active(true);}
+			void deactivate() {set_active(false);}
+			bool is_active() const {return _is_active;}
 			virtual ~GameObject() {}
+			virtual void set_hidden(const bool value) {_is_hidden = value;}
+			virtual void set_active(const bool value) {_is_active = value;}
 		private:
 			const int _draw_order;
+			bool _is_hidden; // draw is not called when hidden
+			bool _is_active; // update is not called when not active
 		public:
 			typedef std::unique_ptr<GameObject> u_ptr;
 	};
 
 	class GameObjectWithParts: public GameObject {
 		public:
-			GameObjectWithParts(const int drawOrder) :
+			GameObjectWithParts(const int drawOrder = 0) :
 					GameObject(drawOrder), _parts() {}
 			// initialises all the parts
 			virtual void initialise(const ResourceContext &rctx, const DrawContext& dctx) override {
 				for (auto p = _parts.begin(); p != _parts.end(); p++) (*p)->initialise(rctx,dctx);
 			}
 			;
+			// update all the active parts
 			void update(const UpdateContext &context);
 			void add_part(GameObject::u_ptr object) {
 				_parts.emplace_after(_parts.before_begin(), std::move(object));
 			}
 			;
 			void collect(std::deque<GameObject*> &c);
+			// draw only this, not children by default does nothing
+			void draw(const DrawContext&) override {};
 		protected:
+			virtual void set_hidden(const bool value) override;
+			virtual void set_active(const bool value) override;
 			std::forward_list<GameObject::u_ptr> _parts;
 
 	};
@@ -124,14 +140,11 @@ namespace game {
 	class MainObject: public GameObjectWithParts {
 		public:
 			MainObject(int drawOrder, GLdouble nearest, GLdouble farest)
-				: GameObjectWithParts(drawOrder) , _running(true), _nearest(nearest), _farest(farest) {};
+				: GameObjectWithParts(drawOrder), _nearest(nearest), _farest(farest) {};
             void initialise(const ResourceContext & rctx, const DrawContext& dctx) override;
-			void exit() { _running = false;}
 			void update(const UpdateContext& ctx) override;
-			bool is_alive() const {return _running;}
 			void draw(const DrawContext&) override;
 		private:
-			bool _running;
 			GLdouble _nearest, _farest;
 		public:
 			typedef std::unique_ptr<MainObject> u_ptr;

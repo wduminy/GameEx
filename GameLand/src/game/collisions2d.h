@@ -164,9 +164,9 @@ private:
 	int box_x(const Scalar x) { return (x - _bounds.left()) / _division_count; }
 	int box_y(const Scalar y) { return (y - _bounds.top()) / _division_count; }
 	BoxRange range_from(CollidablePolygon * p);
-	vector<CollidablePolygonPList> _boxes;
 	CollidablePolygonPList _outside_items;
 	const BoundedBox2 _bounds;
+	vector<CollidablePolygonPList> _boxes;
 	const unsigned int _division_count;
 };
 
