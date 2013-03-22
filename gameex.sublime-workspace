@@ -1,0 +1,485 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"in",
+				"include"
+			],
+			[
+				"Main",
+				"MainPage"
+			],
+			[
+				"main",
+				"main_page"
+			],
+			[
+				"a",
+				"add_part"
+			],
+			[
+				"pro",
+				"project_query_item"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "gameex.sublime-project",
+			"settings":
+			{
+				"buffer_size": 821,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "GameLand/src/makefile",
+			"settings":
+			{
+				"buffer_size": 325,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "Project System",
+	"command_palette":
+	{
+		"height": 81.0,
+		"selected_items":
+		[
+			[
+				"clean",
+				"Build: Clean"
+			],
+			[
+				"clea",
+				"Build: Clean"
+			],
+			[
+				"cle",
+				"Build: Clean"
+			],
+			[
+				"bui",
+				"Build: Build"
+			],
+			[
+				"bcl",
+				"Bookmarks: Clear All"
+			],
+			[
+				"bcle",
+				"Build: Clean"
+			],
+			[
+				"bclea",
+				"Build: Clean"
+			],
+			[
+				"bucl",
+				"Build: Clean"
+			],
+			[
+				"clan",
+				"Build: Clean"
+			],
+			[
+				"dir",
+				"Build: dir"
+			],
+			[
+				"Package Control: install",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"task",
+				"Tasks: New document"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"remoe",
+				"Package Control: Remove Package"
+			],
+			[
+				"Tas",
+				"Set Syntax: Task"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"taskw",
+				"Taskwarrior: View Tasks"
+			],
+			[
+				"todo",
+				"Show TODOs: Project and open files"
+			],
+			[
+				"pakrem",
+				"Package Control: Remove Package"
+			],
+			[
+				"packa:re",
+				"Package Control: Remove Package"
+			],
+			[
+				"packarem",
+				"Package Control: Remove Package"
+			],
+			[
+				"packr",
+				"Package Control: Remove Package"
+			],
+			[
+				"pakcre",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: int",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			],
+			[
+				"m",
+				"Set Syntax: Makefile"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/testex/makefile",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/makevars",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/makefile",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/network/makefile",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/makefile",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/systemex.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/collisions2d_test.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/testex/test_util.depends",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/testex/test_main.depends",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/log.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/systemex.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/leaktrack.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/makefile",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/log.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/gameex.sublime-project",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/collisions2d.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/collisions2d.h",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/Makefile/Make.sublime-build",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/mainpage.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/mainpage.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/main_scene.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/font.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/Makefile",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/duality_main.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game_objects.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/main_scene.h",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/PlainTasks/messages/Tutorial.todo",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/my_tasks.todo",
+		"/C/Users/willemd/Documents/GitHub/GameEx/.gitignore",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/controller.cpp",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/SideBarEnhancements/messages/11.13.2012.1305.0.txt",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/todo.txt",
+		"/C/Users/willemd/Documents/GitHub/GameEx/.metadata/.plugins/org.eclipse.core.resources/.projects/GameLand/org.eclipse.egit.core/GitProjectData.properties",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/media/duality/fence.frag",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/media/duality/arena.frag",
+		"/G/.gitattributes",
+		"/C/development/gui/code/badgerui/badger_model/com/vastech/localdb/project_004.sql",
+		"/C/development/gui/code/badgerui/badger_model/com/vastech/localdb/project_003.sql",
+		"/C/scratch/page006.xml",
+		"/C/development/ngmc/trunk/src-redist-full/Redistributables/OCR_Verus/Verus/crs-api-sample.cpp",
+		"/C/development/ngmc/trunk/src-redist-full/Redistributables/OCR_Verus/Verus/crs-api-sample-zone.cpp",
+		"/C/development/ngmc/trunk/src/MediaServer/.project",
+		"/C/development/ngmc/trunk/src/MediaServer/.classpath",
+		"/C/development/ngmc/trunk/src/MediaServer/build.xml",
+		"/C/development/ngmc/trunk/src/TextSearch/.classpath",
+		"/C/development/github/Racer/TorcsRCS/torcs/WrapperBaseDriver.h",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/development/boogaloo/build.xml",
+		"/C/development/boogaloo/src/boogaloo/Background.scala",
+		"/C/development/github/Racer/README.md",
+		"/C/development/github/Racer/TorcsRCS/Makefile",
+		"/C/development/github/Racer/TorcsRCS/torcs/CarControl.cpp",
+		"/C/Users/willemd/Documents/TXCUserDictionary.dic"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"\n",
+			";\n",
+			")\n",
+			"MainPage",
+			"GameObject",
+			"GameObjectChainLink",
+			"ruler",
+			"systemex",
+			"DualityScene",
+			"our",
+			"L009",
+			"L010",
+			"lineID",
+			"Steel Merchants",
+			"dm )go"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "gameex.sublime-project",
+					"settings":
+					{
+						"buffer_size": 821,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								504,
+								504
+							]
+						],
+						"settings":
+						{
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "GameLand/src/makefile",
+					"settings":
+					{
+						"buffer_size": 325,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								37,
+								37
+							]
+						],
+						"settings":
+						{
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/Makefile/Makefile.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 49.0
+	},
+	"input":
+	{
+		"height": 49.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 294.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"coll.h",
+				"src/game/collisions2d.h"
+			],
+			[
+				"gamec",
+				"src/game/game.cpp"
+			],
+			[
+				"gameh",
+				"src/game/game.h"
+			],
+			[
+				"font",
+				"src/game/font.h"
+			],
+			[
+				"gameob",
+				"src/game/game_objects.h"
+			],
+			[
+				"scene",
+				"src/duality/main_scene.cpp"
+			],
+			[
+				"dual",
+				"src/duality/duality_main.cpp"
+			],
+			[
+				"gamecpp",
+				"src/game/game.cpp"
+			],
+			[
+				"game.h",
+				"src/game/game.h"
+			],
+			[
+				"gamh",
+				"src/game/game.h"
+			],
+			[
+				"dualityscene",
+				"src/duality/main_scene.h"
+			],
+			[
+				"dualcontroll",
+				"src/duality/controller.cpp"
+			],
+			[
+				"mainph",
+				"src/duality/mainpage.h"
+			],
+			[
+				"dual/page",
+				"src/duality/mainpage.cpp"
+			],
+			[
+				"git",
+				"GameEx/.metadata/.plugins/org.eclipse.core.resources/.projects/GameLand/org.eclipse.egit.core/GitProjectData.properties"
+			],
+			[
+				"",
+				"duality/controller.cpp"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 215.0,
+	"status_bar_visible": true
+}

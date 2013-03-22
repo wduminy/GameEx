@@ -3,13 +3,13 @@
  * See LICENCE.txt
  */
 #pragma once
-#include <stdexcept>
+#include <stdexcept>    
 #include <string>
 #include <stdarg.h>
-#include <algorithm>
-#include <functional>
-#include <list>
-#include <memory>
+#include <algorithm>     
+#include <functional>  
+#include <list>  
+#include <memory>     
 #define PREVENT_COPY(X) private: X(const X &source); X & operator=(const X&);
 #define ENSURE(P,M) if (!(P)) throw std::runtime_error(M)
 #ifdef NDEBUG

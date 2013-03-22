@@ -30,6 +30,7 @@ void run_tests() {
 		cout << "Unit tests passed";
 	else
 		cout << "Unit tests failed!";
+	cout << endl;
 #ifdef FIND_LEAKS
 	puts(systemex::memoryLeakReport().c_str());
 #endif
@@ -38,13 +39,14 @@ void run_tests() {
 
 int main( int , char* [] ) {
 	try {
-		cout << "RUNNING TESTS";
+		cout << "RUNNING TESTS" << endl;
 		run_tests();
 	} catch (std::exception &e) {
-		cout << "Error --- " << e.what();
+		cout << "Error --- " << e.what() << endl;
 	} catch (...) {
-		cout << "unexpected error occurred";
+		cout << "unexpected error occurred" << endl;
 	}
+	cout << "RUNNING DONE" << endl;
 	cout.flush();
 	return EXIT_SUCCESS;
 }

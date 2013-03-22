@@ -1,18 +1,18 @@
 /**
  * Copyright 2012 Willem Duminy
- * See LICENCE.txt
+ * See LICENCE.txt 
  */
-#pragma once
+#pragma once 
 #include <string>
-#include <fstream>
+#include <fstream> 
 #include <time.h>
-#include "systemex.h"
-
+#include "systemex.h"  
+ 
 #define LOG ::systemex::Log::instance().record()
 #define TRACE (::systemex::Log::instance().record() << __FILE__ << "(" << __LINE__ << "):")
 
 namespace systemex {
-
+ 
 	class Log {
 			PREVENT_COPY(Log)
 		public:

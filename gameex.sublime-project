@@ -1,0 +1,37 @@
+// for help: http://www.sublimetext.com/docs/2/projects.html
+{
+	"folders":
+	[
+		{ 
+			"path": "/C/Users/willemd/Documents/GitHub/GameEx/GameLand",
+			"name":"Root",
+			"folder_exclude_patterns":["src"]
+		},
+		{ 
+			"path": "/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src",
+		  	"name":"Source",
+	        "file_exclude_patterns":["*.o","*.depends"]
+	  	}
+	],
+	"build_systems": [
+		// http://docs.sublimetext.info/en/latest/reference/build_systems.html#options
+		{// run make in the working folder
+			"name": "Project System",
+			"cmd": ["make","-l"], 
+			"file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+			"variants": [
+				{// start the executable program
+					"cmd": ["make","run"], 
+				    "name":"Run"
+				    // "working_dir":"${project_path}"
+				},	
+				{// run the tests in the current folder
+				 	"cmd": ["make","test"], "name":"Test"
+				},	
+				{// clean the current folder
+				 	"cmd": ["make","clean"], "name":"Clean"
+				}
+			]
+		}
+	]
+}
