@@ -12,7 +12,7 @@ LIBS = -L"C:\development\cpp\libraries\SDL-1.2.15\lib" -lmingw32 -lwsock32 -lglu
 # name of test file
 TEST = test.exe
 
-%.depends: %.cpp
+%.depends: %.cpp %.h
 	$(CXX) -MM -MG $(CXXFLAGS) $< > $@
 
 %.o: %.cpp

@@ -1,5 +1,5 @@
 # makefile for systemex
-include ..\makevars
+include ../makevars
 
 # dirs on which these tests depend
 SRCS_DIRS=../testex

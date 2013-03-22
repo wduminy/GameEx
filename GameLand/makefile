@@ -6,46 +6,41 @@
 
 include src/makerecipes
 
+all:
+	$(MAKE) -C src/systemex all
+	$(MAKE) -C src/network all
+	$(MAKE) -C src/game all
+	$(MAKE) -C src/duality all
+
+
 # all the directories with game code
-SRCS_DIRS=src/systemex src/network src/game src/duality
+DEP_DIRS= src/systemex src/network src/game src/duality
+DEP_SRCS=$(foreach dir,$(DEP_DIRS), $(wildcard $(dir)/*.cpp))
+DEP_OBJS=$(DEP_SRCS:.cpp=.o)
+DEP_OBJS_NO_TEST=$(patsubst %_test.o,,$(DEP_OBJS))
+DEP_OBJS_NO_MAIN=$(patsubst %_main.o,,$(DEP_OBJS))
+TEST_SRCS=$(wildcard src/testex/*.cpp)
+TEST_OBJS=$(TEST_SRCS:.cpp=.o)
 
-# wildcard reference to those objects
-OBJ_DIRS=$(foreach dir,$(SRCS_DIRS), $(dir)/*.o) 
-
-# all the sources
-SRCS_ALL=$(foreach dir,$(SRCS_DIRS), $(wildcard $(dir)/*.cpp)) 
-DEPS_ALL=$(SRCS_ALL:.cpp=.depends) 
-
-# objects for all run.
-OBJS_ALL=$(SRCS_ALL:.cpp=.o)
-all: $(OBJS_ALL)
-
-# those sources that have unit tests in them
-SRCS_UNIT_TEST=$(foreach dir,$(SRCS_DIRS), $(wildcard $(dir)/*test.cpp)) 
-OBJS_UNIT_TEST=$(SRCS_UNIT_TEST:.cpp=.o)
-# the sources needed to run unit tests
-SRCS_TEST=$(wildcard src/testex/*.cpp) 
-# all objects that are test specific 
-OBJS_TEST=$(SRCS_TEST:.cpp=.o) 
-# all object, but excludes main method other than test main
-OBJS_TEST_RUN=$(OBJS_ALL:src/duality/duality_main.o=) $(OBJS_TEST) 
-test: $(OBJS_TEST_RUN)  
-	$(CXX) -o test.exe $(OBJS_TEST_RUN) $(LINKFLAGS) $(LIBS)
+DEP_OBJS_FOR_TEST=$(TEST_OBJS) $(DEP_OBJS_NO_MAIN)
+test: all
+	$(CXX) -o test.exe $(DEP_OBJS_FOR_TEST) $(LINKFLAGS) $(LIBS)
 	.\test.exe
 
-run_test:
-	.\test.exe
-	
-# I generate unit test first and then delete them :()
-run: $(DEPS_ALL) $(OBJS_ALL)
-	rm -f $(OBJS_TEST) $(OBJS_UNIT_TEST)
-	$(CXX) -o game.exe $(OBJ_DIRS) $(LINKFLAGS) $(LIBS)
+DEP_OBJS_FOR_RUN= $(DEP_OBJS_NO_TEST)	
+run: all
+	$(CXX) -o game.exe $(DEP_OBJS_FOR_RUN) $(LINKFLAGS) $(LIBS)
 	.\game.exe
 
 clean:
-	rm -f $(foreach dir,$(SRCS_DIRS), $(wildcard $(dir)/*.o)) 
-	rm -f $(foreach dir,$(SRCS_DIRS), $(wildcard $(dir)/*.depends))
-	rm -f $(foreach dir,$(SRCS_DIRS), $(wildcard $(dir)/*.exe))
+	rm -f $(foreach dir,$(DEP_DIRS), $(wildcard $(dir)/*.o)) 
+	rm -f $(foreach dir,$(DEP_DIRS), $(wildcard $(dir)/*.depends))
+	rm -f $(foreach dir,$(DEP_DIRS), $(wildcard $(dir)/*.exe))
 
-# unfortunately dependencies are generated, even when I run clean :()
--include $(DEPS_ALL)
+# this target is called by the makefile in sub folders
+# the idea is that the test runs from the same location
+# as the program.
+# prevents provlems related to the dlls and the meida file
+# directory
+run_test:
+	.\test.exe

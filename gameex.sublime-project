@@ -19,17 +19,19 @@
 			"name": "Project System",
 			"cmd": ["make","-l"], 
 			"file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+			"working_dir":"${project_path}/GameLand",
 			"variants": [
 				{// start the executable program
 					"cmd": ["make","run"], 
-				    "name":"Run"
-				    // "working_dir":"${project_path}"
+				    "name":"Run",
+				    "working_dir":"${project_path}/GameLand"
 				},	
 				{// run the tests in the current folder
 				 	"cmd": ["make","test"], "name":"Test"
 				},	
-				{// clean the current folder
-				 	"cmd": ["make","clean"], "name":"Clean"
+				{// remove all artefacts
+				 	"cmd": ["make","clean"], "name":"Clean",
+					"working_dir":"${project_path}/GameLand"
 				}
 			]
 		}

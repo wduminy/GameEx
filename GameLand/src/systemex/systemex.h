@@ -2,14 +2,14 @@
  * Copyright 2012 Willem Duminy
  * See LICENCE.txt
  */
-#pragma once
-#include <stdexcept>    
-#include <string>
+#pragma once 
+#include <stdexcept>
+#include <string> 
 #include <stdarg.h>
-#include <algorithm>     
+#include <algorithm>
 #include <functional>  
 #include <list>  
-#include <memory>     
+#include <memory>
 #define PREVENT_COPY(X) private: X(const X &source); X & operator=(const X&);
 #define ENSURE(P,M) if (!(P)) throw std::runtime_error(M)
 #ifdef NDEBUG

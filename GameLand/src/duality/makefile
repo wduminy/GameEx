@@ -1,17 +1,14 @@
-# makefile for duality 
-#	- rule for making the test file
+# makefile for game
+include ..\makevars
 
-include ../makevars
+ # dirs on which these tests depend
+DEP_DIRS= ../systemex ../testex ../game
+DEP_SRCS=$(foreach dir,$(DEP_DIRS), $(wildcard $(dir)/*.cpp))
+DEP_OBJS=$(DEP_SRCS:.cpp=.o)
+DEP_OBJS_NO_TEST=$(patsubst %_test.o,,$(DEP_OBJS))
 
-# dirs on which these tests depend
-SRCS_DIRS=../systemex ../game ../testex
 # objects derived from dirs
-OBJ_DIRS=$(foreach dir,$(SRCS_DIRS), $(dir)/*.o) 
-# object in this dir -- excluding files with a main function
-OBJS_TEST_RUN=$(OBJS:duality_main.o=) $(OBJ_DIRS)
+OBJS_TEST_RUN=$(OBJS) $(DEP_OBJS_NO_TEST)
 
-$(TEST): all  
+$(TEST): $(OBJS_TEST_RUN)  
 	$(CXX) -o $(TEST) $(OBJS_TEST_RUN) $(LINKFLAGS) $(LIBS)
-
-
-

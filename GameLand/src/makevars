@@ -1,21 +1,24 @@
 # This makefile is shared by all subsystems (a subsystem is a directory under this one).
 # It provides:
-#	- target 'all' that builds all sources ... delegates to main makefile
-#	- target 'clean' that removes all build artefacts ... delegates to main makefile  
+#	- target 'all' that builds all sources 
+#	- target 'clean' that removes all build artefacts  
 #   - a few 'useful variables'
 include ../makerecipes
-
+ 
 # sources in current folder
 SRCS = $(wildcard *.cpp)
 # objects from current folder
 OBJS = $(SRCS:.cpp=.o)
-all:  
-	$(MAKE) -C ../.. all
+DEPS = $(SRCS:.cpp=.depends)
+
+all: $(OBJS)  
 
 clean:
-	$(MAKE) -C ../.. clean
+	rm -f $(DEPS) $(OBJS)
 
-test: $(TEST)	
+# move test to run directory before running it
+test: $(OBJS) $(TEST)	
 	cp $(TEST) ../../
 	$(MAKE) -C ../.. run_test
 
+-include $(DEPS)
