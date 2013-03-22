@@ -3,9 +3,20 @@
 	"folders":
 	[
 		{ 
-			"path": "/C/Users/willemd/Documents/GitHub/GameEx/GameLand",
+			"path": "/C/Users/willemd/Documents/GitHub/GameEx/",
 			"name":"Root",
-			"folder_exclude_patterns":["src"]
+			"folder_exclude_patterns":["*"],
+			"file_exclude_patterns":[".*","*.sublime-*"]
+		},
+		{ 
+			"path": "/C/Users/willemd/Documents/GitHub/GameEx/GameLand",
+			"name":"GameLand",
+			"folder_exclude_patterns":["*"],
+			"file_exclude_patterns":[".*","*.sublime-*"]
+		},
+		{ 
+			"path": "/C/Users/willemd/Documents/GitHub/GameEx/GameLand/media",
+			"name":"Media"
 		},
 		{ 
 			"path": "/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src",
