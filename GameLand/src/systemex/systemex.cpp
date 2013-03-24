@@ -38,6 +38,12 @@ namespace systemex {
 	    throw runtime_error(msg);
 	}
 
+	void ensure_file_exists(const char * filename) {
+		std::ifstream s(filename);
+		if (!s)
+			throw file_not_found(filename);
+	}
+
 
 	char * cstring_copy(const char *str) {
 		size_t len = strlen(str);

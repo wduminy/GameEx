@@ -4,6 +4,98 @@
 		"selected_items":
 		[
 			[
+				"c",
+				"c_str"
+			],
+			[
+				"fil",
+				"fileName"
+			],
+			[
+				"ss",
+				"systemex"
+			],
+			[
+				"Ex",
+				"ensure_file_exists"
+			],
+			[
+				"file",
+				"file_not_found"
+			],
+			[
+				"if",
+				"ifstream"
+			],
+			[
+				"init",
+				"initSDL"
+			],
+			[
+				"SDL_S",
+				"SDL_Surface"
+			],
+			[
+				"SDL_Surf",
+				"SDL_Surface_u_ptr"
+			],
+			[
+				"_",
+				"_surface"
+			],
+			[
+				"text",
+				"text_sf"
+			],
+			[
+				"te",
+				"text_sf"
+			],
+			[
+				"SDL_KE",
+				"SDL_KEYDOWN"
+			],
+			[
+				"SDL",
+				"SDLKey"
+			],
+			[
+				"key",
+				"key_up"
+			],
+			[
+				"is",
+				"is_quit"
+			],
+			[
+				"k",
+				"key_down"
+			],
+			[
+				"In",
+				"InputEvent"
+			],
+			[
+				"Gam",
+				"GameLand"
+			],
+			[
+				"DE",
+				"DEP_OBJS_FOR_TEST"
+			],
+			[
+				"TE",
+				"TEST_OBJS"
+			],
+			[
+				"DEP",
+				"DEP_OBJS_NO_MAIN"
+			],
+			[
+				"DEP_",
+				"DEP_OBJS"
+			],
+			[
 				"OB",
 				"OBJ_DIRS"
 			],
@@ -67,41 +159,13 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "GameLand/src/systemex/systemex.h",
-			"settings":
-			{
-				"buffer_size": 3031,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "GameLand/src/makerecipes",
-			"settings":
-			{
-				"buffer_size": 733,
-				"line_ending": "Windows"
-			}
-		}
 	],
 	"build_system": "Project System",
 	"command_palette":
 	{
-		"height": 196.0,
+		"height": 392.0,
 		"selected_items":
 		[
-			[
-				"make",
-				"Set Syntax: Makefile"
-			],
-			[
-				"wrap",
-				"Word Wrap: Toggle"
-			],
-			[
-				"wra",
-				"Word Wrap: Toggle"
-			],
 			[
 				"clean",
 				"Build: Clean"
@@ -111,8 +175,88 @@
 				"Build: Clean"
 			],
 			[
+				"gdb",
+				"SublimeGDB: Pause"
+			],
+			[
 				"clea",
 				"Build: Clean"
+			],
+			[
+				"cl",
+				"Build: Clean"
+			],
+			[
+				"gdbbr",
+				"SublimeGDB: Open Breakpoint View"
+			],
+			[
+				"console",
+				"SublimeGDB: Open Console View"
+			],
+			[
+				"gdben",
+				"SublimeGDB: Stop Debugging"
+			],
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"git gui",
+				"Git: Gui"
+			],
+			[
+				"git g",
+				"Git: Gui"
+			],
+			[
+				"git",
+				"Git: Gui"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"wrap",
+				"Word Wrap: Toggle"
+			],
+			[
+				"min",
+				"View: Toggle Minimap"
+			],
+			[
+				"wr",
+				"Word Wrap: Toggle"
+			],
+			[
+				"syn:w",
+				"Set Syntax: Markdown"
+			],
+			[
+				"lean",
+				"Build: Clean"
+			],
+			[
+				"make",
+				"Set Syntax: Makefile"
+			],
+			[
+				"wra",
+				"Word Wrap: Toggle"
 			],
 			[
 				"Make",
@@ -171,10 +315,6 @@
 				"Tasks: New document"
 			],
 			[
-				"inst",
-				"Package Control: Install Package"
-			],
-			[
 				"insta",
 				"Package Control: Install Package"
 			],
@@ -223,10 +363,6 @@
 				"Package Control: Install Package"
 			],
 			[
-				"Package Control: ins",
-				"Package Control: Install Package"
-			],
-			[
 				"m",
 				"Set Syntax: Makefile"
 			]
@@ -248,17 +384,65 @@
 	},
 	"file_history":
 	[
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game_test.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/main_page.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/controller.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/font.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/duality_main.cpp",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/my_log.todo",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/makerecipes",
+		"/C/Users/willemd/Documents/GitHub/GameEx/gameex.sublime-project",
+		"/C/Users/willemd/Documents/GitHub/GameEx/my_log.todo",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/log.txt",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/SublimeGDB/SublimeGDB.sublime-settings",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/main_page.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/main_scene.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/systemex.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/font.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/systemex.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/sdl_utils.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/sdl_utils.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/gl_objects.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/sdlutils.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/sdlutils.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/collisions2d.h",
+		"/C/development/cpp/libraries/SDL-1.2.15/bin/sdl-config",
+		"/C/Users/willemd/Documents/GitHub/GameEx/game/collisions2d.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/controller.cpp",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/User/SublimeGDB.sublime-settings",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/controller.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/makevars",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/User/PlainTasks.sublime-settings",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/PlainTasks/PlainTasks (Windows).sublime-settings",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/User/Git.sublime-settings",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/Git/Git.sublime-settings",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/User/C++.sublime-settings",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/snake.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/main_scene.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game_objects.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/main_page.cpp",
+		"/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/bits/unique_ptr.h",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/User/Markdown.sublime-settings",
+		"/C/Users/willemd/Documents/GitHub/GameEx/README.md",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/User/JSON.sublime-settings",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/User/Distraction Free.sublime-settings",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/mainpage.h",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/PlainTasks/messages/Tutorial.todo",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/makefile",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/makefile",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/makefile",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/network/makefile",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/GameLand.layout.cbTemp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/GameLand.layout",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/makefile",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/[Finished in 0.1s]../makevars",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/controller.depends",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/duality_test.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/makevars",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/makerecipes",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/system_test.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/network/makefile",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/makefile",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/makefile",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/makefile",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/makefile",
-		"/C/Users/willemd/Documents/GitHub/GameEx/gameex.sublime-project",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/systemex.depends",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/Debug/src/network/network.d",
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/User/Default (Windows).sublime-keymap",
@@ -273,33 +457,19 @@
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/LaTeXTools/DDEExecute.py",
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/Package Control/Package Control.sublime-settings",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/makevars.mak",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/systemex.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/collisions2d_test.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/testex/test_util.depends",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/testex/test_main.depends",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/log.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/systemex.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/leaktrack.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/log.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/collisions2d.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/collisions2d.h",
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/Makefile/Make.sublime-build",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/mainpage.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/mainpage.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/main_scene.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/font.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/Makefile",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/duality_main.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game_objects.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/main_scene.h",
-		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
-		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
-		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/PlainTasks/messages/Tutorial.todo",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/my_tasks.todo",
 		"/C/Users/willemd/Documents/GitHub/GameEx/.gitignore",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/controller.cpp",
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/SideBarEnhancements/messages/11.13.2012.1305.0.txt",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/todo.txt",
 		"/C/Users/willemd/Documents/GitHub/GameEx/.metadata/.plugins/org.eclipse.core.resources/.projects/GameLand/org.eclipse.egit.core/GitProjectData.properties",
@@ -340,6 +510,33 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"\\",
+			"fileName",
+			"your_executable_name",
+			"game",
+			"MainPage",
+			"\\",
+			"ctx.input()",
+			"UpdateContext",
+			"targetFramesPerSecond",
+			"targetUpdatesPerSecond",
+			"_draw_interval",
+			"targetUpdatesPerSecond",
+			"_event",
+			"	}",
+			"_event",
+			"void",
+			"MainPage",
+			"override",
+			"void",
+			"override",
+			"MainPage",
+			"prepare_subsystems",
+			" ",
+			"OBJS_TEST_RUN",
+			"DEP",
+			"DEP_OBJS",
+			"/",
 			"     ",
 			"    ",
 			")\n",
@@ -401,7 +598,7 @@
 		"replace_history":
 		[
 		],
-		"reverse": true,
+		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
 		"whole_word": false,
@@ -410,68 +607,8 @@
 	"groups":
 	[
 		{
-			"selected": 1,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "GameLand/src/systemex/systemex.h",
-					"settings":
-					{
-						"buffer_size": 3031,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								112,
-								112
-							]
-						],
-						"settings":
-						{
-							"glsv_configured": true,
-							"glsv_enabled": 1,
-							"glsv_spec": 0,
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "GameLand/src/makerecipes",
-					"settings":
-					{
-						"buffer_size": 733,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								673,
-								673
-							]
-						],
-						"settings":
-						{
-							"glsv_configured": true,
-							"glsv_enabled": 1,
-							"glsv_spec": 0,
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -510,6 +647,10 @@
 	{
 		"height": 294.0
 	},
+	"output.git":
+	{
+		"height": 178.0
+	},
 	"replace":
 	{
 		"height": 0.0
@@ -521,12 +662,152 @@
 		"selected_items":
 		[
 			[
-				"system.dep",
-				"GameLand/src/systemex/systemex.depends"
+				"todo",
+				"GameLand/my_log.todo"
+			],
+			[
+				"log",
+				"GameLand/log.txt"
+			],
+			[
+				"gamecpp",
+				"Source/game/game.cpp"
+			],
+			[
+				"recip",
+				"Source/makerecipes"
+			],
+			[
+				"rec",
+				"Source/makerecipes"
+			],
+			[
+				"main.",
+				"Source/duality/duality_main.cpp"
+			],
+			[
+				"ga.h",
+				"Source/game/game.h"
+			],
+			[
+				"mph",
+				"Source/duality/main_page.h"
+			],
+			[
+				"fo",
+				"Source/game/font.cpp"
+			],
+			[
+				"mainpc",
+				"Source/duality/main_page.cpp"
+			],
+			[
+				"contcpp",
+				"Source/duality/controller.cpp"
+			],
+			[
+				"maip",
+				"Source/duality/main_page.cpp"
+			],
+			[
+				"fon",
+				"Source/game/font.h"
+			],
+			[
+				"lo",
+				"GameLand/log.txt"
+			],
+			[
+				"gl",
+				"Source/game/gl_objects.h"
+			],
+			[
+				"sy",
+				"Source/systemex/systemex.cpp"
+			],
+			[
+				"sys.h",
+				"Source/systemex/systemex.h"
+			],
+			[
+				"font",
+				"Source/game/font.cpp"
+			],
+			[
+				"rece",
+				"Source/makerecipes"
+			],
+			[
+				"main",
+				"Source/duality/main_scene.h"
+			],
+			[
+				"controll",
+				"Source/duality/controller.cpp"
+			],
+			[
+				"con",
+				"Source/duality/controller.h"
+			],
+			[
+				"gamec",
+				"Source/game/game.cpp"
+			],
+			[
+				"game",
+				"Source/game/game.h"
+			],
+			[
+				"mainp",
+				"Source/duality/main_page.cpp"
+			],
+			[
+				"tod",
+				"Root/my_log.todo"
 			],
 			[
 				"makev",
 				"Source/makevars"
+			],
+			[
+				"gameh",
+				"Source/game/game.h"
+			],
+			[
+				"duam",
+				"Source/duality/duality_main.cpp"
+			],
+			[
+				"masc",
+				"Source/duality/main_scene.cpp"
+			],
+			[
+				"duamain",
+				"Source/duality/duality_main.cpp"
+			],
+			[
+				"sna",
+				"Source/duality/snake.cpp"
+			],
+			[
+				"gam",
+				"Source/game/game.h"
+			],
+			[
+				"game.h",
+				"Source/game/game.h"
+			],
+			[
+				".md",
+				"Root/README.md"
+			],
+			[
+				"mac",
+				"Source/duality/main_page.cpp"
+			],
+			[
+				"system.dep",
+				"GameLand/src/systemex/systemex.depends"
 			],
 			[
 				"dual",
@@ -545,32 +826,12 @@
 				"src/game/collisions2d.h"
 			],
 			[
-				"gamec",
-				"src/game/game.cpp"
-			],
-			[
-				"gameh",
-				"src/game/game.h"
-			],
-			[
-				"font",
-				"src/game/font.h"
-			],
-			[
 				"gameob",
 				"src/game/game_objects.h"
 			],
 			[
 				"scene",
 				"src/duality/main_scene.cpp"
-			],
-			[
-				"gamecpp",
-				"src/game/game.cpp"
-			],
-			[
-				"game.h",
-				"src/game/game.h"
 			],
 			[
 				"gamh",
@@ -611,7 +872,7 @@
 		],
 		"width": 380.0
 	},
-	"show_minimap": true,
+	"show_minimap": false,
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,

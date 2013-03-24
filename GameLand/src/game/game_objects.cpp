@@ -50,7 +50,7 @@ namespace game {
 
 	void SphereCamera::update(const UpdateContext& ctx) {
 		const static double rads_per_update = ctx.seconds_per_update() * rads_per_second;
-		switch (ctx.key_down()) {
+		switch (ctx.input().key_down()) {
 			case SDLK_LEFT:
 				_delta = -rads_per_update;
 				break;
@@ -66,7 +66,7 @@ namespace game {
 			default:
 				break;
 		}
-		switch (ctx.key_up()) {
+		switch (ctx.input().key_up()) {
 			case SDLK_LEFT:
 			case SDLK_RIGHT:
 				_delta = 0;

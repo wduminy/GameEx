@@ -6,8 +6,8 @@
 
 SDL=C:\development\cpp\libraries\SDL-1.2.15
 INCLUDES = -I"C:\development\cpp\libraries\shared\include" -I"$(SDL)\include"
-CXXFLAGS = -D__GXX_EXPERIMENTAL_CXX__ -Wall -fmessage-length=0 -std=c++0x	
-LINKFLAGS = -O0 -g3 
+CXXFLAGS = -g -O2 -Wall -fmessage-length=0 -std=c++0x -Weffc++	
+LINKFLAGS =   
 LIBS = -L"C:\development\cpp\libraries\SDL-1.2.15\lib" -lmingw32 -lwsock32 -lglu32 -lopengl32 -lSDL_ttf -lSDLmain -lSDL.dll
 # name of test file
 TEST = test.exe

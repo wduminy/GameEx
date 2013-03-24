@@ -1,5 +1,11 @@
 // for help: http://www.sublimetext.com/docs/2/projects.html
 {
+	"settings":
+	{
+	     "sublimegdb_workingdir": "${folder:${project_path:game.exe}}",
+	     // NOTE: You MUST provide --interpreter=mi for the plugin to work
+	     "sublimegdb_commandline": "gdb --interpreter=mi ./game.exe"
+	},
 	"folders":
 	[
 		{ 
@@ -30,7 +36,6 @@
 			"name": "Project System",
 			"cmd": ["make","-l"], 
 			"file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
-			"working_dir":"${project_path}/GameLand",
 			"variants": [
 				{// start the executable program
 					"cmd": ["make","run"], 

@@ -14,7 +14,7 @@ int main( int , char* [] ) {
 				MainObject::u_ptr(new DualityController()),
 				//UpdateContext::u_ptr(new UpdateContext(10000,10)), // to check performance
 				UpdateContext::u_ptr(new UpdateContext(50,20)),
-				DrawContext::u_ptr(new DrawContext(false,800,600)),
+				DrawContext::u_ptr(new DrawContext(false,800,600,true)),
 				ResourceContext::u_ptr(new ResourceContext("duality/"))
 		);
 		g.run();

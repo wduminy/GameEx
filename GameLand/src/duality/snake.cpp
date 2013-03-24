@@ -162,7 +162,7 @@ void SnakeObject::initialise(const ResourceContext& ctx,
 }
 
 void SnakeObject::update(const UpdateContext& uc) {
-	switch (uc.key_down()) {
+	switch (uc.input().key_down()) {
 	case SDLK_a:
 		_left_key_down = true;
 		break;
@@ -172,7 +172,7 @@ void SnakeObject::update(const UpdateContext& uc) {
 	default:
 		break;
 	}
-	switch (uc.key_up()) {
+	switch (uc.input().key_up()) {
 	case SDLK_a:
 		_left_key_down = false;
 		break;

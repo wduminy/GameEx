@@ -40,6 +40,23 @@ public:
 	typedef std::unique_ptr<ResourceContext> u_ptr;
 };
 
+class InputEvent {
+public:
+	const SDL_Event& event() const { return _event;}
+	/** The key that is pressed down */
+	SDLKey key_down() const;
+	/** The key that has been released */
+	SDLKey key_up() const;
+	/** Is the control key pressed? */
+	bool is_ctl_down() const; 
+	/** True when the window is closed. Used in the game loop. See SDL_QUIT for info.*/
+	bool is_quit() const;
+	/** Update the event state. Used in the game loop */
+	void poll();	
+private:
+	SDL_Event _event;
+};
+
 class UpdateContext {
 public:
 	UpdateContext(unsigned int targetUpdatesPerSecond, unsigned int targetFramesPerSecond);
@@ -49,12 +66,10 @@ public:
 	double updates_per_second() const { return 1000.0 / _update_interval; }
 	double seconds_per_update() const { return 1.0 / updates_per_second();}
 	void tick();
-	SDLKey key_up() const;
-	SDLKey key_down() const;
-	SDL_Event event() const { return _event;}
 	void log_statistics() const;
+	const InputEvent& input() const {return _event;}
 private:
-	SDL_Event _event;
+	InputEvent _event;
 	const unsigned int _update_interval;
 	const unsigned int _draw_interval;
 	const Uint32 _first_tick;
@@ -69,14 +84,18 @@ public:
 };
 
 class DrawContext {
+	PREVENT_COPY(DrawContext)
 public:
-	DrawContext(const bool fullscreen, const int width, const int height);
+	DrawContext(const bool fullscreen, const int width, const int height, bool opengl);
 	~DrawContext();
 	Glex& gl() const;
+	SDL_Surface * screen() const {return _screen;} 
 	int width() const {return _width;}
 	int height() const {return _height;}
+	bool has_opengl() const {return _glex.get();}
 private:
-	Glex::u_ptr instance_p;
+	SDL_Surface * _screen;
+	Glex::u_ptr _glex;
 	int _width;
 	int _height;
 public:

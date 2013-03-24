@@ -4,8 +4,7 @@
  */
 
 #pragma once
-#include "main_scene.h"
-
+#include "../game/game.h"
 namespace duality {
 
 class DualityController: public game::MainObject {

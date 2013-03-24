@@ -24,7 +24,7 @@ namespace tut {
 	}
 
 	TEST<1>() {
-		DrawContext ctx(false,10,10);
+		DrawContext ctx(false,10,10,true);
 		ShaderProgram p(ctx.gl());
 		ensure_error(p.bind("hello","there"),"syntax error");
 	}
@@ -119,7 +119,7 @@ namespace tut {
 	TEST<10>() {
 		set_test_name("load opengl surface");
 		ResourceContext ctx;
-		DrawContext dx(false,10,10);
+		DrawContext dx(false,10,10,true);
 		auto surface = ctx.load_BMP("cracked_tiles.BMP");
 		Texture t(dx.gl());
 		t.copy_from(*surface);

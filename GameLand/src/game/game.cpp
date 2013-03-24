@@ -8,47 +8,42 @@
 
 namespace game {
 	using systemex::string_from_file;
-
-	void check(int sdl_result) {
-		if (sdl_result != 0)
-			throw systemex::runtime_error_ex("SDL call returned %d, error:%s",
-					sdl_result, SDL_GetError());
+	SDL_Surface * initSDL(const bool fullscreen, const int w, const int h, bool use_opengl) {
+			check(SDL_Init(SDL_INIT_VIDEO));
+			atexit(SDL_Quit);
+			check(TTF_Init());
+			atexit(TTF_Quit);
+			auto version = SDL_Linked_Version();
+			LOG << "Using SDL version " << (int) version->major << "." << (int) version->minor << "." << (int) version->patch;
+			auto info = SDL_GetVideoInfo();
+			auto bpp = info->vfmt->BitsPerPixel;
+			int flags = SDL_SWSURFACE;
+			if (fullscreen)
+				flags |= SDL_FULLSCREEN;
+			if (use_opengl) {
+				flags |= SDL_OPENGL;
+				SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+				SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+				SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+				SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+				SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+			}
+			SDL_Surface * screen = SDL_SetVideoMode(w, h, bpp, flags);
+			check(screen);
+			return screen;
 	}
 
-	void check(void * p) {
-		if (p == 0)
-			throw systemex::runtime_error_ex("SDL error: %s", SDL_GetError());
-	}
-
-    Glex * glexAfterInit(const bool fullscreen, const int w, const int h) {
-		check(SDL_Init(SDL_INIT_VIDEO));
-		atexit(SDL_Quit);
-		check(TTF_Init());
-		atexit(TTF_Quit);
-		auto version = SDL_Linked_Version();
-		LOG << "Using SDL version " << (int) version->major << "." << (int) version->minor << "." << (int) version->patch;
-		auto info = SDL_GetVideoInfo();
-		auto bpp = info->vfmt->BitsPerPixel;
-		int flags = SDL_OPENGL;
-		if (fullscreen)
-			flags |= SDL_FULLSCREEN;
-		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
-		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-		check(SDL_SetVideoMode(w, h, bpp, flags));
-		return new Glex();
-    }
-
-
-	DrawContext::DrawContext(const bool fullscreen, const int width, const int height)
-			: instance_p(glexAfterInit(fullscreen,width, height))
-			, _width(width)
-			, _height(height) {}
+	DrawContext::DrawContext(const bool fullscreen, const int width,
+			const int height, bool opengl)
+			: _screen(initSDL(fullscreen,width, height, opengl)),
+				_glex(opengl?new Glex():0),
+				_width(width),
+				_height(height) {}
 
 	Glex& DrawContext::gl() const {
-		return *instance_p;
+		if (!_glex)
+			throw std::runtime_error("draw context does not have opengl");
+		return *_glex;
 	}
 
 	DrawContext::~DrawContext() {
@@ -68,39 +63,52 @@ namespace game {
 		}
 	}
 
+	bool InputEvent::is_quit() const {
+		return _event.type == SDL_QUIT;
+	}
 
-	/**
-	 *
-	 * @param targetUpdatesPerSecond - anything more than 1000 means ASAP
-	 * @param targetFramesPerSecond - anything more than 1000 means ASAP
-	 */
-	UpdateContext::UpdateContext(unsigned int targetUpdatesPerSecond, unsigned int targetFramesPerSecond) :
-            _event(),
-			_update_interval(1000 / targetUpdatesPerSecond),
-			_draw_interval(1000 / targetFramesPerSecond),
-			_first_tick(SDL_GetTicks()),
-            next_update(_first_tick + _update_interval),
-            next_draw(_first_tick + _draw_interval),
-            update(false),
-            draw(false),
-            _tick_time(_first_tick),
-            _draws(0),
-            _updates(0)
-             {}
-
-	SDLKey UpdateContext::key_down() const {
+	SDLKey InputEvent::key_down() const {
 		if (_event.type != SDL_KEYDOWN)
 			return SDLK_UNKNOWN;
 		else
 			return _event.key.keysym.sym;
 	}
 
-	SDLKey UpdateContext::key_up() const {
+	SDLKey InputEvent::key_up() const {
 		if (_event.type != SDL_KEYUP)
 			return SDLK_UNKNOWN;
 		else
 			return _event.key.keysym.sym;
 	}
+
+	bool InputEvent::is_ctl_down() const {
+		if (_event.type != SDL_KEYDOWN)
+			return false;
+		return _event.key.keysym.mod & KMOD_CTRL;
+	}
+
+	void InputEvent::poll() {
+			SDL_PollEvent(&_event);
+	}
+
+	/**
+	 *
+	 * @param updatesPerSec 
+	 * @param framesPerSec  
+	 */
+	UpdateContext::UpdateContext(unsigned int updatesPerSec, unsigned int framesPerSec) :
+			_event(),
+			_update_interval(1000 / updatesPerSec),
+			_draw_interval(1000 / framesPerSec),
+			_first_tick(SDL_GetTicks()),
+			next_update(_first_tick + _update_interval),
+			next_draw(_first_tick + _draw_interval),
+			update(false),
+			draw(false),
+			_tick_time(_first_tick),
+			_draws(0),
+			_updates(0)
+			{}
 
 	void UpdateContext::tick() {
 		_tick_time = SDL_GetTicks();
@@ -110,7 +118,7 @@ namespace game {
 			//processed one at a time of the update loop. so, if the input seems
 			//jittery, it could be that the SDL events must be processed in a different
 			//way -- maybe an 'input context' would be a good idea
-			SDL_PollEvent(&_event);
+			_event.poll();
 			unsigned int delta = _tick_time - next_update;
 			next_update = _tick_time + _update_interval - delta;
 			_updates++;
@@ -165,53 +173,42 @@ namespace game {
 		_update->log_statistics();
 	}
 
-     void MainObject::initialise(const ResourceContext & rctx, const DrawContext& dctx) {
+  void MainObject::initialise(const ResourceContext & rc, const DrawContext& dc) {
+	  if (dc.has_opengl()) {
 		/* Our shading model--Gouraud (smooth). */
-        glShadeModel(GL_SMOOTH);
-        /* Culling. */
-        glCullFace(GL_BACK);
-        glFrontFace(GL_CCW);
-        glEnable(GL_CULL_FACE);
-        glEnable(GL_DEPTH_TEST);
-        /* Set the clear color. */
-        glClearColor(0.0, 0.0, 0.0, 0);
-        /* Setup our viewport. */
-        glViewport(0, 0, dctx.width(), dctx.height());
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        float ratio = (float) dctx.width() /  (float) dctx.height();
-        glLoadIdentity(); // load identity because we want to 'reset' the perspective
-        gluPerspective(45.0, ratio, _nearest, _farest);
-        GameObjectWithParts::initialise(rctx,dctx);
+		glShadeModel(GL_SMOOTH);
+		/* Culling. */
+		glCullFace(GL_BACK);
+		glFrontFace(GL_CCW);
+		glEnable(GL_CULL_FACE);
+		glEnable(GL_DEPTH_TEST);
+		glClearColor(0.0, 0.0, 0.0, 0);
+		glViewport(0, 0, dc.width(), dc.height());
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		float ratio = (float) dc.width() /  (float) dc.height();
+		glLoadIdentity(); // load identity because we want to 'reset' the perspective
+		gluPerspective(45.0, ratio, _nearest, _farest);
+	  }
+	  GameObjectWithParts::initialise(rc,dc);
 	}
 
 	void MainObject::update(const UpdateContext& ctx) {
 		GameObjectWithParts::update(ctx);
-		switch (ctx.event().type) {
-		case SDL_KEYDOWN:
-			switch (ctx.event().key.keysym.sym) {
-			case SDLK_ESCAPE:
-				deactivate();
-				break;
-			default:
-				break;
-			}
-			break;
-		case SDL_QUIT:
+		auto i = ctx.input();
+		if (i.is_quit() || (i.key_down() == SDLK_c && i.is_ctl_down()))
 			deactivate();
-			break;
-		default:
-			break;
-		}
 	}
 
-	void MainObject::draw(const DrawContext&) {
-		/* Clear the colour and depth buffers. */
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	void MainObject::draw(const DrawContext& dc) {
+		if (dc.has_opengl()) {
+			/* Clear the colour and depth buffers. */
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		/* We don't want to modify the projection matrix. */
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
+			/* We don't want to modify the projection matrix. */
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+		}
 	}
 
 	const std::string RESOURCE_PATH("media/");

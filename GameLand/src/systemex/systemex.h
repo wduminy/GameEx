@@ -42,7 +42,8 @@ namespace systemex {
 
 	// caller must delete[] result
 	char * cstring_copy(const char *);
-
+	// throws exception if the file does not exist
+	void ensure_file_exists(const char * filename);
 	string string_from_format(const char *szFormat, ...);
 	// creates a directory if it is not found
 	void create_dir(const string& path);
