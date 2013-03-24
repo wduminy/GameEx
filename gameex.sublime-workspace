@@ -159,19 +159,51 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "GameLand/src/game/font.cpp",
+			"settings":
+			{
+				"buffer_size": 4353,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "Project System",
 	"command_palette":
 	{
-		"height": 392.0,
+		"height": 334.0,
 		"selected_items":
 		[
 			[
-				"clean",
-				"Build: Clean"
+				"packaga",
+				"Package Control: Upgrade Package"
+			],
+			[
+				"upgr",
+				"Package Control: Upgrade/Overwrite All Packages"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Upgrade Package"
+			],
+			[
+				"goo",
+				"SublimeGoogle: search selection"
+			],
+			[
+				"googl",
+				"SublimeGoogle: search"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
 			],
 			[
 				"cle",
+				"Build: Clean"
+			],
+			[
+				"clean",
 				"Build: Clean"
 			],
 			[
@@ -221,10 +253,6 @@
 			[
 				"git",
 				"Git: Gui"
-			],
-			[
-				"Package Control: ",
-				"Package Control: Install Package"
 			],
 			[
 				"inst",
@@ -315,10 +343,6 @@
 				"Tasks: New document"
 			],
 			[
-				"insta",
-				"Package Control: Install Package"
-			],
-			[
 				"remoe",
 				"Package Control: Remove Package"
 			],
@@ -384,6 +408,8 @@
 	},
 	"file_history":
 	[
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/SublimeGDB/sublimegdb.py",
+		"/C/Program Files (x86)/Roxio/OEM/Roxio Central 5/RoxioCentralFx.exe",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game_test.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/main_page.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/controller.cpp",
@@ -607,8 +633,39 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "GameLand/src/game/font.cpp",
+					"settings":
+					{
+						"buffer_size": 4353,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4353,
+								4353
+							]
+						],
+						"settings":
+						{
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4048.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -661,6 +718,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"font",
+				"Source/game/font.cpp"
+			],
 			[
 				"todo",
 				"GameLand/my_log.todo"
@@ -728,10 +789,6 @@
 			[
 				"sys.h",
 				"Source/systemex/systemex.h"
-			],
-			[
-				"font",
-				"Source/game/font.cpp"
 			],
 			[
 				"rece",

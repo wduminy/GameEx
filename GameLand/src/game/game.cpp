@@ -46,6 +46,13 @@ namespace game {
 		return *_glex;
 	}
 
+	void DrawContext::swap() {
+		if (has_opengl())
+			SDL_GL_SwapBuffers();
+		else
+			SDL_Flip(_screen);
+	}
+
 	DrawContext::~DrawContext() {
 		SDL_QuitSubSystem(SDL_INIT_VIDEO);
 	}
@@ -166,7 +173,7 @@ namespace game {
 					if ((*it)->is_visible())
 						(*it)->draw(*_draw);
 				}
-				SDL_GL_SwapBuffers();
+				_draw->swap();
 			}
 			_update->tick();
 		};
@@ -218,13 +225,6 @@ namespace game {
 			throw systemex::runtime_error_ex("subDirectory (%s) must end with '/'", subDirectory.c_str());
 	}
 
-	SDL_Surface_u_ptr ResourceContext::load_BMP(const char * filename) const {
-		auto fullname = _root_directory + filename;
-		SDL_Surface_u_ptr result(SDL_LoadBMP(fullname.c_str()));
-		if (result.get() == 0)
-			throw systemex::runtime_error_ex("could not load '%s'", fullname.c_str());
-		return result;
-	}
 
 	string ResourceContext::load_text(const char * filename) const {
 		auto fullname = _root_directory + filename;
@@ -242,7 +242,8 @@ namespace game {
 
 	Texture::u_ptr ResourceContext::load_texture_bmp(Glex& gl, const char* filename, const int textureIndex) const {
 		Texture::u_ptr result(new Texture(gl));
-		result->copy_from(*load_BMP(filename));
+		Surface::u_ptr sface(new Surface(_root_directory + filename));
+		result->copy_from(*sface);
 	    result->activate(textureIndex);
 	    return result;
 	}

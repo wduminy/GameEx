@@ -4,29 +4,66 @@
  */
 
 #pragma once
-#include "sdl_utils.h" 
+#include "gl_objects.h"
 #include <SDL/SDL_ttf.h>
 #include <string>
 #include "../systemex/systemex.h"
 namespace game {
 
-/* Use a font to render text. 
+/* Use  font to render text.
  */
-class Font {
-	PREVENT_COPY(Font)
+class Font2D {
+	PREVENT_COPY(Font2D)
 public:
-	Font(const std::string &fileName, int pointSize, SDL_Surface * surface);
+	Font2D(const std::string &fileName, int pointSize);
 	/** Set foreground colour. Default is white */
 	void set_fg(const SDL_Color &value) {_color = value;} 
 	/** Render with transparent background */
-	void render(const Sint16 x, const Sint16 y, const std::string &text) const;
-	~Font();
+	void render(SDL_Surface& surface, const Sint16 x, const Sint16 y, const std::string &text) const;
+	~Font2D();
 private:
 	TTF_Font * _font;
 	SDL_Color _color;
-	SDL_Surface * _surface;
 public:
-	typedef std::unique_ptr<Font> u_ptr;
+	typedef std::unique_ptr<Font2D> u_ptr;
 };
+
+class Font {
+	PREVENT_COPY(Font)
+public:
+	Font(const char *address, int length, int pointSize, int style, float fgRed,
+			float fgGreen, float fgBlue, float bgRed, float bgGreen,float bgBlue);
+	void drawText(char *text, int x, int y);
+private:
+	static const int minGlyph = ' ';
+	static const int maxGlyph = 126;
+	void textSize(char *text, SDL_Rect *r);
+	typedef struct {
+		int minx, maxx;
+		int miny, maxy;
+		int advance;
+		SDL_Surface *pic;
+		GLuint tex;
+		GLfloat texMinX, texMinY;
+		GLfloat texMaxX, texMaxY;
+	} glyph;
+	int height;
+	int ascent;
+	int descent;
+	int lineSkip;
+	glyph glyphs[maxGlyph + 1];
+	const char *address;
+	int length;
+	int pointSize;
+	int style;
+	float fgRed, fgGreen, fgBlue;
+	float bgRed, bgGreen, bgBlue;
+	TTF_Font *ttfFont;
+	SDL_Color foreground;
+	SDL_Color background;
+	void loadChar(int c);
+};
+
+
 
 }

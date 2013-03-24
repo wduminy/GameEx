@@ -114,11 +114,13 @@ Glex::Glex()
 {
 }
 
-Texture::Texture(Glex& context) : _context(context), _texture(0), _texture_index(-1)  {}
+Texture::Texture(Glex& context) : _context(context), _texture(0), _texture_index(-1)  {
+	glGenTextures(1, &_texture);
+}
 
 void Texture::copy_from(SDL_Surface& surface) {
 	if ((surface.w & (surface.w - 1)) != 0)
-		throw std::runtime_error("surface  width is not a power of 2");
+		throw runtime_error_ex("surface  width is not a power of 2 it is %d", surface.w);
 	if ((surface.h & (surface.h - 1)) != 0)
 		throw std::runtime_error("surface height is not a power of 2");
 	GLenum texture_format;
@@ -137,7 +139,6 @@ void Texture::copy_from(SDL_Surface& surface) {
 			texture_format = GL_BGR;
 	} else
 		throw runtime_error_ex("surface has invalid bytes per pixel: %d",bpp);
-	glGenTextures(1, &_texture);
 	glBindTexture(GL_TEXTURE_2D, _texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -152,12 +153,13 @@ void Texture::copy_from(SDL_Surface& surface) {
 void Texture::activate(const int textureIndex) {
     _context.glActiveTexture(GL_TEXTURE0 + textureIndex);
     glBindTexture(GL_TEXTURE_2D,_texture);
+    _context.check_error();
     _texture_index = textureIndex;
 }
 
 int Texture::index() const {
 	if (_texture_index == -1)
-		throw runtime_error("texture has not been activated yet");
+		throw runtime_error("cannot use index because texture has not been activated yet");
 	return _texture_index;
 }
 

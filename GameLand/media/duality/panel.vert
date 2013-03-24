@@ -1,7 +1,6 @@
-
 void main()
 {
    gl_Position = (gl_ModelViewProjectionMatrix * gl_Vertex);
-   gl_TexCoord[0] = gl_MultiTexCoord0;
-   gl_TexCoord[0].x /= 2.5;	
+   gl_TexCoord[0].x = gl_Vertex.x;
+   gl_TexCoord[0].y = -gl_Vertex.y;
 } 

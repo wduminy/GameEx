@@ -3,8 +3,10 @@
  * See LICENCE.txt
  */
 #include "game.h"
+#include "game_math.h"
 #include <array>
 #include <vector>
+
 #pragma once
 namespace game {
 	using std::vector;
@@ -18,6 +20,8 @@ namespace game {
 			void push_back3f(const GLfloat* xyz);
 			void push_back(const vector<const GLfloat*> &points);
 			void push_back_reverse(const vector<const GLfloat*> &points);
+			void push_back(const Vector2 &v) {push_back(v.x(),v.y(),0);}
+			void push_back(const Vector &v) {push_back(v.x(),v.y(),v.z());}
 			void reset() const {_it = _verts.get();}
 			bool at_end() const {return _it >= _ins;}
 			void draw_step() const {glVertex3fv(_it);_it+=3;}
@@ -27,6 +31,15 @@ namespace game {
 			GLfloat * _ins;
 			GLfloat * _end;
 			mutable GLfloat * _it;
+	};
+
+	class BillBoard {
+	public:
+		BillBoard(const Scalar left, Scalar top, const Scalar width, const Scalar height);
+		BillBoard(const Vector &p1, const Vector &p2);
+		void draw() {_rectangle.draw();}
+	private:
+		TriangleStrip _rectangle;
 	};
 
 	class SphereCamera : public GameObject {

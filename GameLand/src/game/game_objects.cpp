@@ -84,7 +84,18 @@ namespace game {
 				       0,0,0,0,0,1);
 	}
 
+	BillBoard::BillBoard(const Scalar left, const Scalar top, const Scalar width,
+			const Scalar height) : _rectangle(2) {
+		auto right = left + width;
+		auto bottom = top + height;
+		_rectangle.push_back(-3,+3,0);
+		_rectangle.push_back(-3,-3,0);
+		_rectangle.push_back(3,3,0);
+		_rectangle.push_back(3,-3,0);
+	}
+
+	BillBoard::BillBoard(const Vector &p1, const Vector &p2) : _rectangle(2) {
+		Vector center = (p2-p1)*0.5;
+	}
 }
-
-
 

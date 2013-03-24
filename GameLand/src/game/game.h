@@ -23,8 +23,9 @@ public:
 	 * @param subDirectory must have a '/' at the end
 	 */
 	ResourceContext(const string& subDirectory = "");
-	SDL_Surface_u_ptr load_BMP(const char * filename) const;
+
 	string load_text(const char * filename) const;
+	const string& dir() const {return _root_directory;};
 	ShaderProgram::u_ptr load_program(Glex& gl, const char * filePrefix) const;
 
 	/**
@@ -89,10 +90,11 @@ public:
 	DrawContext(const bool fullscreen, const int width, const int height, bool opengl);
 	~DrawContext();
 	Glex& gl() const;
-	SDL_Surface * screen() const {return _screen;} 
+	SDL_Surface * screen() const {return _screen;}
 	int width() const {return _width;}
 	int height() const {return _height;}
 	bool has_opengl() const {return _glex.get();}
+	void swap();
 private:
 	SDL_Surface * _screen;
 	Glex::u_ptr _glex;
@@ -135,6 +137,7 @@ public:
 	bool is_hidden() const {return _is_hidden;}
 	bool is_visible() const {return !_is_hidden;}
 	void activate() {set_active(true);}
+	/** Deactivate excludes an object from the update loop.  Note that it may still be visible */
 	void deactivate() {set_active(false);}
 	bool is_active() const {return _is_active;}
 	virtual ~GameObject() {}
@@ -175,9 +178,18 @@ public:
 	};
 	/** Call update() for each active child */
 	void update(const UpdateContext &context) override;
+
 	void add_part(GameObject::u_ptr object) {
 		_parts.emplace_after(_parts.before_begin(), std::move(object));
 	};
+	/** Add a part to this composite.
+	 * Note that this memory of this part is is managed by this
+	 * containing object.
+	 * @param object
+	 */
+	void add_part(GameObject * object) {
+		_parts.emplace_after(_parts.before_begin(), GameObject::u_ptr(object));
+	}
 	void collect(std::deque<GameObject*> &c);
 	/** Default draw method does nothing.  Note that it does not draw the children.*/
 	void draw(const DrawContext&) override {};
@@ -199,7 +211,7 @@ public:
 	GameObjectChainLink() : _next(0) {}
 	/** Set the next object in the chain */
 	void set_next(GameObjectChainLink * value) {_next = value;}
-	/** Deactivate this object and set the next object in the chain */
+	/** Deactivate and hides this object and activate and show the next object in the chain */
 	void activate_next() {deactivate(); hide(); if (_next) {_next->activate();_next->show();};}
 private:
 	GameObjectChainLink * _next;

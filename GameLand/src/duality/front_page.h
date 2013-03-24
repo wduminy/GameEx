@@ -4,19 +4,23 @@
  */
 
 #pragma once
-#include "../game/game.h"
+#include "../game/game_objects.h"
 #include "../game/font.h"
  
 namespace duality {
 using namespace game;
 
-class MainPage : public game::GameObjectChainLink {
+class FrontPage : public game::GameObjectChainLink {
 public:
-	MainPage();
+	FrontPage();
 	void initialise(const ResourceContext &rc, const DrawContext& dc) override; 
 	void update(const UpdateContext &uc) override;
 	void draw(const DrawContext &dc) override;
 private:
-	Font::u_ptr _font;
+	Font2D::u_ptr _font;
+	BillBoard _panel;
+	ShaderProgram::u_ptr _program;
+	Texture::u_ptr _tex;
+    Surface::u_ptr _surface;
 };
 }
