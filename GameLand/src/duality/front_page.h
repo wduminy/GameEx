@@ -15,9 +15,10 @@ public:
 	FrontPage();
 	void initialise(const ResourceContext &rc, const DrawContext& dc) override; 
 	void update(const UpdateContext &uc) override;
-	void draw(const DrawContext &dc) override;
+	bool escaped() const {return _escaped;}
 private:
 	Font2D::u_ptr _font;
 	Panel * _panel;
+	bool _escaped;
 };
 }

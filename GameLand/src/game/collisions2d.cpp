@@ -204,6 +204,11 @@ void CollisionManagerWithBoxes::remove(CollidablePolygon* collidable) {
 	modify_boxes(collidable, false);
 }
 
+void CollisionManagerWithBoxes::clear() {
+	_outside_items.clear();
+	for_each(b, _boxes) {(*b).clear();}
+}
+
 void CollisionManagerWithBoxes::add(CollidablePolygon* collidable) {
 	modify_boxes(collidable, true);
 }

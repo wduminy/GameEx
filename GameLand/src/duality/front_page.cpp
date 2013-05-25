@@ -6,7 +6,7 @@
 #include "front_page.h"
 
 namespace duality {
-	FrontPage::FrontPage() : _font(), _panel(new Panel(-0.5,0.5,1,1)) {
+	FrontPage::FrontPage() : _font(), _panel(new Panel(-1,1,2,2)), _escaped(false) {
 		add_part(_panel);
 	}
 	
@@ -18,9 +18,8 @@ namespace duality {
 
 	void FrontPage::update(const UpdateContext &uc) {
 		if (uc.input().key_down() == SDLK_ESCAPE)
-			deactivate();
-	};
-	
-	void FrontPage::draw(const DrawContext &dc) {
+			_escaped = true;
+		else if (uc.input().key_down() == SDLK_RETURN)
+			activate_next();
 	};
 }

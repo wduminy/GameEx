@@ -136,7 +136,7 @@ public:
 	void show() {set_hidden(false);}
 	bool is_hidden() const {return _is_hidden;}
 	bool is_visible() const {return !_is_hidden;}
-	void activate() {set_active(true);}
+	virtual void activate() {set_active(true);}
 	/** Deactivate excludes an object from the update loop.  Note that it may still be visible */
 	void deactivate() {set_active(false);}
 	bool is_active() const {return _is_active;}

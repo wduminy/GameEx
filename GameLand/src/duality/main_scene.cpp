@@ -2,9 +2,9 @@
  * Copyright 2012 Willem Duminy
  * See LICENCE.txt
  */
-#include "../game/game_objects.h"
+
 #include "main_scene.h"
-#include "snake.h"
+
 
 namespace duality {
 using namespace game;
@@ -30,19 +30,15 @@ CollidablePolygon toPoly(const GLfloat v[], const GLfloat w[], const Vector2 &d)
 	return CollidablePolygon(FENCE_TYPE, toVec(v), {toVec(v,d), toVec(w,d), toVec(w)});
 }
 
-class Fence : public game::GameObject {
-public:
-	Fence(CollisionManager &colMgr) : _strip(8),
+Fence::Fence() : _strip(8),
 	    _program_p(), _tex_p(), _polys(
 	    		{toPoly(leftBack,rightBack,Vector2(0,-1)),
 	    		 toPoly(leftFront,rightFront,Vector2(0,1)),
 	    		 toPoly(leftBack,leftFront,Vector(-1,0)),
 	    		 toPoly(rightBack,rightFront,Vector(1,0))})
-	 {
-		for (int i=0; i < 4; i++)
-			colMgr.add(&_polys[i]);
-	 }
-	void initialise(const ResourceContext &ctx, const DrawContext &draw) override {
+	 {}
+
+void Fence::initialise(const ResourceContext &ctx, const DrawContext &draw) {
 		_strip.push_back({
 			leftBack, leftBackT,
 			rightBack, rightBackT,
@@ -54,7 +50,8 @@ public:
 		_tex_p = ctx.load_texture_bmp(draw.gl(),"../cracked_tiles.bmp",0);
 
 	}
-	void draw(const DrawContext &ctx) override {
+
+void Fence::draw(const DrawContext &ctx) {
 	    _tex_p->activate(_tex_p->index());
         _program_p->begin();
         _program_p->arg("tex",_tex_p->index());
@@ -63,12 +60,10 @@ public:
 		glEnd();
 		_program_p->end();
 	}
-private:
-	TriangleStrip _strip;
-	ShaderProgram::u_ptr _program_p;
-	Texture::u_ptr _tex_p;
-	CollidablePolygon _polys[4];
-};
+
+CollidablePolygon * Fence::poly(int i) {
+		return &_polys[i];
+}
 
 class Arena : public game::GameObject {
 public:
@@ -103,11 +98,29 @@ public:
 
 DualityScene::DualityScene() :
 		_col_mgr(CollisionListener::u_ptr(new DualityListener()),
-		BoundedBox2(toVec(leftBack), toVec(rightFront)),5) {
+		         BoundedBox2(toVec(leftBack), toVec(rightFront)),5),
+		_snake(new SnakeObject(_col_mgr)),
+		_fence(new Fence())
+
+			{
 	add_part(GameObject::u_ptr(new Arena()));
-	add_part(GameObject::u_ptr(new SnakeObject(_col_mgr)));
-	add_part(GameObject::u_ptr(new Fence(_col_mgr)));
+	add_part(_snake);
+	add_part(_fence);
+	set_active(false);
 }
 
+void DualityScene::update(const UpdateContext &uc) {
+	if (uc.input().key_up() == SDLK_ESCAPE)
+		activate_next();
+	else
+		GameObjectChainLink::update(uc);
+};
+
+void DualityScene::activate() {
+	 _snake->reset();GameObjectChainLink::activate();
+	for (int i=0; i < 4; i++)
+		_snake->mgr().add(_fence->poly(i));
+	GameObjectChainLink::activate();
+}
 
 }

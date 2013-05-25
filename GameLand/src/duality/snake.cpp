@@ -46,18 +46,16 @@ Snake::Snake(const Vector& startingPoint,
 		_points(),
 		_head(SNAKE_MEM_SIZE-1,0),
 		_tail(SNAKE_MEM_SIZE-1,1),
-		_move_vector(lookingAt * distancePerMove),
+		_move_vector(),
 		_rotation_angle(0.0f),
 		_radians_per_move(radiansPerTurn),
-		_translation_vector(_move_vector),
-		_remaining_growth(initialGrowth),
+		_translation_vector(lookingAt * distancePerMove),
+		_remaining_growth(0),
 		_time_to_grow(updatesPerGrow),
-		_previous_head(1),
+		_previous_head(),
 		_is_alive(true)
 	{
-		_points[_tail].assign(startingPoint);
-		ASSERT(_move_vector.norm() > 0);
-		_points[_head].assign(startingPoint + _move_vector, &_points[_tail]);
+		reset(startingPoint, lookingAt, initialGrowth);
 	}
 
 void Snake::move(const SteerDirection& dir) {
@@ -216,6 +214,20 @@ CollidablePolygon& SpinePoint::polygon() const {
 	}
 	_poly_is_dirty = false;
 	return _polygon;
+}
+
+void Snake::reset(const Vector& startingPoint,
+		const Vector& lookingAt,const int initialGrowth) {
+	_tail.assign(1);
+	_head.assign(0);
+	_previous_head = 1;
+	_is_alive = true;
+	_rotation_angle = 0;
+	_move_vector = _translation_vector;
+	_remaining_growth = initialGrowth;
+	_points[_tail].assign(startingPoint);
+	_points[_head].assign(startingPoint + _move_vector, &_points[_tail]);
+	on_reset();
 }
 
 }

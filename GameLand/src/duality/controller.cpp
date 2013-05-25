@@ -5,19 +5,21 @@
 
 #include "controller.h"
 #include "main_scene.h"
-#include "front_page.h"
 namespace duality {
 	DualityController::DualityController() :
 		MainObject(-100,DualityScene::NEAREST,DualityScene::FAREST),
-		_chain_sentinal(new FrontPage())
+		_main_page(new FrontPage())
 	{
+		auto main_scene = new DualityScene();
+		main_scene->set_next(_main_page);
+		_main_page->set_next(main_scene);
 		add_part(new SphereCamera(-1, CAM_Y, CAM_RADIUS));
-		//add_part(new DualityScene());
-		add_part(_chain_sentinal);
+		add_part(_main_page);
+		add_part(main_scene);
 	}
 
 	void DualityController::update(const UpdateContext& ctx) {
-		if (!_chain_sentinal->is_active())
+		if (_main_page->escaped())
 			deactivate();
 		else
 			MainObject::update(ctx);

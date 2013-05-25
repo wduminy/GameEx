@@ -199,6 +199,7 @@ namespace game {
 		RotateInt& operator--();
 		operator int() const {return _value;}
 		int max() const {return _max_value;}
+		void assign(int v) { _value = v; }
 		bool operator != (RotateInt& other) const {return _value != other._value;};
 	private:
 		const int _max_value;

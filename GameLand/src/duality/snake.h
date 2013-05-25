@@ -66,12 +66,16 @@ namespace duality {
 		virtual ~Snake(){};
 		void kill() {_is_alive = false;}
 		bool is_alive() const {return _is_alive;}
+		void reset(const Vector& startingPoint = Vector::origin + (Vector::up * (SNAKE_WIDTH_HALF)),
+				   const Vector& lookingAt = Vector::north,
+				   const int initialGrowth = 200);
 	protected:
 		const RotateInt& head_index() const {return _head;};
 		const RotateInt& tail_index() const {return _tail;};
 		const SnakeArray& points() const {return _points;}
 		virtual void on_head_added(){};
 		virtual void before_tail_remove(){};
+		virtual void on_reset() {};
 	private:
 		SnakeArray _points;
 		RotateInt _head, _tail;
@@ -91,14 +95,16 @@ namespace duality {
 				const Vector& startingPoint = Vector::origin + (Vector::up * (SNAKE_WIDTH_HALF)),
 				const Vector& lookingAt = Vector::north) :
 					Snake(startingPoint, lookingAt), _col_mgr(mgr) {}
+		CollisionManager& mgr() { return _col_mgr; }
 	protected:
 		void on_head_added() override;
 		void before_tail_remove() override;
+		void on_reset() override {_col_mgr.clear();}
 	private:
 		CollisionManager& _col_mgr;
 	};
 
-	class SnakeObject : public GameObject, private SnakeWithCollision {
+	class SnakeObject : public GameObject, public SnakeWithCollision {
 	public:
 		SnakeObject(CollisionManager &mgr);
 		void initialise(const ResourceContext &ctx, const DrawContext &draw) override;

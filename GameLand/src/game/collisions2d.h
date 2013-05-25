@@ -115,6 +115,7 @@ public:
 	bool check_and_add(CollidablePolygon * collidable, const bool ignoreIfCollide = false);
 	virtual void add(CollidablePolygon * collidable) = 0;
 	virtual void remove(CollidablePolygon * collidable) = 0;
+	virtual void clear() = 0;
 	const CollisionListener& listener() const {return *_listener;}
 	virtual ~CollisionManager(){}
 protected:
@@ -132,6 +133,7 @@ public:
 	SimpleCollisionManager(CollisionListener::u_ptr listener);
 	void add(CollidablePolygon * collidable) override;
 	void remove(CollidablePolygon * collidable) override;
+	void clear() override {_items.clear();}
 protected:
 	CollidablePolygon * collider_or_null(CollidablePolygon * collidable) override;
 private:
@@ -156,6 +158,7 @@ public:
 	CollisionManagerWithBoxes(CollisionListener::u_ptr listener, const BoundedBox2 & bounds, const unsigned int division_count);
 	void add(CollidablePolygon * collidable) override;
 	void remove(CollidablePolygon * collidable) override;
+	void clear() override;
 protected:
 	CollidablePolygon * collider_or_null(CollidablePolygon * collidable) override;
 	CollidablePolygonPList& list_at(int x, int y) {return _boxes[y * _division_count + x]; }
