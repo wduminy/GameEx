@@ -50,7 +50,7 @@ bool Glex::hasExtensions(const char * extension, ...) {
 	return result;
 }
 
-void Glex::check_error() {
+void Glex::check_error(const std::string& what) {
 	auto code = glGetError();
 	if (code == NO_ERROR)
         return;
@@ -88,7 +88,7 @@ void Glex::check_error() {
 		error = "An undefined error occurred";
 		break;
 	}
-	throw systemex::runtime_error_ex("%s (%d)", error, code);
+	throw systemex::runtime_error_ex("'%s': %s (%d)", what.c_str(), error, code);
 }
 
 Glex::Glex()
@@ -111,6 +111,7 @@ Glex::Glex()
 	, glActiveTexture ((PFNGLACTIVETEXTUREPROC) getGLProc("glActiveTexture"))
 	, glGetUniformLocation	((PFNGLGETUNIFORMLOCATIONPROC) getGLProc("glGetUniformLocation"))
 	, glUniform1i ((PFNGLUNIFORM1IPROC) getGLProc("glUniform1i"))
+	, glUniform1f ((PFNGLUNIFORM1FPROC) getGLProc("glUniform1f"))
 {
 }
 
@@ -157,7 +158,7 @@ void Texture::activate(const int textureIndex) {
     _texture_index = textureIndex;
 }
 
-int Texture::index() const {
+GLuint Texture::index() const {
 	if (_texture_index == -1)
 		throw runtime_error("cannot use index because texture has not been activated yet");
 	return _texture_index;
@@ -199,7 +200,12 @@ GLint ShaderProgram::loc(const GLchar * name) {
 
 void ShaderProgram::arg(const GLchar * name, const GLuint value) {
     _context.glUniform1i(loc(name),value);
-    _context.check_error();
+    _context.check_error(string("setting uniform variable: ") + name);
+}
+
+void ShaderProgram::arg(const GLchar * name, const GLfloat value) {
+    _context.glUniform1f(loc(name),value);
+    _context.check_error(string("setting uniform variable: ") + name);
 }
 
 void ShaderProgram::begin() {
@@ -229,6 +235,7 @@ GLint ShaderProgram::compile(const char * source, GLenum type) {
 		std::string error(message);
 		delete[] message;
 		g.glDeleteShader(shader);
+		error = error + "***\n" + source + "\n****";
 		throw runtime_error(error);
 	}
 	return shader;

@@ -84,18 +84,38 @@ namespace game {
 				       0,0,0,0,0,1);
 	}
 
-	BillBoard::BillBoard(const Scalar left, const Scalar top, const Scalar width,
-			const Scalar height) : _rectangle(2) {
-		auto right = left + width;
-		auto bottom = top + height;
-		_rectangle.push_back(-3,+3,0);
-		_rectangle.push_back(-3,-3,0);
-		_rectangle.push_back(3,3,0);
-		_rectangle.push_back(3,-3,0);
+	Panel::Panel(const Scalar x, const Scalar y, const Scalar width,
+			const Scalar height) : _rectangle(2),_program(),_tex(),_surface(),_left(x), _top(x) {
+		auto r = x + width;
+		auto b = y - height;
+		_rectangle.push_back(x,y,0);
+		_rectangle.push_back(x,b,0);
+		_rectangle.push_back(r,y,0);
+		_rectangle.push_back(r,b,0);
 	}
 
-	BillBoard::BillBoard(const Vector &p1, const Vector &p2) : _rectangle(2) {
-		Vector center = (p2-p1)*0.5;
+
+	void Panel::initialise(const ResourceContext &rc, const DrawContext& dc) {
+		// each game should have its own panel shader
+		_program  = rc.load_program(dc.gl(),"panel");
+		// TODO At the moment we need to load the bmp to initialise the texture
+		// properly, but we should be able to use the texture without doing this
+		const char bmpFile[] = "../test.bmp";
+		_tex = rc.load_texture_bmp(dc.gl(),bmpFile,0);
+		_surface.reset(new Surface(rc.dir() + bmpFile));
+	}
+
+	void Panel::draw(const DrawContext &dc) {
+		_tex->copy_from(*_surface);
+	    _tex->activate(_tex->index());
+        _program->begin();
+        _program->arg("tex",_tex->index());
+        _program->arg("left", _left);
+        _program->arg("top",_top);
+		glBegin(GL_TRIANGLE_STRIP);
+		_rectangle.draw();
+		glEnd();
+		_program->end();
 	}
 }
 

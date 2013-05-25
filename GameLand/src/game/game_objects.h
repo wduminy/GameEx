@@ -33,13 +33,22 @@ namespace game {
 			mutable GLfloat * _it;
 	};
 
-	class BillBoard {
+	/**
+	 * Panels are drawn on screen.  Coordinates are: centre = (0,0) left-top = (-1,1)
+	 */
+	class Panel : public GameObject {
 	public:
-		BillBoard(const Scalar left, Scalar top, const Scalar width, const Scalar height);
-		BillBoard(const Vector &p1, const Vector &p2);
-		void draw() {_rectangle.draw();}
+		Panel(const Scalar x, Scalar y, const Scalar width, const Scalar height);
+		operator SDL_Surface& () {return *_surface;}
+		void initialise(const ResourceContext &rc, const DrawContext& dc) override;
+		void draw(const DrawContext &dc) override;
 	private:
 		TriangleStrip _rectangle;
+		ShaderProgram::u_ptr _program;
+		Texture::u_ptr _tex;
+	    Surface::u_ptr _surface;
+		GLfloat _left;
+		GLfloat _top;
 	};
 
 	class SphereCamera : public GameObject {

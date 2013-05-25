@@ -18,9 +18,6 @@ public:
 	void draw(const DrawContext &dc) override;
 private:
 	Font2D::u_ptr _font;
-	BillBoard _panel;
-	ShaderProgram::u_ptr _program;
-	Texture::u_ptr _tex;
-    Surface::u_ptr _surface;
+	Panel * _panel;
 };
 }

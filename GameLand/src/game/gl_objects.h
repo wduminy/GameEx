@@ -38,7 +38,8 @@ namespace game {
 			PFNGLACTIVETEXTUREPROC glActiveTexture;
 			PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
 			PFNGLUNIFORM1IPROC glUniform1i;
-			void check_error();
+			PFNGLUNIFORM1FPROC glUniform1f;
+			void check_error(const std::string& what = "");
 			void setViewRange(const float&, const float&);
 		private:
 			// NB: terminate arg list with NULL
@@ -53,7 +54,7 @@ namespace game {
 		Texture(Glex &context);
 		void copy_from(SDL_Surface& surface);
 		void activate(const int textureIndex);
-		int index() const;
+		GLuint index() const;
 		~Texture();
 	private:
         Glex& _context;
@@ -69,6 +70,7 @@ namespace game {
 			ShaderProgram(Glex& aContext);
 			void bind(const string& vertexSource, const string& fragmentSource);
 			void arg(const GLchar * name, const GLuint value);
+			void arg(const GLchar * name, const GLfloat value);
 			void begin();
 			void end();
 			~ShaderProgram();
