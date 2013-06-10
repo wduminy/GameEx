@@ -13,7 +13,6 @@ namespace duality {
 		auto main_scene = new DualityScene();
 		main_scene->set_next(_main_page);
 		_main_page->set_next(main_scene);
-		add_part(new SphereCamera(-1, CAM_Y, CAM_RADIUS));
 		add_part(_main_page);
 		add_part(main_scene);
 	}

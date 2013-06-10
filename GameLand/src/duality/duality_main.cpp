@@ -10,11 +10,13 @@ using namespace game;
 
 int main( int , char* [] ) {
 	try {
+		auto dc = new DrawContext(false,800,600,true);
+		auto uc = new UpdateContext(50,20);
 		game::Game g(
 				MainObject::u_ptr(new DualityController()),
 				//UpdateContext::u_ptr(new UpdateContext(10000,10)), // to check performance
-				UpdateContext::u_ptr(new UpdateContext(50,20)),
-				DrawContext::u_ptr(new DrawContext(false,800,600,true)),
+				UpdateContext::u_ptr(uc),
+				DrawContext::u_ptr(dc),
 				ResourceContext::u_ptr(new ResourceContext("duality/"))
 		);
 		g.run();

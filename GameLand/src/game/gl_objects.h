@@ -53,7 +53,9 @@ namespace game {
 	public:
 		Texture(Glex &context);
 		void copy_from(SDL_Surface& surface);
-		void activate(const int textureIndex);
+		void copy_from_2d(SDL_Surface& surface);
+		void bind(const int textureIndex);
+		void activate();
 		GLuint index() const;
 		~Texture();
 	private:
@@ -73,6 +75,7 @@ namespace game {
 			void arg(const GLchar * name, const GLfloat value);
 			void begin();
 			void end();
+			bool is_first_time() const { return _first_time; }
 			~ShaderProgram();
 		private:
 			void destroy_shaders();
@@ -82,6 +85,7 @@ namespace game {
 			GLint _vertexShader;
 			GLint _fragmentShader;
 			GLint _program;
+			bool _first_time;
 		public:
 			typedef std::unique_ptr<ShaderProgram> u_ptr;
 	};

@@ -16,7 +16,7 @@ TTF_Font * open_font(const char * fileName, int pointSize) {
 }
 
 Font2D::Font2D(const std::string& fileName, int pointSize) :
-		_font(open_font(fileName.c_str(), pointSize)), _color( { 255, 255, 255,
+		_font(open_font(fileName.c_str(), pointSize)), _color( { 255, 0, 0,
 				0 }) {
 }
 

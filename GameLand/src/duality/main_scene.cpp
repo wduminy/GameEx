@@ -52,7 +52,7 @@ void Fence::initialise(const ResourceContext &ctx, const DrawContext &draw) {
 	}
 
 void Fence::draw(const DrawContext &ctx) {
-	    _tex_p->activate(_tex_p->index());
+	    _tex_p->activate();
         _program_p->begin();
         _program_p->arg("tex",_tex_p->index());
 		glBegin(GL_TRIANGLE_STRIP);
@@ -76,7 +76,7 @@ public:
 	}
 
 	void draw(const DrawContext& draw) override {
-	    _tex_p->activate(_tex_p->index());
+	    _tex_p->activate();
         _program_p->begin();
         _program_p->arg("tex",_tex_p->index());
 		glBegin(GL_TRIANGLE_STRIP);
@@ -103,10 +103,12 @@ DualityScene::DualityScene() :
 		_fence(new Fence())
 
 			{
+	add_part(new SphereCamera(-1, CAM_Y, CAM_RADIUS));
 	add_part(GameObject::u_ptr(new Arena()));
 	add_part(_snake);
 	add_part(_fence);
 	set_active(false);
+	set_hidden(false);
 }
 
 void DualityScene::update(const UpdateContext &uc) {

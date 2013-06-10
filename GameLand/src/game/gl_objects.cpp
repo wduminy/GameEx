@@ -124,6 +124,10 @@ void Texture::copy_from(SDL_Surface& surface) {
 		throw runtime_error_ex("surface  width is not a power of 2 it is %d", surface.w);
 	if ((surface.h & (surface.h - 1)) != 0)
 		throw std::runtime_error("surface height is not a power of 2");
+	copy_from_2d(surface);
+}
+
+void Texture::copy_from_2d(SDL_Surface& surface) {
 	GLenum texture_format;
 	auto bpp = surface.format->BytesPerPixel;
 	if (bpp == 4) {
@@ -140,7 +144,7 @@ void Texture::copy_from(SDL_Surface& surface) {
 			texture_format = GL_BGR;
 	} else
 		throw runtime_error_ex("surface has invalid bytes per pixel: %d",bpp);
-	glBindTexture(GL_TEXTURE_2D, _texture);
+	activate();
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -151,13 +155,17 @@ void Texture::copy_from(SDL_Surface& surface) {
     _context.check_error();
 }
 
-void Texture::activate(const int textureIndex) {
-    _context.glActiveTexture(GL_TEXTURE0 + textureIndex);
-    glBindTexture(GL_TEXTURE_2D,_texture);
-    _context.check_error();
+
+void Texture::bind(const int textureIndex) {
     _texture_index = textureIndex;
+    activate();
 }
 
+void Texture::activate() {
+    _context.glActiveTexture(GL_TEXTURE0 + _texture_index);
+    glBindTexture(GL_TEXTURE_2D,_texture);
+    _context.check_error();
+}
 GLuint Texture::index() const {
 	if (_texture_index == -1)
 		throw runtime_error("cannot use index because texture has not been activated yet");
@@ -174,6 +182,7 @@ ShaderProgram::ShaderProgram(Glex& aContext)
 	, _vertexShader(0)
 	, _fragmentShader(0)
 	, _program(0)
+    , _first_time(true)
 {}
 
 void ShaderProgram::bind(const string& vertexSource,
@@ -214,6 +223,7 @@ void ShaderProgram::begin() {
 
 void ShaderProgram::end() {
     _context.glUseProgram(0);
+    _first_time = false;
 }
 
 GLint ShaderProgram::compile(const char * source, GLenum type) {

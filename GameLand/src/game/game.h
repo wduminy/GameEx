@@ -90,6 +90,7 @@ public:
 	DrawContext(const bool fullscreen, const int width, const int height, bool opengl);
 	~DrawContext();
 	Glex& gl() const;
+	operator Glex&() const {return gl();}
 	SDL_Surface * screen() const {return _screen;}
 	int width() const {return _width;}
 	int height() const {return _height;}
@@ -211,8 +212,8 @@ public:
 	GameObjectChainLink() : _next(0) {}
 	/** Set the next object in the chain */
 	void set_next(GameObjectChainLink * value) {_next = value;}
-	/** Deactivate and hides this object and activate and show the next object in the chain */
-	void activate_next() {deactivate(); hide(); if (_next) {_next->activate();_next->show();};}
+	/** Deactivate this object and activate the next object in the chain */
+	void activate_next() {deactivate(); if (_next) {_next->activate();};}
 private:
 	GameObjectChainLink * _next;
 };

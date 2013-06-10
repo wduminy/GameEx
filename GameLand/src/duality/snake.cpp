@@ -104,7 +104,7 @@ void SnakeObject::draw(const DrawContext& gc) {
     _program_p->begin();
     _program_p->arg("snakeSkin",_tex_p->index());
     // i am not sure why this call to activate is needed
-    _tex_p->activate(_tex_p->index());
+    _tex_p->activate();
 	//glLineWidth(3); // pixels
 	glBegin(GL_TRIANGLE_STRIP);
 	auto index = tail_index();

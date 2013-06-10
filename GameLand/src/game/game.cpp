@@ -178,6 +178,7 @@ namespace game {
 			_update->tick();
 		};
 		_update->log_statistics();
+		::systemex::Log::instance().file().flush();
 	}
 
   void MainObject::initialise(const ResourceContext & rc, const DrawContext& dc) {
@@ -243,8 +244,8 @@ namespace game {
 	Texture::u_ptr ResourceContext::load_texture_bmp(Glex& gl, const char* filename, const int textureIndex) const {
 		Texture::u_ptr result(new Texture(gl));
 		Surface::u_ptr sface(new Surface(_root_directory + filename));
-		result->copy_from(*sface);
-	    result->activate(textureIndex);
+	    result->bind(textureIndex);
+	    result->copy_from(*sface);
 	    return result;
 	}
 

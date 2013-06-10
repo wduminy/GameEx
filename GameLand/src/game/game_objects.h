@@ -38,10 +38,13 @@ namespace game {
 	 */
 	class Panel : public GameObject {
 	public:
-		Panel(const Scalar x, Scalar y, const Scalar width, const Scalar height);
+		Panel(const Scalar x, Scalar y, const Scalar width, const Scalar height, int pixelW, int pixelH);
 		operator SDL_Surface& () {return *_surface;}
 		void initialise(const ResourceContext &rc, const DrawContext& dc) override;
 		void draw(const DrawContext &dc) override;
+		// call this to display updates made to the surface
+		void update_buffer() {_tex->copy_from_2d(*_surface);}
+
 	private:
 		TriangleStrip _rectangle;
 		ShaderProgram::u_ptr _program;
@@ -49,6 +52,10 @@ namespace game {
 	    Surface::u_ptr _surface;
 		GLfloat _left;
 		GLfloat _top;
+		GLfloat _width;
+		GLfloat _height;
+		int _pixelW;
+		int _pixelH;
 	};
 
 	class SphereCamera : public GameObject {

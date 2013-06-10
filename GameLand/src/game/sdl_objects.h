@@ -14,7 +14,7 @@ namespace game {
 		PREVENT_COPY(Surface)
 	public:
 		explicit Surface(const std::string& path_to_bmp);
-		Surface(const int size);
+		Surface(const int w, const int h);
 		operator SDL_Surface& () {return *_surface;}
 		~Surface();
 	private:

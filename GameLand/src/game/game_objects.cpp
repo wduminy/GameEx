@@ -84,8 +84,19 @@ namespace game {
 				       0,0,0,0,0,1);
 	}
 
+	/**
+	 *
+	 * @param x  -1 = left 1 = right
+	 * @param y  -1 = bottom 1 = top
+	 * @param width 1.0 is full screen
+	 * @param height 1.0 is full screen
+	 * @param pixelW
+	 * @param pixelH
+	 */
 	Panel::Panel(const Scalar x, const Scalar y, const Scalar width,
-			const Scalar height) : _rectangle(2),_program(),_tex(),_surface(),_left(x), _top(x) {
+			const Scalar height, int pixelW, int pixelH) :
+					_rectangle(2),_program(),_tex(),_surface(),
+					_left(x), _top(x), _pixelW(pixelW), _pixelH(pixelH), _width(width), _height(height) {
 		auto r = x + width;
 		auto b = y - height;
 		_rectangle.push_back(x,y,0);
@@ -100,19 +111,23 @@ namespace game {
 		_program  = rc.load_program(dc.gl(),"panel");
 		// TODO At the moment we need to load the bmp to initialise the texture
 		// properly, but we should be able to use the texture without doing this
-		const char bmpFile[] = "../test.bmp";
-		_tex = rc.load_texture_bmp(dc.gl(),bmpFile,0);
-		_surface.reset(new Surface(rc.dir() + bmpFile));
+		_tex.reset(new Texture(dc));
+		//_surface.reset(new Surface(rc.dir() + "../test.bmp"));
+		_surface.reset(new Surface(_pixelW,_pixelH));
+		_tex->bind(1);
 	}
 
 	void Panel::draw(const DrawContext &dc) {
-		_tex->copy_from(*_surface);
-	    _tex->activate(_tex->index());
+	    _tex->activate();
         _program->begin();
-        _program->arg("tex",_tex->index());
-        _program->arg("left", _left);
-        _program->arg("top",_top);
-		glBegin(GL_TRIANGLE_STRIP);
+        if (_program->is_first_time()) {
+			_program->arg("tex",_tex->index());
+			_program->arg("left", _left);
+			_program->arg("top",_top);
+			_program->arg("width", _width);
+			_program->arg("height",_height);
+        }
+        glBegin(GL_TRIANGLE_STRIP);
 		_rectangle.draw();
 		glEnd();
 		_program->end();

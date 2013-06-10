@@ -10,12 +10,13 @@
 namespace duality {
 using namespace game;
 
-class FrontPage : public game::GameObjectChainLink {
+class FrontPage : public GameObjectChainLink {
 public:
 	FrontPage();
 	void initialise(const ResourceContext &rc, const DrawContext& dc) override; 
 	void update(const UpdateContext &uc) override;
 	bool escaped() const {return _escaped;}
+	void set_active(const bool v) override {GameObjectChainLink::set_active(v);set_hidden(!v);}
 private:
 	Font2D::u_ptr _font;
 	Panel * _panel;

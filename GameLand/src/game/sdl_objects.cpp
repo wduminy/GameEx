@@ -18,7 +18,7 @@ game::Surface::Surface(const std::string& path_to_bmp)
 	check(_surface);
 }
 
-game::Surface::Surface(const int size)
+game::Surface::Surface(const int w, const int h)
   :_surface() {
 	Uint32 rmask, gmask, bmask, amask;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
@@ -32,7 +32,7 @@ game::Surface::Surface(const int size)
     bmask = 0x00ff0000;
     amask = 0xff000000;
 #endif
-    _surface = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 32,
+    _surface = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, 32,
                                        rmask, gmask, bmask, amask);
     check(_surface);
 }
