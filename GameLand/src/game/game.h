@@ -26,7 +26,7 @@ public:
 
 	string load_text(const char * filename) const;
 	const string& dir() const {return _root_directory;};
-	ShaderProgram::u_ptr load_program(Glex& gl, const char * filePrefix) const;
+	ShaderProgram * load_program(Glex& gl, const char * filePrefix) const;
 
 	/**
 	 * @param gl
@@ -34,7 +34,7 @@ public:
 	 * @param textureIndex zero based index where 0 implies
 	 * @return
 	 */
-	Texture::u_ptr load_texture_bmp(Glex& gl, const char * filename, const int textureIndex) const;
+	Texture * load_texture_bmp(Glex& gl, const char * filename, const int textureIndex) const;
 private:
 	const string _root_directory;
 public:

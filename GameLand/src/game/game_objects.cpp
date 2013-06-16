@@ -96,7 +96,8 @@ namespace game {
 	Panel::Panel(const Scalar x, const Scalar y, const Scalar width,
 			const Scalar height, int pixelW, int pixelH) :
 					_rectangle(2),_program(),_tex(),_surface(),
-					_left(x), _top(x), _pixelW(pixelW), _pixelH(pixelH), _width(width), _height(height) {
+					_left(x), _top(x), _width(width), _height(height),
+					_pixelW(pixelW), _pixelH(pixelH) {
 		auto r = x + width;
 		auto b = y - height;
 		_rectangle.push_back(x,y,0);
@@ -108,7 +109,7 @@ namespace game {
 
 	void Panel::initialise(const ResourceContext &rc, const DrawContext& dc) {
 		// each game should have its own panel shader
-		_program  = rc.load_program(dc.gl(),"panel");
+		_program.reset(rc.load_program(dc.gl(),"panel"));
 		// TODO At the moment we need to load the bmp to initialise the texture
 		// properly, but we should be able to use the texture without doing this
 		_tex.reset(new Texture(dc));

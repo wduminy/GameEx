@@ -24,12 +24,19 @@ void Font2D::render(SDL_Surface& surface, const Sint16 x, const Sint16 y,
 		const std::string &text) const {
 	SDL_Surface * text_sf = TTF_RenderText_Solid(_font, text.c_str(), _color);
 	if (text_sf) {
-		SDL_Rect dest_r = { x, y, 0, 0 };
+		SDL_Rect dest_r { x, y, 0, 0 };
 		check(SDL_BlitSurface(text_sf, NULL, &surface, &dest_r));
 		SDL_FreeSurface(text_sf);
 	} else
 		throw systemex::runtime_error_ex("render text failed: %s",
 				TTF_GetError());
+}
+
+void Font2D::render_center(SDL_Surface& surface, const Sint16 x, const Sint16 y,
+		const std::string &text) const {
+	int w, h;
+	TTF_SizeText(_font,text.c_str(),&w,&h);
+	render(surface, x - w /2, y,text);
 }
 
 Font2D::~Font2D() {

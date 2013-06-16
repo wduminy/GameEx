@@ -46,8 +46,8 @@ void Fence::initialise(const ResourceContext &ctx, const DrawContext &draw) {
 			leftFront,leftFrontT,
 			leftBack, leftBackT
 		});
-		_program_p = ctx.load_program(draw.gl(),"fence");
-		_tex_p = ctx.load_texture_bmp(draw.gl(),"../cracked_tiles.bmp",0);
+		_program_p.reset(ctx.load_program(draw.gl(),"fence"));
+		_tex_p.reset(ctx.load_texture_bmp(draw.gl(),"../cracked_tiles.bmp",0));
 
 	}
 
@@ -71,8 +71,8 @@ public:
 
 	void initialise(const ResourceContext &ctx, const DrawContext &draw) override {
 		_strip.push_back({leftFront,leftBack,rightFront,rightBack});
-		_program_p = ctx.load_program(draw.gl(),"arena");
-		_tex_p = ctx.load_texture_bmp(draw.gl(),"../cracked_tiles.bmp",0);
+		_program_p.reset(ctx.load_program(draw.gl(),"arena"));
+		_tex_p.reset(ctx.load_texture_bmp(draw.gl(),"../cracked_tiles.bmp",0));
 	}
 
 	void draw(const DrawContext& draw) override {

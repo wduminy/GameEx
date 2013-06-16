@@ -18,8 +18,10 @@ public:
 	Font2D(const std::string &fileName, int pointSize);
 	/** Set foreground colour. Default is white */
 	void set_fg(const SDL_Color &value) {_color = value;} 
-	/** Render with transparent background */
+	/** Render with transparent background, using the current foreground colour */
 	void render(SDL_Surface& surface, const Sint16 x, const Sint16 y, const std::string &text) const;
+	/** Draw such that x is the horizontal center */
+	void render_center(SDL_Surface& surface, const Sint16 x, const Sint16 y, const std::string &text) const;
 	~Font2D();
 private:
 	TTF_Font * _font;

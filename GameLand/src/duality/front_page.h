@@ -11,6 +11,7 @@ namespace duality {
 using namespace game;
 
 class FrontPage : public GameObjectChainLink {
+	PREVENT_COPY(FrontPage)
 public:
 	FrontPage();
 	void initialise(const ResourceContext &rc, const DrawContext& dc) override; 
