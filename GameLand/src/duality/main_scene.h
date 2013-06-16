@@ -11,7 +11,7 @@
 #define ARENA_HALF 3.0f
 #define FLOOR_Z 0.0f
 #define CAM_Y ARENA_HALF * 1.5
-#define CAM_RADIUS ARENA_HALF * 1.5
+#define CAM_RADIUS ARENA_HALF * 1.2
 
 namespace duality {
 	using namespace game;

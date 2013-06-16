@@ -103,46 +103,45 @@ void Snake::grow(const unsigned int sizeIncrement) {
 void SnakeObject::draw(const DrawContext& gc) {
     _program_p->begin();
     _program_p->arg("snakeSkin",_tex_p->index());
-    // i am not sure why this call to activate is needed
     _tex_p->activate();
-	//glLineWidth(3); // pixels
-	glBegin(GL_TRIANGLE_STRIP);
+	glBegin(GL_QUADS);
 	auto index = tail_index();
 	int previous_point = index;
 	--index;
-	const auto &firstPoint = points()[previous_point];
-	glVertex3fv(firstPoint.bottomRight().c_elems());
 	for (; index != head_index(); --index) {
 		const auto &p = points()[previous_point];
 		const auto &q = points()[index];
+		const auto &t0 = p.bottomLeft().c_elems();
+		const auto &t1 = p.topMiddle().c_elems();
+		const auto &t2 = p.bottomRight().c_elems();
+		const auto &u0 = q.bottomLeft().c_elems();
+		const auto &u1 = q.topMiddle().c_elems();
+		const auto &u2 = q.bottomRight().c_elems();
+
+		// quad on side 0
 		glTexCoord2d(previous_point,0);
-		glVertex3fv(p.topMiddle().c_elems());
+		glVertex3fv(t0);
+		glTexCoord2d(index,0);
+		glVertex3fv(u0);
+		glTexCoord2d(index,0.5);
+		glVertex3fv(u1);
+		glTexCoord2d(previous_point,0.5);
+		glVertex3fv(t1);
+
+		// quad on other side
+		glTexCoord2d(previous_point,1.0);
+		glVertex3fv(t2);
+		glTexCoord2d(previous_point,0.5);
+		glVertex3fv(t1);
+		glTexCoord2d(index,0.5);
+		glVertex3fv(u1);
 		glTexCoord2d(index,1.0);
-		glVertex3fv(q.bottomRight().c_elems());
+		glVertex3fv(u2);
+
 		previous_point = index;
 	}
-	const auto &lastPoint = points()[previous_point];
-	glTexCoord2d(index,1.0);
-	glVertex3fv(lastPoint.topMiddle().c_elems());
 	glEnd();
 
-	glBegin(GL_TRIANGLE_STRIP);
-	auto index2 = tail_index();
-	previous_point = index2;
-	--index2;
-	glVertex3fv(firstPoint.topMiddle().c_elems());
-	for (; index2 != head_index(); --index2) {
-		const auto &p = points()[previous_point];
-		const auto &q = points()[index2];
-		glTexCoord2d(previous_point,1.0);
-		glVertex3fv(p.bottomLeft().c_elems());
-		glTexCoord2d(index2,0);
-		glVertex3fv(q.topMiddle().c_elems());
-		previous_point = index2;
-	}
-	glTexCoord2d(index2,0);
-	glVertex3fv(lastPoint.bottomLeft().c_elems());
-	glEnd();
 	_program_p->end();
 
 }
