@@ -96,6 +96,7 @@ public:
 	int height() const {return _height;}
 	bool has_opengl() const {return _glex.get();}
 	void swap();
+	void screen_to_bmp(const std::string& filename) const;
 private:
 	SDL_Surface * _screen;
 	Glex::u_ptr _glex;
@@ -221,12 +222,13 @@ private:
 class MainObject: public GameObjectWithParts {
 public:
 	MainObject(int drawOrder, GLdouble nearest, GLdouble farest)
-		: GameObjectWithParts(drawOrder), _nearest(nearest), _farest(farest) {};
+		: GameObjectWithParts(drawOrder), _nearest(nearest), _farest(farest), _print_screen(false) {};
     void initialise(const ResourceContext & rctx, const DrawContext& dctx) override;
 	void update(const UpdateContext& ctx) override;
 	void draw(const DrawContext&) override;
 private:
 	GLdouble _nearest, _farest;
+	bool _print_screen;
 public:
 	typedef std::unique_ptr<MainObject> u_ptr;
 };

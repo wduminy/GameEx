@@ -202,6 +202,8 @@ void MainObject::update(const UpdateContext& ctx) {
 	auto i = ctx.input();
 	if (i.is_quit() || (i.key_down() == SDLK_c && i.is_ctl_down()))
 		deactivate();
+	if (ctx.input().key_down() == SDLK_PRINT)
+		_print_screen = true;
 }
 
 void MainObject::draw(const DrawContext& dc) {
@@ -212,6 +214,9 @@ void MainObject::draw(const DrawContext& dc) {
 		/* We don't want to modify the projection matrix. */
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
+	}
+	if (_print_screen) {
+		dc.screen_to_bmp("screen.bmp");
 	}
 }
 
@@ -261,6 +266,34 @@ void GameObjectWithParts::set_active(const bool value) {
 	{
 		(*e)->set_active(value);
 	}
+}
+
+SDL_Surface* flip_vertical(SDL_Surface* sfc) {
+     SDL_Surface* result = SDL_CreateRGBSurface(sfc->flags, sfc->w, sfc->h,
+         sfc->format->BytesPerPixel * 8, sfc->format->Rmask, sfc->format->Gmask,
+         sfc->format->Bmask, sfc->format->Amask);
+     const auto pitch = sfc->pitch;
+     const auto pxlength = pitch*sfc->h;
+     auto pixels = static_cast<unsigned char*>(sfc->pixels) + pxlength;
+     auto rpixels = static_cast<unsigned char*>(result->pixels) ;
+     for(auto line = 0; line < sfc->h; ++line) {
+         memcpy(rpixels,pixels,pitch);
+         pixels -= pitch;
+         rpixels += pitch;
+     }
+     return result;
+}
+
+void DrawContext::screen_to_bmp(const std::string& filename) const {
+	if (!has_opengl())
+		throw std::runtime_error("screen shot works only in open gl mode");
+	SDL_Surface * image = SDL_CreateRGBSurface(SDL_SWSURFACE, _width, _height, 24, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+	glReadBuffer(GL_FRONT);
+	glReadPixels(0, 0, _width, _height, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
+	SDL_Surface * flipped = flip_vertical(image);
+	SDL_SaveBMP(flipped, filename.c_str());
+	SDL_FreeSurface(image);
+	SDL_FreeSurface(flipped);
 }
 
 }
