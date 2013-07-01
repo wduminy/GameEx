@@ -148,30 +148,49 @@ Game::Game(MainObject::u_ptr primaryPart, UpdateContext::u_ptr update,
 				std::move(draw)), _resource(std::move(resource)) {
 }
 
-void Game::run() {
-	_primary->initialise(*_resource, *_draw);
-	std::deque<GameObject *> objects;
-	_primary->collect(objects);
-	// to fix draw order, sort the object
-	std::sort(objects.begin(), objects.end(),
-			[](const GameObject * a, const GameObject * b) {
-				return a->draw_order() < b->draw_order();});
-	_update->tick();
-	while (_primary->is_active()) {
-		if (_update->is_update_step()) {
-			_primary->update(*_update);
-		}
-		if (_update->is_draw_step()) {
-			for (auto it = objects.begin(); it != objects.end(); it++) {
-				if ((*it)->is_visible())
-					(*it)->draw(*_draw);
-			}
-			_draw->swap();
-		}
+Game::Game(MainObject * primaryPart,
+		const std::string& resource_path,
+		int ups, int fps,
+		bool fullscreen, int width, int height,
+		bool opengl) : Game(
+				MainObject::u_ptr(primaryPart),
+				UpdateContext::u_ptr(new UpdateContext(ups,fps)),
+				DrawContext::u_ptr(new DrawContext(fullscreen,width,height,opengl)),
+				ResourceContext::u_ptr(new ResourceContext(resource_path))
+			) {}
+
+int Game::run() {
+	try {
+		_primary->initialise(*_resource, *_draw);
+		std::deque<GameObject *> objects;
+		_primary->collect(objects);
+		// to fix draw order, sort the object
+		std::sort(objects.begin(), objects.end(),
+				[](const GameObject * a, const GameObject * b) {
+					return a->draw_order() < b->draw_order();});
 		_update->tick();
-	};
-	_update->log_statistics();
-	::systemex::Log::instance().file().flush();
+		while (_primary->is_active()) {
+			if (_update->is_update_step()) {
+				_primary->update(*_update);
+			}
+			if (_update->is_draw_step()) {
+				for (auto it = objects.begin(); it != objects.end(); it++) {
+					if ((*it)->is_visible())
+						(*it)->draw(*_draw);
+				}
+				_draw->swap();
+			}
+			_update->tick();
+		};
+		_update->log_statistics();
+		return EXIT_SUCCESS;
+	} catch (std::exception &e) {
+		LOG << "exception: " << (e.what()) << std::endl;
+	    return EXIT_FAILURE;
+		} catch (...) {
+		LOG << "unexpected error occurred";
+	    return EXIT_FAILURE;
+	}
 }
 
 void MainObject::initialise(const ResourceContext & rc, const DrawContext& dc) {

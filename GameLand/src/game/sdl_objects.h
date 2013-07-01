@@ -15,7 +15,8 @@ namespace game {
 	public:
 		explicit Surface(const std::string& path_to_bmp);
 		Surface(const int w, const int h);
-		operator SDL_Surface& () {return *_surface;}
+		operator SDL_Surface& () {return sdl();}
+		SDL_Surface& sdl() {return *_surface;}
 		~Surface();
 	private:
 		SDL_Surface * _surface;

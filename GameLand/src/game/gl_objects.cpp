@@ -119,7 +119,7 @@ Texture::Texture(Glex& context) : _context(context), _texture(0), _texture_index
 	glGenTextures(1, &_texture);
 }
 
-void Texture::copy_from(SDL_Surface& surface) {
+void Texture::copy_from(const SDL_Surface& surface) {
 	if ((surface.w & (surface.w - 1)) != 0)
 		throw runtime_error_ex("surface  width is not a power of 2 it is %d", surface.w);
 	if ((surface.h & (surface.h - 1)) != 0)
@@ -127,7 +127,7 @@ void Texture::copy_from(SDL_Surface& surface) {
 	copy_from_2d(surface);
 }
 
-void Texture::copy_from_2d(SDL_Surface& surface) {
+void Texture::copy_from_2d(const SDL_Surface& surface) {
 	GLenum texture_format;
 	auto bpp = surface.format->BytesPerPixel;
 	if (bpp == 4) {
@@ -162,9 +162,11 @@ void Texture::bind(const int textureIndex) {
 }
 
 void Texture::activate() {
+	if (_texture_index < 0)
+		throw runtime_error("texture has not been bound");
     _context.glActiveTexture(GL_TEXTURE0 + _texture_index);
     glBindTexture(GL_TEXTURE_2D,_texture);
-    _context.check_error();
+    _context.check_error("bind texture");
 }
 GLuint Texture::index() const {
 	if (_texture_index == -1)

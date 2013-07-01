@@ -52,8 +52,8 @@ namespace game {
 	class Texture {
 	public:
 		Texture(Glex &context);
-		void copy_from(SDL_Surface& surface);
-		void copy_from_2d(SDL_Surface& surface);
+		void copy_from(const SDL_Surface& surface);
+		void copy_from_2d(const SDL_Surface& surface);
 		void bind(const int textureIndex);
 		void activate();
 		GLuint index() const;

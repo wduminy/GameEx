@@ -221,7 +221,7 @@ private:
 
 class MainObject: public GameObjectWithParts {
 public:
-	MainObject(int drawOrder, GLdouble nearest, GLdouble farest)
+	MainObject(int drawOrder=-1, GLdouble nearest=0.1, GLdouble farest=100)
 		: GameObjectWithParts(drawOrder), _nearest(nearest), _farest(farest), _print_screen(false) {};
     void initialise(const ResourceContext & rctx, const DrawContext& dctx) override;
 	void update(const UpdateContext& ctx) override;
@@ -240,8 +240,13 @@ public:
 		UpdateContext::u_ptr update,
 		DrawContext::u_ptr draw,
 		ResourceContext::u_ptr resource);
+	Game(MainObject * primaryPart,
+			const std::string& resource_path,
+			int ups = 50, int fps = 20,
+			bool fullscreen = false, int width=800, int height=600,
+			bool opengl = true);
 	// the game runs until primary is dead
-	void run();
+	int run();
 private:
 	MainObject::u_ptr _primary;
 	UpdateContext::u_ptr _update;

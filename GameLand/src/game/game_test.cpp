@@ -107,22 +107,23 @@ namespace tut {
 	TEST<8>() {
 		set_test_name("load bmp");
 		ResourceContext ctx;
-		ctx.load_BMP("cracked_tiles.BMP");
+		game::Surface s("media/cracked_tiles.BMP");
 	}
 
 	TEST<9>() {
 		set_test_name("load BMP fails");
 		ResourceContext ctx;
-		ensure_error(ctx.load_BMP("_not_a_name.bmp"),"name.bmp");
+		ensure_error(game::Surface("_not_a_name.bmp"),"name.bmp");
 	}
 
 	TEST<10>() {
 		set_test_name("load opengl surface");
 		ResourceContext ctx;
 		DrawContext dx(false,10,10,true);
-		auto surface = ctx.load_BMP("cracked_tiles.BMP");
+		game::Surface surface("media/cracked_tiles.BMP");
 		Texture t(dx.gl());
-		t.copy_from(*surface);
+		t.bind(1);
+		t.copy_from(surface.sdl());
 	}
 
 	TEST<11>() {
