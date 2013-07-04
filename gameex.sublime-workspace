@@ -36,14 +36,6 @@
 			}
 		},
 		{
-			"file": "GameLand/src/game/game.cpp",
-			"settings":
-			{
-				"buffer_size": 7471,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 			"settings":
 			{
@@ -157,6 +149,7 @@
 	},
 	"file_history":
 	[
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/my_tasks.todo",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/main_scene.cpp",
@@ -166,7 +159,6 @@
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/collisions2d.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/systemex.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game_math.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/duality_main.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game_objects.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/main_scene.h",
@@ -247,7 +239,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -279,34 +271,6 @@
 				},
 				{
 					"buffer": 1,
-					"file": "GameLand/src/game/game.cpp",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7471,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2455,
-								2455
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 3466.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
 					"file": "/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 					"semi_transient": false,
 					"settings":

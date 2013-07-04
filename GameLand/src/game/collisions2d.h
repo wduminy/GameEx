@@ -106,6 +106,7 @@ public:
 class CollidablePolygonPList : public std::list<CollidablePolygon *> {
 public:
 	CollidablePolygon * collider_or_null(CollidablePolygon * collidable);
+	virtual ~CollidablePolygonPList() {}
 };
 
 class CollisionManager {

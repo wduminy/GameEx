@@ -69,7 +69,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="duality/duality_test.cpp|game/collisions2d_test.cpp|game/game_test.cpp|systemex/system_test.cpp|testex|network/network_test.cpp|testex/test_main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="terrain/terrain_main.cpp|duality/duality_test.cpp|game/collisions2d_test.cpp|game/game_test.cpp|systemex/system_test.cpp|testex|network/network_test.cpp|testex/test_main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -139,7 +139,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="duality/duality_test.cpp|game/collisions2d_test.cpp|network/network_test.cpp|systemex/leaktrack.cpp|game/game_test.cpp|systemex/system_test.cpp|testex" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="terrain/terrain_main.cpp|duality/duality_test.cpp|game/collisions2d_test.cpp|network/network_test.cpp|systemex/leaktrack.cpp|game/game_test.cpp|systemex/system_test.cpp|testex" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -160,7 +160,7 @@
 					<folderInfo id="cdt.managedbuild.config.gnu.mingw.exe.debug.1445902212.482944226." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.mingw.exe.debug.716912375" name="MinGW GCC" superClass="cdt.managedbuild.toolchain.gnu.mingw.exe.debug">
 							<targetPlatform id="cdt.managedbuild.target.gnu.platform.mingw.exe.debug.642814541" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.mingw.exe.debug"/>
-							<builder buildPath="${workspace_loc:/GameLand/Debug}" id="cdt.managedbuild.tool.gnu.builder.mingw.base.1311372716" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="cdt.managedbuild.tool.gnu.builder.mingw.base"/>
+							<builder buildPath="${workspace_loc:/GameLand}/Test" id="org.eclipse.cdt.build.core.internal.builder.67243230" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="org.eclipse.cdt.build.core.internal.builder"/>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.mingw.exe.debug.1230678092" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.exe.debug">
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.19029014" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -218,7 +218,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="network/network_test.cpp|GameLand.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="duality/duality_main.cpp|terrain/terrain_main.cpp|network/network_test.cpp|GameLand.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -236,6 +236,7 @@
 		<configuration configurationName="Test">
 			<resource resourceType="PROJECT" workspacePath="/GameLand"/>
 		</configuration>
+		<configuration configurationName="Terrain Debug"/>
 		<configuration configurationName="Debug">
 			<resource resourceType="PROJECT" workspacePath="/GameLand"/>
 		</configuration>
