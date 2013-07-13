@@ -20,6 +20,7 @@ namespace game {
 	using std::array;
 
 	typedef GLfloat Scalar;
+	typedef unsigned char Byte;
 	extern const Scalar zero;
 	extern const Scalar unity;
 	extern const Scalar pi;   // pi is 180 degrees
@@ -104,7 +105,7 @@ namespace game {
 
 
 	/**
-	 * Coordinate system: x - increase to west, y increases north, z increases up you
+	 * Coordinate system: x - increase to west, y increases north, z increases up
 	 */
 	class Vector : public Vector2 {
 		public:

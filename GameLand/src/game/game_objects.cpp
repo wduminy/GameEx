@@ -45,8 +45,8 @@ namespace game {
 			draw_step();
 	}
 
-	SphereCamera::SphereCamera(int drawOrder, double z, double r)
-	: GameObject(drawOrder), _circleZ(z), _circleRadius(r), _theta(0), _delta(0) {}
+	SphereCamera::SphereCamera(int drawOrder, double z, double r, const Vector& location)
+	: GameObject(drawOrder), _circleZ(z), _circleRadius(r), _theta(0), _delta(0), _location(location) {}
 
 	void SphereCamera::update(const UpdateContext& ctx) {
 		const static double rads_per_update = ctx.seconds_per_update() * rads_per_second;
@@ -79,9 +79,12 @@ namespace game {
 
 	void SphereCamera::draw(const DrawContext&) {
 		gluLookAt(_circleRadius * sin(_theta),
-				  -_circleRadius * cos(_theta),
-				  _circleZ,
-				       0,0,0,0,0,1);
+				-_circleRadius * cos(_theta),
+				_circleZ,
+				  _location.x(),
+				  _location.y(),
+				  _location.z(),
+				   0,0,1);
 	}
 
 	/**

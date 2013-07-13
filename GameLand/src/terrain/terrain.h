@@ -5,3 +5,4 @@
  */
 #pragma once
 #include "heightmap.h"
+#include "terrain_object.h"

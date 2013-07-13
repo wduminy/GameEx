@@ -69,7 +69,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="terrain/terrain_main.cpp|duality/duality_test.cpp|game/collisions2d_test.cpp|game/game_test.cpp|systemex/system_test.cpp|testex|network/network_test.cpp|testex/test_main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="duality/duality_main.cpp|duality/duality_test.cpp|game/collisions2d_test.cpp|game/game_test.cpp|systemex/system_test.cpp|testex|network/network_test.cpp|testex/test_main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -139,7 +139,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="terrain/terrain_main.cpp|duality/duality_test.cpp|game/collisions2d_test.cpp|network/network_test.cpp|systemex/leaktrack.cpp|game/game_test.cpp|systemex/system_test.cpp|testex" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="duality/duality_main.cpp|duality/duality_test.cpp|game/collisions2d_test.cpp|network/network_test.cpp|systemex/leaktrack.cpp|game/game_test.cpp|systemex/system_test.cpp|testex" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

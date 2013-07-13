@@ -2,7 +2,7 @@
  * Copyright 2012 Willem Duminy
  * See LICENCE.txt
  */
-#include "game.h"
+#include "game_base.h"
 #include "game_math.h"
 #include <array>
 #include <vector>
@@ -60,14 +60,16 @@ namespace game {
 
 	class SphereCamera : public GameObject {
 		public:
-			SphereCamera(int drawOrder, double circleZ = 5, double circleRadius = 5);
+			SphereCamera(int drawOrder, double circleZ = 5, double circleRadius = 5, const Vector& location = Vector::origin);
 			void update(const UpdateContext& ctx);
 			void draw(const DrawContext& ctx);
+			Vector& location() { return _location; }
 		private:
 			double _circleZ;
 			const double _circleRadius;
 			double _theta;
 			double _delta;
+			Vector _location;
 	};
 
 
