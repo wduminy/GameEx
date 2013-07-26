@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <winsock2.h>
-#include "../systemex/systemex.h"
+#include <systemex/systemex.h>
 using std::exception;
 using std::cerr;
 using std::endl;

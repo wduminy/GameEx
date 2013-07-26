@@ -2,9 +2,9 @@
  * Copyright 2012 Willem Duminy
  * See LICENCE.txt
  */
-#include "../testex/test_util.h"
-#include "game.h"
-#include "game_math.h"
+#include <test_util.h>
+#include <game/game.h>
+#include <game/game_math.h>
 
 #define TEST template<> template<> void test_group<gamedata>::object::test
 namespace tut {

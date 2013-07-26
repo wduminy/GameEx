@@ -3,7 +3,7 @@
  * See LICENCE.txt
  */
 #include <tut/tut.hpp>
-#include "systemex.h"
+#include <systemex/systemex.h>
 /**
  * \brief Unit tests
  */

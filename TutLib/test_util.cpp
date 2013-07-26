@@ -5,7 +5,7 @@
 
 #include "test_util.h"
 #include <cstring>
-#include "../systemex/systemex.h"
+#include <systemex/systemex.h>
 namespace tut {
 using namespace systemex;
 void ensure_contains(const char * text, const char * sought) {

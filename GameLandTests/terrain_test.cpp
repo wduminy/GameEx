@@ -1,9 +1,9 @@
-#include "../testex/test_util.h"
+#include <test_util.h>
 #define TESTDATA TerrainData
 #define TEST(N) template<> template<> void test_group<tut::TESTDATA>::object::test<N>()
 #define BEGIN(Num,Name) template<> template<> void test_group<TESTDATA>::object::test<Num>() {set_test_name(Name);
 #define END }
-#include "terrain.h"
+#include <terrain/terrain.h>
 
 namespace tut {
 	using namespace terrain;

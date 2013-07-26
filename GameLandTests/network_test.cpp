@@ -2,8 +2,8 @@
  * Copyright 2012 Willem Duminy
  * See LICENCE.txt
  */
-#include "../testex/test_util.h"
-#include "network.h"
+#include <test_util.h>
+#include <network/network.h>
 
 #define TEST template<> template<> void test_group<networkdata>::object::test
 namespace tut {
