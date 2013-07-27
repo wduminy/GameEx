@@ -19,6 +19,9 @@ public:
 		check_range(c,r); return _elems.at(r * n_rows + c);}
 	elemT& operator() (size_t c, size_t r) {
 		check_range(c,r);return _elems.at(r * n_rows + c);}
+	size_t count_rows() const {return n_rows; }
+	size_t count_columns() const {return m_columns; }
+	size_t size_traverse_triangles() const {return m_columns * n_rows * 2;}
 	virtual ~Heightmap() {};
 	void traverse(std::function<void (int c, int r, elemT h)> applyF) const {
 		for (auto c = 0U; c < m_columns; c++)
