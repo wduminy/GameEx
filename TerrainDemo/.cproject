@@ -18,7 +18,7 @@
 					<folderInfo id="cdt.managedbuild.config.gnu.mingw.exe.release.1799551246.921829521." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.mingw.exe.release.837689326" name="MinGW GCC" superClass="cdt.managedbuild.toolchain.gnu.mingw.exe.release">
 							<targetPlatform id="cdt.managedbuild.target.gnu.platform.mingw.exe.release.65284358" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.mingw.exe.release"/>
-							<builder buildPath="${workspace_loc:/GameLand/Release}" id="cdt.managedbuild.tool.gnu.builder.mingw.base.1492634261" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="cdt.managedbuild.tool.gnu.builder.mingw.base"/>
+							<builder autoBuildTarget="" buildPath="${workspace_loc:/TerrainDemo}/Debug" cleanBuildTarget="" enableAutoBuild="true" enableCleanBuild="true" enabledIncrementalBuild="true" id="cdt.managedbuild.tool.gnu.builder.mingw.base.1492634261" incrementalBuildTarget="" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="cdt.managedbuild.tool.gnu.builder.mingw.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.mingw.exe.release.1015101248" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.exe.release">
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1460087674" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -133,7 +133,7 @@
 								</option>
 								<option id="gnu.cpp.link.option.paths.1450408102" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;C:\development\cpp\libraries\SDL-1.2.15\lib&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GameLandLib/Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GameLandLib/Release}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1325239473" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -175,6 +175,7 @@
 		</configuration>
 		<configuration configurationName="Debug">
 			<resource resourceType="PROJECT" workspacePath="/TerrainDemo"/>
+			<resource resourceType="PROJECT" workspacePath="/GameLandLib"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>

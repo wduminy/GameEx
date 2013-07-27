@@ -18,7 +18,7 @@
 					<folderInfo id="cdt.managedbuild.config.gnu.mingw.exe.release.1799551246.568727818.1034319690." name="/" resourcePath="">
 						<toolChain errorParsers="" id="cdt.managedbuild.toolchain.gnu.mingw.exe.release.1555730973" name="MinGW GCC" superClass="cdt.managedbuild.toolchain.gnu.mingw.exe.release">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.PE" id="cdt.managedbuild.target.gnu.platform.mingw.exe.release.438219654" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.mingw.exe.release"/>
-							<builder autoBuildTarget="" buildPath="${workspace_loc:/GameLand/Release}" cleanBuildTarget="" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" errorParsers="" id="cdt.managedbuild.tool.gnu.builder.mingw.base.1276430957" incrementalBuildTarget="" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" parallelBuildOn="false" superClass="cdt.managedbuild.tool.gnu.builder.mingw.base"/>
+							<builder autoBuildTarget="" buildPath="${workspace_loc:/GameLand/Release}" cleanBuildTarget="" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" errorParsers="" id="cdt.managedbuild.tool.gnu.builder.mingw.base.1276430957" incrementalBuildTarget="" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="cdt.managedbuild.tool.gnu.builder.mingw.base"/>
 							<tool command="as" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GASErrorParser" id="cdt.managedbuild.tool.gnu.assembler.mingw.exe.release.1261344120" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.exe.release">
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1202201622" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -103,6 +103,7 @@
 		<configuration configurationName="Release">
 			<resource resourceType="PROJECT" workspacePath="/GameLandLibTests"/>
 		</configuration>
+		<configuration configurationName="Test"/>
 		<configuration configurationName="Debug">
 			<resource resourceType="PROJECT" workspacePath="/GameLandLibTests"/>
 		</configuration>

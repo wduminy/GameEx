@@ -2,7 +2,6 @@
 #include <iostream>
 #include <game/game.h>
 #include <terrain/terrain.h>
-
 using namespace game;
 using namespace terrain;
 
@@ -15,6 +14,7 @@ public:
 			TransformerByte(1.0f,0.0f,5.0f))  {}
 	void initialise(const ResourceContext & rctx, const DrawContext& dctx) override {
 		_hmap->read_from_bmp(rctx.dir() + "test.bmp");
+		TerrainObject<Byte,demo_hm_t,TransformerByte>::initialise(rctx,dctx);
 	}
 };
 
@@ -27,6 +27,17 @@ class TerrainController : public MainObject {
 };
 
 int main( int , char* [] ) {
-	game::Game g(new TerrainController(), "terrain/", 50, 5000);
-	return g.run();
+	LOG << "started terrain demo ";
+	try {
+		game::Game g(new TerrainController(), "terrain/", 50, 5000);
+		return g.run();
+	} catch (std::exception &e) {
+		LOG << "exception: " << (e.what()) << std::endl;
+        return EXIT_FAILURE;
+  	} catch (...) {
+		LOG << "unexpected error occurred";
+        return EXIT_FAILURE;
+    }
+	return EXIT_SUCCESS;
+
 }

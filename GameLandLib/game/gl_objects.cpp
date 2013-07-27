@@ -18,10 +18,17 @@ void init_opengl() {
     if (!glv)
         throw runtime_error("opengl context not setup");
     std::string version(glv);
-	LOG<< "Running OpenGL Version " << version;
-	if (version[0] < '3')
-		throw std::runtime_error("Needs OpenGL version 3.0.0 or later");
     gl_initialised = true;
+	LOG<< "Running OpenGL Version " << version;
+	const char required[] = "3.1.0\0";
+	bool versionOk = true;
+	for (size_t i=0;i<sizeof(required)-1;i++) {
+		versionOk = version[i] >= required[i];
+		if (!versionOk)
+			break;
+	}
+	if (!versionOk)
+		throw systemex::runtime_error_ex("This program needs OpenGL version %s or later.\nTry updating your display adapter driver.\nNote that old graphic adaptors do not support this version.",required);
 }
 
 PROC getGLProc(const char * name) {
@@ -50,7 +57,7 @@ bool Glex::hasExtensions(const char * extension, ...) {
 	return result;
 }
 
-void Glex::check_error(const std::string& what) {
+void Glex::check_error(const std::string& what) const {
 	auto code = glGetError();
 	if (code == NO_ERROR)
         return;
@@ -112,6 +119,12 @@ Glex::Glex()
 	, glGetUniformLocation	((PFNGLGETUNIFORMLOCATIONPROC) getGLProc("glGetUniformLocation"))
 	, glUniform1i ((PFNGLUNIFORM1IPROC) getGLProc("glUniform1i"))
 	, glUniform1f ((PFNGLUNIFORM1FPROC) getGLProc("glUniform1f"))
+	, glGenBuffers ((PFNGLGENBUFFERSPROC) getGLProc("glGenBuffers"))
+	, glBindBuffer ((PFNGLBINDBUFFERPROC) getGLProc("glBindBuffer"))
+	, glBufferData ((PFNGLBUFFERDATAPROC) getGLProc("glBufferData"))
+	, glEnableVertexAttribArray ((PFNGLENABLEVERTEXATTRIBARRAYPROC) getGLProc("glEnableVertexAttribArray"))
+ 	, glDisableVertexAttribArray ((PFNGLDISABLEVERTEXATTRIBARRAYPROC) getGLProc("glDisableVertexAttribArray"))
+ 	, glVertexAttribPointer ((PFNGLVERTEXATTRIBPOINTERPROC) getGLProc("glVertexAttribPointer"))
 {
 }
 

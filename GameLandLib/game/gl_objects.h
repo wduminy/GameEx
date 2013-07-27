@@ -39,7 +39,13 @@ namespace game {
 			PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
 			PFNGLUNIFORM1IPROC glUniform1i;
 			PFNGLUNIFORM1FPROC glUniform1f;
-			void check_error(const std::string& what = "");
+			PFNGLGENBUFFERSPROC glGenBuffers;
+			PFNGLBINDBUFFERPROC glBindBuffer;
+			PFNGLBUFFERDATAPROC glBufferData;
+			PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray;
+			PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray;
+			PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer;
+			void check_error(const std::string& what = "") const;
 			void setViewRange(const float&, const float&);
 		private:
 			// NB: terminate arg list with NULL
