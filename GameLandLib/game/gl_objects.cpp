@@ -128,7 +128,7 @@ Glex::Glex()
 {
 }
 
-Texture::Texture(Glex& context) : _context(context), _texture(0), _texture_index(-1)  {
+Texture::Texture(Glex * context) : _context(context), _texture(0), _texture_index(-1)  {
 	glGenTextures(1, &_texture);
 }
 
@@ -165,7 +165,7 @@ void Texture::copy_from_2d(const SDL_Surface& surface) {
     glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 	glTexImage2D(GL_TEXTURE_2D, 0, bpp, surface.w, surface.h, 0,
 			texture_format, GL_UNSIGNED_BYTE, surface.pixels);
-    _context.check_error();
+    _context->check_error();
 }
 
 
@@ -177,9 +177,9 @@ void Texture::bind(const int textureIndex) {
 void Texture::activate() {
 	if (_texture_index < 0)
 		throw runtime_error("texture has not been bound");
-    _context.glActiveTexture(GL_TEXTURE0 + _texture_index);
+    _context->glActiveTexture(GL_TEXTURE0 + _texture_index);
     glBindTexture(GL_TEXTURE_2D,_texture);
-    _context.check_error("bind texture");
+    _context->check_error("bind texture");
 }
 GLuint Texture::index() const {
 	if (_texture_index == -1)
@@ -192,57 +192,62 @@ Texture::~Texture() {
 		glDeleteTextures(1, &_texture);
 }
 
-ShaderProgram::ShaderProgram(Glex& aContext)
-    : _context(aContext)
+ShaderProgram::ShaderProgram()
+    : _context(0)
 	, _vertexShader(0)
 	, _fragmentShader(0)
 	, _program(0)
-    , _first_time(true)
-{}
+    , _first_time(true) {}
 
+#define CHECK_CONTEXT if (!_context) throw runtime_error("context not intialized")
 void ShaderProgram::bind(const string& vertexSource,
 		const string& fragmentSource) {
 	destroy_shaders();
 	_vertexShader = compile(vertexSource.c_str(), GL_VERTEX_SHADER);
 	_fragmentShader = compile(fragmentSource.c_str(), GL_FRAGMENT_SHADER);
-    _program = _context.glCreateProgram();
-    _context.glAttachShader(_program,_vertexShader);
-    _context.glAttachShader(_program,_fragmentShader);
-    _context.glLinkProgram(_program);
+	CHECK_CONTEXT;
+    _program = _context->glCreateProgram();
+    _context->glAttachShader(_program,_vertexShader);
+    _context->glAttachShader(_program,_fragmentShader);
+    _context->glLinkProgram(_program);
     GLint result;
-    _context.glGetProgramiv(_program,GL_LINK_STATUS, &result);
+    _context->glGetProgramiv(_program,GL_LINK_STATUS, &result);
     if (result == GL_FALSE)
         throw runtime_error("link failed");
 }
 
 GLint ShaderProgram::loc(const GLchar * name) {
-    const auto result = _context.glGetUniformLocation(_program,name);
+    const auto result = _context->glGetUniformLocation(_program,name);
     if (result == -1)
         throw systemex::runtime_error_ex("Could not locate uniform variable '%s'",name);
     return result;
 }
 
 void ShaderProgram::arg(const GLchar * name, const GLuint value) {
-    _context.glUniform1i(loc(name),value);
-    _context.check_error(string("setting uniform variable: ") + name);
+	CHECK_CONTEXT;
+    _context->glUniform1i(loc(name),value);
+    _context->check_error(string("setting uniform variable: ") + name);
 }
 
 void ShaderProgram::arg(const GLchar * name, const GLfloat value) {
-    _context.glUniform1f(loc(name),value);
-    _context.check_error(string("setting uniform variable: ") + name);
+	CHECK_CONTEXT;
+    _context->glUniform1f(loc(name),value);
+    _context->check_error(string("setting uniform variable: ") + name);
 }
 
 void ShaderProgram::begin() {
-    _context.glUseProgram(_program);
+	CHECK_CONTEXT;
+    _context->glUseProgram(_program);
 }
 
 void ShaderProgram::end() {
-    _context.glUseProgram(0);
+    _context->glUseProgram(0);
     _first_time = false;
 }
 
 GLint ShaderProgram::compile(const char * source, GLenum type) {
-	auto &g = _context;
+	CHECK_CONTEXT;
+	auto &g = *_context;
 	GLint shader = g.glCreateShader(type);
 	if (!shader)
 		g.check_error();
@@ -267,14 +272,15 @@ GLint ShaderProgram::compile(const char * source, GLenum type) {
 }
 
 void ShaderProgram::destroy_shaders() {
-	auto &g = _context;
+	if (!_context)
+		return;
 	if (_program)
-        g.glDeleteProgram(_program);
+        _context->glDeleteProgram(_program);
 	if (_vertexShader)
-		g.glDeleteShader(_vertexShader);
+		_context->glDeleteShader(_vertexShader);
 	_vertexShader = 0;
 	if (_fragmentShader)
-		g.glDeleteShader(_fragmentShader);
+		_context->glDeleteShader(_fragmentShader);
 	_fragmentShader = 0;
 }
 

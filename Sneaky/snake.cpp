@@ -152,8 +152,8 @@ SnakeObject::SnakeObject(CollisionManager &mgr) : SnakeWithCollision(mgr),
 
 void SnakeObject::initialise(const ResourceContext& ctx,
 		const DrawContext& draw) {
-	_program_p.reset(ctx.load_program(draw.gl(),"snake"));
-	_tex_p.reset(ctx.load_texture_bmp(draw.gl(),"snakeskin.bmp",1));
+	_program_p.reset(ctx.load_program(draw,"snake"));
+	_tex_p.reset(ctx.load_texture_bmp(draw,"snakeskin.bmp",1));
 }
 
 void SnakeObject::update(const UpdateContext& uc) {

@@ -8,6 +8,7 @@ using namespace std;
 using game::Scalar;
 using game::Vector;
 
+
 template <typename elemT, size_t m_columns, size_t n_rows > class Heightmap {
 public:
 	typedef std::array<elemT, n_rows * m_columns> container_t;

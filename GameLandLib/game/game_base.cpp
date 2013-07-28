@@ -253,16 +253,17 @@ string ResourceContext::load_text(const char * filename) const {
 	return string_from_file(fullname.c_str());
 }
 
-ShaderProgram * ResourceContext::load_program(Glex& gl,
+ShaderProgram * ResourceContext::load_program(Glex * gl,
 		const char * filePrefix) const {
-	ShaderProgram * result(new ShaderProgram(gl));
+	ShaderProgram * result(new ShaderProgram());
+	result->initialize(gl);
 	auto full_prefix = _root_directory + filePrefix;
 	result->bind(string_from_file((full_prefix + ".vert").c_str()),
 			string_from_file((full_prefix + ".frag").c_str()));
 	return result;
 }
 
-Texture * ResourceContext::load_texture_bmp(Glex& gl, const char* filename,
+Texture * ResourceContext::load_texture_bmp(Glex*  gl, const char* filename,
 		const int textureIndex) const {
 	Texture * result(new Texture(gl));
 	Surface::u_ptr sface(new Surface(_root_directory + filename));

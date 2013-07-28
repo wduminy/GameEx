@@ -2,6 +2,7 @@
 #include <iostream>
 #include <game/game.h>
 #include <terrain/terrain.h>
+#include "terrain_object.h"
 using namespace game;
 using namespace terrain;
 

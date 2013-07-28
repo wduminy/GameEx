@@ -112,7 +112,7 @@ namespace game {
 
 	void Panel::initialise(const ResourceContext &rc, const DrawContext& dc) {
 		// each game should have its own panel shader
-		_program.reset(rc.load_program(dc.gl(),"panel"));
+		_program.reset(rc.load_program(dc,"panel"));
 		// TODO At the moment we need to load the bmp to initialise the texture
 		// properly, but we should be able to use the texture without doing this
 		_tex.reset(new Texture(dc));

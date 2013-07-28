@@ -25,7 +25,8 @@ namespace tut {
 
 	TEST<1>() {
 		DrawContext ctx(false,10,10,true);
-		ShaderProgram p(ctx.gl());
+		ShaderProgram p;
+		p.initialize(&ctx.gl());
 		ensure_error(p.bind("hello","there"),"syntax error");
 	}
 
@@ -121,7 +122,7 @@ namespace tut {
 		ResourceContext ctx;
 		DrawContext dx(false,10,10,true);
 		game::Surface surface("media/cracked_tiles.BMP");
-		Texture t(dx.gl());
+		Texture t(dx);
 		t.bind(1);
 		t.copy_from(surface.sdl());
 	}

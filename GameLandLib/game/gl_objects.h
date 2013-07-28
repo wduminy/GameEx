@@ -57,7 +57,7 @@ namespace game {
 
 	class Texture {
 	public:
-		Texture(Glex &context);
+		Texture(Glex * context);
 		void copy_from(const SDL_Surface& surface);
 		void copy_from_2d(const SDL_Surface& surface);
 		void bind(const int textureIndex);
@@ -65,7 +65,7 @@ namespace game {
 		GLuint index() const;
 		~Texture();
 	private:
-        Glex& _context;
+        Glex * _context;
 		GLuint _texture;
 		int _texture_index;
     public:
@@ -75,7 +75,8 @@ namespace game {
 	class ShaderProgram {
 			PREVENT_COPY(ShaderProgram)
 		public:
-			ShaderProgram(Glex& aContext);
+			ShaderProgram();
+			void initialize(Glex * gl) {_context = gl;}
 			void bind(const string& vertexSource, const string& fragmentSource);
 			void arg(const GLchar * name, const GLuint value);
 			void arg(const GLchar * name, const GLfloat value);
@@ -87,7 +88,7 @@ namespace game {
 			void destroy_shaders();
 			GLint compile(const GLchar * source,GLenum type);
 			GLint loc(const GLchar * name);
-			Glex& _context;
+			Glex * _context;
 			GLint _vertexShader;
 			GLint _fragmentShader;
 			GLint _program;

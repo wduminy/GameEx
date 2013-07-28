@@ -26,7 +26,7 @@ public:
 
 	string load_text(const char * filename) const;
 	const string& dir() const {return _root_directory;};
-	ShaderProgram * load_program(Glex& gl, const char * filePrefix) const;
+	ShaderProgram * load_program(Glex * gl, const char * filePrefix) const;
 
 	/**
 	 * @param gl
@@ -34,7 +34,7 @@ public:
 	 * @param textureIndex zero based index where 0 implies
 	 * @return
 	 */
-	Texture * load_texture_bmp(Glex& gl, const char * filename, const int textureIndex) const;
+	Texture * load_texture_bmp(Glex * gl, const char * filename, const int textureIndex) const;
 private:
 	const string _root_directory;
 public:
@@ -90,7 +90,7 @@ public:
 	DrawContext(const bool fullscreen, const int width, const int height, bool opengl);
 	~DrawContext();
 	Glex& gl() const;
-	operator Glex&() const {return gl();}
+	operator Glex*() const {return _glex.get();}
 	SDL_Surface * screen() const {return _screen;}
 	int width() const {return _width;}
 	int height() const {return _height;}
