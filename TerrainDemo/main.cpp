@@ -22,7 +22,7 @@ public:
 class TerrainController : public MainObject {
 	public:
 	TerrainController() : MainObject(-100,0.3,100) {
-		add_part(new SphereCamera(-1,20.0f,50.0f, Vector(25.0f,0.0f,0.0f)));
+		add_part(new SphereCamera(-1,20.0f,50.0f, Vector(25.0f,-25.0f,0.0f)));
 		add_part(new DemoTerrain());
 	}
 };

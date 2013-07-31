@@ -58,10 +58,10 @@ namespace game {
 				_delta = +rads_per_update;
 				break;
 			case SDLK_UP:
-				_circleZ += rads_per_update;
+				_circleZ += rads_per_update*10;
 				break;
 			case SDLK_DOWN:
-				_circleZ -= rads_per_update;
+				_circleZ -= rads_per_update*10;
 				break;
 			default:
 				break;
@@ -78,9 +78,9 @@ namespace game {
 	}
 
 	void SphereCamera::draw(const DrawContext&) {
-		gluLookAt(_circleRadius * sin(_theta),
-				-_circleRadius * cos(_theta),
-				_circleZ,
+		gluLookAt(_circleRadius * sin(_theta) + _location.x(),
+				-_circleRadius * cos(_theta) + _location.y(),
+				_circleZ + _location.z(),
 				  _location.x(),
 				  _location.y(),
 				  _location.z(),
