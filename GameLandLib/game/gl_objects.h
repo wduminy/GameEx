@@ -76,8 +76,7 @@ namespace game {
 			PREVENT_COPY(ShaderProgram)
 		public:
 			ShaderProgram();
-			void initialize(Glex * gl) {_context = gl;}
-			void bind(const string& vertexSource, const string& fragmentSource);
+			void initialise(Glex * gl,const string& vertexSource, const string& fragmentSource);
 			void arg(const GLchar * name, const GLuint value);
 			void arg(const GLchar * name, const GLfloat value);
 			void begin();

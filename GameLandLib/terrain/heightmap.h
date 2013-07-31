@@ -69,11 +69,11 @@ public:
 
 template <typename elemT> class Transformer {
 public:
-	Transformer(const Scalar& square_length, const Scalar& height_scale)
-		: _square_length(square_length), _height_scale(height_scale) {}
+	Transformer(const Scalar square_length, const Scalar height_scale, const Scalar height_min = 0)
+		: _square_length(square_length), _height_scale(height_scale), _height_min(height_min) {}
 	Scalar x(int c) const { return c * _square_length; }
 	Scalar y(int r) const { return r * _square_length * (-1); }
-	Scalar z(int h) const { return h * _height_scale; }
+	Scalar z(int h) const { return h * _height_scale + _height_min; }
 	Vector operator()(int c, int r, elemT h) const {
 		return Vector(x(c),y(r),z(h));
 	}
@@ -81,13 +81,14 @@ public:
 private:
 	const Scalar _square_length;
 	const Scalar _height_scale;
+	const Scalar _height_min;
 };
 
 class TransformerByte : public Transformer<game::Byte> {
 public:
-	TransformerByte(const Scalar& square_length,
-			const Scalar& height_min, const Scalar& height_max)
-	:Transformer<game::Byte>(square_length, (height_max - height_min)/255){}
+	TransformerByte(const Scalar square_length,
+			const Scalar height_min, const Scalar height_max)
+	:Transformer<game::Byte>(square_length, (height_max - height_min)/255, height_min){}
 };
 
 }

@@ -26,8 +26,7 @@ namespace tut {
 	TEST<1>() {
 		DrawContext ctx(false,10,10,true);
 		ShaderProgram p;
-		p.initialize(&ctx.gl());
-		ensure_error(p.bind("hello","there"),"syntax error");
+		ensure_error(p.initialise(ctx,"hello","there"),"syntax error");
 	}
 
 	TEST<2>() {

@@ -200,12 +200,11 @@ ShaderProgram::ShaderProgram()
     , _first_time(true) {}
 
 #define CHECK_CONTEXT if (!_context) throw runtime_error("context not intialized")
-void ShaderProgram::bind(const string& vertexSource,
-		const string& fragmentSource) {
+void ShaderProgram::initialise(Glex * gl,const string& vertexSource,const string& fragmentSource) {
+	_context = gl;
 	destroy_shaders();
 	_vertexShader = compile(vertexSource.c_str(), GL_VERTEX_SHADER);
 	_fragmentShader = compile(fragmentSource.c_str(), GL_FRAGMENT_SHADER);
-	CHECK_CONTEXT;
     _program = _context->glCreateProgram();
     _context->glAttachShader(_program,_vertexShader);
     _context->glAttachShader(_program,_fragmentShader);

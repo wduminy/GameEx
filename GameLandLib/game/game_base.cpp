@@ -248,6 +248,11 @@ ResourceContext::ResourceContext(const string& subDirectory) :
 				subDirectory.c_str());
 }
 
+/**
+ * @brief Loads the text from the resource folder
+ * @param filename
+ * @return
+ */
 string ResourceContext::load_text(const char * filename) const {
 	auto fullname = _root_directory + filename;
 	return string_from_file(fullname.c_str());
@@ -256,9 +261,8 @@ string ResourceContext::load_text(const char * filename) const {
 ShaderProgram * ResourceContext::load_program(Glex * gl,
 		const char * filePrefix) const {
 	ShaderProgram * result(new ShaderProgram());
-	result->initialize(gl);
 	auto full_prefix = _root_directory + filePrefix;
-	result->bind(string_from_file((full_prefix + ".vert").c_str()),
+	result->initialise(gl,string_from_file((full_prefix + ".vert").c_str()),
 			string_from_file((full_prefix + ".frag").c_str()));
 	return result;
 }

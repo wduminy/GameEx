@@ -21,9 +21,9 @@ void terrain::render_terrain(const game::Glex& gl, GLuint buffer, size_t cols, s
 	glPolygonMode(GL_FRONT, GL_FILL);
 	glColor3b(100,100,100);
 	render_strips(gl,buffer,cols, rows);
-	glPolygonMode(GL_FRONT, GL_LINE);
-	glEnable(GL_LINE_SMOOTH);
-	glLineWidth(2);
-	glColor3b(50,0,0);
-	render_strips(gl,buffer,cols, rows);
+//	glPolygonMode(GL_FRONT, GL_LINE);
+//	glEnable(GL_LINE_SMOOTH);
+//	glLineWidth(2);
+//	glColor3b(50,0,0);
+//	render_strips(gl,buffer,cols, rows);
 }
