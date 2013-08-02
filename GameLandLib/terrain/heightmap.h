@@ -23,6 +23,16 @@ public:
 	size_t count_rows() const {return n_rows; }
 	size_t count_columns() const {return m_columns; }
 	size_t size_traverse_triangles() const {return m_columns * n_rows * 2;}
+	elemT max_height() const {
+		auto result = _elems.front();
+		for_each(e, _elems) { if (*e > result) result = *e; }
+		return result;
+	}
+	elemT min_height() const {
+		auto result = _elems.front();
+		for_each(e, _elems) { if (*e < result) result = *e; }
+		return result;
+	}
 	virtual ~Heightmap() {};
 	void traverse(std::function<void (int c, int r, elemT h)> applyF) const {
 		for (auto c = 0U; c < m_columns; c++)
@@ -64,6 +74,14 @@ public:
 		write_heightmap(bmp_filename,
 				m_columns,n_rows,
 				Heightmap<game::Byte,m_columns,n_rows>::elems().data());
+	}
+	void normalise() {
+		const game::Byte min = Heightmap<game::Byte,m_columns,n_rows>::min_height();
+		const game::Byte max = Heightmap<game::Byte,m_columns,n_rows>::max_height();
+		const float offset = -min;
+		const float scale = 255.0f / (max - min);
+		auto &elems = Heightmap<game::Byte,m_columns,n_rows>::elems();
+		for_each(e,elems) {*e = (*e + offset) * scale;}
 	}
 };
 

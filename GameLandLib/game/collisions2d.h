@@ -170,7 +170,7 @@ private:
 	CollidablePolygonPList _outside_items;
 	const BoundedBox2 _bounds;
 	vector<CollidablePolygonPList> _boxes;
-	const unsigned int _division_count;
+	const int _division_count;
 };
 
 }
