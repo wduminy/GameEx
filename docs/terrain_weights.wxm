@@ -1,0 +1,26 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 12.04.0 ] */
+
+/* [wxMaxima: input   start ] */
+kill(all);
+clamp(x) := if (x < 0) then 0 else if (x > 1) then 1 else x;
+f_r: lambda([v,x,m,u],clamp(-abs(x - v) * m + u));
+m: 8;
+u: 1.6;
+f(v,x) := f_r(v,x,m,u);
+f(0.5,x);
+ice(x):=f(0.94,x);
+rock(x):=f(0.65,x);
+grass(x):=f(0.35,x);
+sand(x):=f(0.06,x);
+wxplot2d ([ice,rock,grass,sand], [x, 0, 1], [y, 0, 1.1])$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+t(x) := (ice(x) + rock(x) + grass(x) + sand(x))/4;
+ice(x) / t(x);
+wxplot2d (t,[x, 0, 1],[y,0,1.1])$
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

@@ -5,16 +5,18 @@ const vec3 grey = vec3(0.75,0.75,0.75);
 const vec3 green = vec3(0,1,0);
 const vec3 blue = vec3(0,0,1);
 const vec3 brown = vec3(0.7,0.6,0.1);
-const float ice = .8;
-const float rock = .6;
-const float grass = .3;
-const float sand = .1;
-const float edge_fudge = 3.0;  // user smaller number for blunter edge 
+const float ice = 0.94;
+const float rock = 0.65;
+const float grass = 0.35;
+const float sand = 0.06;
+const float m = 8.5;   
+const float u = 1.6;
+
 
 varying float height;
 
 float degree(float v) {
-	return clamp(1.0 - abs(height-v)*edge_fudge,0,1);
+	return clamp(u - abs(height-v)*m,0,1);
 }
 
 void main(){
