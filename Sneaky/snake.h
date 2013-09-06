@@ -4,10 +4,10 @@
  */
 
 #pragma once
-#include <game/game.h>
-#include <game/game_math.h>
-#include <game/collisions2d.h>
 #include <array>
+#include <game.h>
+#include <game_math.h>
+#include <collisions2d.h>
 
 using namespace game;
 

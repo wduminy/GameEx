@@ -1,5 +1,5 @@
 #include "sdl_objects.h"
-#include "../systemex/systemex.h"
+#include "systemex.h"
 namespace game {
  	void check(int sdl_result) {
 		if (sdl_result)

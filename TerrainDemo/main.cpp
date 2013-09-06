@@ -1,7 +1,7 @@
-#include <systemex/log.h>
+#include <log.h>
 #include <iostream>
-#include <game/game.h>
-#include <terrain/terrain.h>
+#include <game.h>
+#include <terrain.h>
 #include "terrain_object.h"
 using namespace game;
 using namespace terrain;

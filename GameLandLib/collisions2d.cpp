@@ -3,7 +3,7 @@
  * See LICENCE.txt
  */
 #include "collisions2d.h"
-#include "../systemex/log.h"
+#include "log.h"
 namespace game {
 bool BoundedBox2::in_bounds_of(const BoundedBox2& other) const {
 	if (is_empty_box() || other.is_empty_box())

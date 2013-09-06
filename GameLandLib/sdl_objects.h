@@ -5,7 +5,7 @@
 #pragma once
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
-#include "../systemex/systemex.h"
+#include "systemex.h"
 namespace game {
  	void check(int sdl_result);
 	void check(void * p);

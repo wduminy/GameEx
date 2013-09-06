@@ -4,7 +4,6 @@
  */
 
 #pragma once
-#include "../systemex/systemex.h"
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
 #include <valarray>
@@ -13,6 +12,7 @@
 #include <iomanip>
 #include <array>
 #include <assert.h>
+#include "systemex.h"
 namespace game {
 	using std::valarray;
 	using std::runtime_error;

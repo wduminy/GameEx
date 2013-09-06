@@ -1,55 +1,17 @@
-// for help: http://www.sublimetext.com/docs/2/projects.html
 {
-	"settings":
-	{
-	     "sublimegdb_workingdir": "${folder:${project_path:game.exe}}",
-	     // NOTE: You MUST provide --interpreter=mi for the plugin to work
-	     "sublimegdb_commandline": "gdb --interpreter=mi ./game.exe"
-	},
 	"folders":
 	[
-		{ 
-			"path": "/C/Users/willemd/Documents/GitHub/GameEx/",
-			"name":"Root",
-			"folder_exclude_patterns":["*"],
-			"file_exclude_patterns":[".*","*.sublime-*"]
-		},
-		{ 
-			"path": "/C/Users/willemd/Documents/GitHub/GameEx/GameLand",
-			"name":"GameLand",
-			"folder_exclude_patterns":["*"],
-			"file_exclude_patterns":[".*","*.sublime-*"]
-		},
-		{ 
-			"path": "/C/Users/willemd/Documents/GitHub/GameEx/GameLand/media",
-			"name":"Media"
-		},
-		{ 
-			"path": "/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src",
-		  	"name":"Source",
-	        "file_exclude_patterns":["*.o","*.depends"]
-	  	}
-	],
-	"build_systems": [
-		// http://docs.sublimetext.info/en/latest/reference/build_systems.html#options
-		{// run make in the working folder
-			"name": "Project System",
-			"cmd": ["make","-l"], 
-			"file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
-			"variants": [
-				{// start the executable program
-					"cmd": ["make","run"], 
-				    "name":"Run",
-				    "working_dir":"${project_path}/GameLand"
-				},	
-				{// run the tests in the current folder
-				 	"cmd": ["make","test"], "name":"Test"
-				},	
-				{// remove all artefacts
-				 	"cmd": ["make","clean"], "name":"Clean",
-					"working_dir":"${project_path}/GameLand"
-				}
-			]
+		{
+			"name": "Root",
+			"follow_symlinks": true,
+			"path": "C:\\Users\\willemd\\Documents\\GitHub\\GameEx"
+		}, 
+		{
+			"name":"GameLandLib",
+			"path": "GameLandLib",
+			"file_include_patterns": ["*.cpp", "*.h"]
+
 		}
+
 	]
 }

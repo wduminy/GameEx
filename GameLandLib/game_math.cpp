@@ -4,7 +4,7 @@
  */
 
 #include "game_math.h"
-#include "../systemex/log.h"
+#include "log.h"
 
 namespace game {
 	const Vector Vector::origin(0,0,0);

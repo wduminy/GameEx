@@ -3,7 +3,7 @@
  * See LICENCE.txt
  */
 #include "controller.h"
-#include <systemex/log.h>
+#include <log.h>
 #include <iostream>
 using namespace game;
 

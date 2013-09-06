@@ -3,7 +3,7 @@
  * See LICENCE.txt
  */
 #include <test_util.h>
-#include <network/network.h>
+#include <network.h>
 
 #define TEST template<> template<> void test_group<networkdata>::object::test
 namespace tut {

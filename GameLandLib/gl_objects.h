@@ -6,7 +6,7 @@
 #include <SDL/SDL_opengl.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include "../systemex/systemex.h"
+#include "systemex.h"
 #include "sdl_objects.h"
 typedef const GLfloat* GLfloat_ptr;
 

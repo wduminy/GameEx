@@ -4,7 +4,7 @@
  */
 #pragma once
 #include <winsock2.h>
-#include "../systemex/systemex.h"
+#include "systemex.h"
 
 namespace network {
 

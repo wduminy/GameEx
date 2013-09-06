@@ -3,7 +3,7 @@
  * See LICENCE.txt
  */
 #include "game.h"
-#include "../systemex/log.h"
+#include "log.h"
 #include <windows.h>
 
 namespace game {

@@ -4,8 +4,8 @@
  */
 
 #pragma once
-#include <game/game_objects.h>
-#include <game/font.h>
+#include <game_objects.h>
+#include <font.h>
  
 using namespace game;
 

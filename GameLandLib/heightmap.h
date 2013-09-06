@@ -1,7 +1,7 @@
 #pragma once
 #include <array>
 #include <functional>
-#include "..\game\game.h"
+#include "game.h"
 
 namespace terrain {
 using namespace std;

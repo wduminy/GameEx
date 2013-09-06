@@ -7,7 +7,7 @@
 #include "gl_objects.h"
 #include <SDL/SDL_ttf.h>
 #include <string>
-#include "../systemex/systemex.h"
+#include "systemex.h"
 namespace game {
 
 /* Use  font to render text.

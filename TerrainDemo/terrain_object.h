@@ -4,8 +4,8 @@
  */
 
 #pragma once
-#include <game/game.h>
-#include <systemex/log.h>
+#include <game.h>
+#include <log.h>
 
 namespace terrain {
 void render_terrain(const game::Glex& gl, GLuint buffer, size_t cols, size_t rows);

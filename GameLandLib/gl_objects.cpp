@@ -3,7 +3,7 @@
  * See LICENCE.txt
  */
 #include "gl_objects.h"
-#include "../systemex/log.h"
+#include "log.h"
 
 namespace game {
 using systemex::runtime_error;

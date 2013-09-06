@@ -3,8 +3,8 @@
  * See LICENCE.txt
  */
 #include <test_util.h>
-#include <systemex/systemex.h>
-#include <game/collisions2d.h>
+#include <systemex.h>
+#include <collisions2d.h>
 #include <sstream>
 #define TEST(Num,Name,Logic) template<> template<> void test_group<CollisionData>::object::test<Num>() {set_test_name(Name); Logic}
 #define BEGIN(Num,Name) template<> template<> void test_group<CollisionData>::object::test<Num>() {set_test_name(Name);

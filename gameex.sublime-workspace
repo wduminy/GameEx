@@ -28,19 +28,19 @@
 	"buffers":
 	[
 		{
-			"file": "GameLand/src/duality/controller.cpp",
+			"file": "gameex.sublime-project",
 			"settings":
 			{
-				"buffer_size": 577,
+				"buffer_size": 1561,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+			"file": "README.md",
 			"settings":
 			{
-				"buffer_size": 122,
-				"line_ending": "Unix"
+				"buffer_size": 340,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -149,6 +149,8 @@
 	},
 	"file_history":
 	[
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/controller.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/my_tasks.todo",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game.h",
@@ -167,7 +169,6 @@
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/PlainTasks/messages/Tutorial.todo",
 		"/C/Users/willemd/Documents/GitHub/GameEx/.gitignore",
 		"/C/Users/willemd/Documents/GitHub/GameEx/gameex.sublime-project",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/controller.cpp",
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/SideBarEnhancements/messages/11.13.2012.1305.0.txt",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/todo.txt",
 		"/C/Users/willemd/Documents/GitHub/GameEx/.metadata/.plugins/org.eclipse.core.resources/.projects/GameLand/org.eclipse.egit.core/GitProjectData.properties",
@@ -239,16 +240,44 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "GameLand/src/duality/controller.cpp",
+					"file": "gameex.sublime-project",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 577,
+						"buffer_size": 1561,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								304,
+								304
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "README.md",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 340,
 						"regions":
 						{
 						},
@@ -261,34 +290,7 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/C++/C++.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 122,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								121,
-								121
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -450,7 +452,7 @@
 	"show_minimap": true,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": false,
+	"side_bar_visible": true,
 	"side_bar_width": 215.0,
 	"status_bar_visible": true,
 	"template_settings":

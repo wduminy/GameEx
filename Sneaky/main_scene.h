@@ -4,9 +4,9 @@
  */
 #pragma once
 
-#include <game/game.h>
-#include <game/collisions2d.h>
-#include <game/game_objects.h>
+#include <game.h>
+#include <collisions2d.h>
+#include <game_objects.h>
 #include "snake.h"
 #define ARENA_HALF 3.0f
 #define FLOOR_Z 0.0f

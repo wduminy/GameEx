@@ -4,7 +4,7 @@
  */
 
 #pragma once
-#include <game/game.h>
+#include <game.h>
 #include "front_page.h"
 using namespace game;
 

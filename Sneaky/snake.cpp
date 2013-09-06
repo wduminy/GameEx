@@ -4,7 +4,7 @@
  */
 
 #include "snake.h"
-#include <systemex/log.h>
+#include <log.h>
 
 const unsigned char SPINE = 0;
 
