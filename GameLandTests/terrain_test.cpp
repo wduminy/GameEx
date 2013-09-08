@@ -10,7 +10,7 @@ namespace tut {
 	struct TESTDATA{
 		virtual ~TESTDATA(){}
 	};
-	test_group<TESTDATA> terrainTests("110 Terrain tests");
+	test_group<TESTDATA> teterrrainTests("110 Terrain tests");
 	BEGIN(1, "reading and writing BMP Heightmap") {
 		HeightmapWithByte<50,50> hm;
 		hm.read_from_bmp("media/terrain/test.bmp");

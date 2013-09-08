@@ -30,7 +30,7 @@ class TerrainController : public MainObject {
 };
 
 int main( int , char* [] ) {
-	LOG << "started terrain demo ";
+	LOG << "started terrain demo";
 	try {
 		game::Game g(new TerrainController(), "terrain/", 50, 5000);
 		return g.run();

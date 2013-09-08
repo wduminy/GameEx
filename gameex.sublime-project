@@ -1,17 +1,38 @@
 {
 	"folders":
 	[
+
 		{
-			"name": "Root",
-			"follow_symlinks": true,
+			"name": "All",
 			"path": "C:\\Users\\willemd\\Documents\\GitHub\\GameEx"
+		},
+		{
+			"name":"TerrainDemo",
+			"path": "TerrainDemo",
+			"file_include_patterns": ["*.cpp", "*.h"]
 		}, 
 		{
 			"name":"GameLandLib",
 			"path": "GameLandLib",
 			"file_include_patterns": ["*.cpp", "*.h"]
-
 		}
-
-	]
+	],
+	"build_systems":
+	[
+		    {
+            "name": "Terrain Demo",
+            "cmd": ["make","run_terrain"],
+            "working_dir": "$project_path"
+        },
+		    {
+            "name": "Library Tests",
+            "cmd": ["make","run_tests"],
+            "working_dir": "$project_path"
+        },
+	      {
+            "name": "Make Multi-threaded",
+            "cmd": ["make","-j4"],
+            "working_dir": "$project_path"
+        }
+  ]
 }
