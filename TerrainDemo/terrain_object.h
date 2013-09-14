@@ -5,7 +5,7 @@
 
 #pragma once
 #include <game.h>
-#include <log.h>
+#include <log.h> 
 
 namespace terrain {
 void render_terrain(const game::Glex& gl, GLuint buffer, size_t cols, size_t rows);
@@ -29,7 +29,7 @@ public:
 				verts[i++] = v.z();
 			}
 		});
-		dc.gl().glBindBuffer(GL_ARRAY_BUFFER, _buffer);
+		dc.gl().glBindBuffer(GL_ARRAY_BUFFER, _buffer);  
 		dc.gl().glBufferData(GL_ARRAY_BUFFER,b_size*sizeof(GLfloat), (void*) verts.data(),GL_STATIC_DRAW);
 		dc.gl().glBindBuffer(GL_ARRAY_BUFFER,0);
 		_program.initialise(dc,rc.load_text("terrain.vert"), rc.load_text("terrain.frag"));

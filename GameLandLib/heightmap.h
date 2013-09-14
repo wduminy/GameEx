@@ -17,8 +17,7 @@ public:
 	const container_t& elems() const {return _elems;}
 	container_t& elems() {return _elems;}
 	const elemT& operator() (size_t c, size_t r) const {
-		check_range(c,r); return _elems.at(r * n_rows + c);}
-	elemT& operator() (size_t c, size_t r) {
+		check_range(c,r); return _elems.at(r * n_rows + c);}	elemT& operator() (size_t c, size_t r) {
 		check_range(c,r);return _elems.at(r * n_rows + c);}
 	size_t count_rows() const {return n_rows; }
 	size_t count_columns() const {return m_columns; }

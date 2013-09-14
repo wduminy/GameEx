@@ -6,6 +6,11 @@
 			"name": "All",
 			"path": "C:\\Users\\willemd\\Documents\\GitHub\\GameEx"
 		},
+		{ "name": "Blog",
+	 		"path" : "C:\\Users\\willemd\\Documents\\GitHub\\codespear.github.io",
+	 		"folder_include_patterns": ["_drafts","_posts"],
+	 		"file_include_patterns": ["*.md"]
+	 	},
 		{
 			"name":"TerrainDemo",
 			"path": "TerrainDemo",

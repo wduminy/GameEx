@@ -10,16 +10,20 @@ TUT_LIB := $(TARGET_DIR)/libTutLib.a
 GAME_LAND_TEST := $(TARGET_DIR)/GameLandTests.exe
 TERRAIN_DEMO := $(TARGET_DIR)/TerrainDemo.exe
 SNEAKY := $(TARGET_DIR)/Sneaky.exe
-.PHONY : clean all run_sneaky run_terrain run_test 
+.PHONY : clean all run_sneaky run_terrain run_test dox 
+
+run_terrain: $(TERRAIN_DEMO)
+	cd $(TARGET_DIR); ./TerrainDemo.exe
+
+dox: 
+	rm -f -r ../codespear.github.io/gameex/html
+	cd docs; doxygen doxy.txt
 
 run_sneaky: $(SNEAKY)
 	cd $(TARGET_DIR); ./Sneaky.exe
 
 $(SNEAKY): $(OBJS) $(GAME_LAND_LIB)
 	g++ $(wildcard Sneaky/*.o) -o $@ -lGameLandLib $(LINK_ARGS)  
-
-run_terrain: $(TERRAIN_DEMO)
-	cd $(TARGET_DIR); ./TerrainDemo.exe
 
 $(TERRAIN_DEMO): $(OBJS) $(GAME_LAND_LIB)
 	g++ $(wildcard TerrainDemo/*.o) -o $@ -lGameLandLib $(LINK_ARGS)  
@@ -39,10 +43,12 @@ $(TUT_LIB): $(GAME_LAND_LIB)
 clean:
 	rm -f $(foreach e, $(DIRS), $(wildcard $(e)/*.depends)) $(foreach e, $(DIRS), $(wildcard $(e)/*.o))
 
-%.o: %.cpp 
+%.o: %.cpp %.depends 
 	g++ $(COMPILE_ARGS) -c $< -o $@
 
-%.depends: %.cpp
-	g++ -M $(COMPILE_ARGS) $< > $@
+%.depends: %.cpp 
+	g++ -MT $(@:.depends=.o) -MM $(COMPILE_ARGS) $< -o $@
 
+# The - is in front of the include, so that we do not get an error if the depends
+# files to not exist
 -include $(DEPS)

@@ -106,6 +106,9 @@ public:
 	typedef std::unique_ptr<DrawContext> u_ptr;
 };
 
+class Drawable {
+	virtual void draw(const DrawContext& gc) = 0;
+};
 
 /**
  Use this as base class for all objects that are updated and drawn in your game. It is not 
@@ -122,7 +125,7 @@ public:
  therefore possible to have a draw order for your objects that is entirely different from the
  update order 
 */
-class GameObject {
+class GameObject : Drawable {
 PREVENT_COPY(GameObject)
 public:
 	GameObject(int drawOrder = 0) :	_draw_order(drawOrder), _is_hidden(false), _is_active(true) {};
