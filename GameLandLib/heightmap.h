@@ -1,7 +1,8 @@
 #pragma once
 #include <array>
 #include <functional>
-#include "game.h"
+#include "game_base.h"
+#include "game_math.h"
 
 namespace terrain {
 using namespace std;
@@ -12,6 +13,7 @@ using game::Vector;
 template <typename elemT, size_t m_columns, size_t n_rows > class Heightmap {
 public:
 	typedef std::array<elemT, n_rows * m_columns> container_t;
+	typedef std::function<void (int c, int r, elemT h)> triangle_fun_t;
 
 	Heightmap(const elemT& zero_value) : _elems() {_elems.fill(zero_value);}
 	const container_t& elems() const {return _elems;}
@@ -33,12 +35,17 @@ public:
 		return result;
 	}
 	virtual ~Heightmap() {};
-	void traverse(std::function<void (int c, int r, elemT h)> applyF) const {
+	/** Calls a function for each vertex in the heightmap.
+	The order is (0,0) (0,1) etc. */
+	void traverse(triangle_fun_t applyF) const {
 		for (auto c = 0U; c < m_columns; c++)
 			for (auto r = 0U; r < n_rows; r++)
 				applyF(c,r,_elems.at(r * n_rows + c));
 	}
-	void traverse_triangles(std::function<void (int c, int r, elemT h)> applyF) const {
+	/** Calls a function that helps with the rendering of a triangle strip.
+	@param applyF the function that is called. applyF(-1,-1,0) indicates the end of a strip.
+	*/  
+	void traverse_triangles(triangle_fun_t applyF) const {
 		for (auto c = 0U; c < m_columns-1; c++) {
 			auto nc = c + 1;
 			for (auto r = 0U; r < n_rows; r++) {
@@ -46,6 +53,24 @@ public:
 				applyF(c,r,_elems.at(r * n_rows + c));
 			}
 			applyF(-1,-1,0); // signal end of triangle strip
+		}
+	}
+
+  /** Calls a function for each vertex in the triangle that contains given coordinates.
+  @param c,r the coordinates somewhere in the range (0..m_columns, 0...n_rows)
+  @param applyF the function that will be called three times */
+	void apply_triangle(const Scalar& r, const Scalar& c, triangle_fun_t applyF) {
+		const int fc = (int) floor(c);
+		const int fr = (int) floor(r);
+		const int rc = (int) round(c);
+		if (fc == rc) {
+			applyF(fc+1,fr,_elems.at(fr * n_rows + fc+1));
+			applyF(fc,fr,_elems.at(fr * n_rows + fc));
+			applyF(fc,fr+1,_elems.at((fr+1) * n_rows + fc));
+		} else {
+			applyF(fc,fr,_elems.at(fr * n_rows + fc));
+			applyF(fc+1,fr+1,_elems.at((fr+1) * n_rows + fc+1));
+			applyF(fc,fr+1,_elems.at((fr+1) * n_rows + fc));			
 		}
 	}
 
@@ -60,6 +85,9 @@ protected:
 void read_heightmap(const string& filename,size_t buffer_size, game::Byte * buffer);
 void write_heightmap(const string& filename,int width, int height, game::Byte * buffer);
 
+/** 
+ * A heightmap that has a Byte as element type. 
+ */
 template <size_t m_columns, size_t n_rows > class HeightmapWithByte
 	: public Heightmap<game::Byte, m_columns,n_rows>{
 public:
@@ -74,6 +102,9 @@ public:
 				m_columns,n_rows,
 				Heightmap<game::Byte,m_columns,n_rows>::elems().data());
 	}
+	/** Adjusts the heights so that the heighest point is 255 and the
+	 * lowest point is 0.
+	 */
 	void normalise() {
 		const game::Byte min = Heightmap<game::Byte,m_columns,n_rows>::min_height();
 		const game::Byte max = Heightmap<game::Byte,m_columns,n_rows>::max_height();
@@ -84,6 +115,10 @@ public:
 	}
 };
 
+/**
+ A functor that maps elements to a Vector.
+ @ tparam elemT used as input
+ */
 template <typename elemT> class Transformer {
 public:
 	Transformer(const Scalar square_length, const Scalar height_scale, const Scalar height_min = 0)
@@ -101,6 +136,7 @@ private:
 	const Scalar _height_min;
 };
 
+/** A Transformer with Byte as input */
 class TransformerByte : public Transformer<game::Byte> {
 public:
 	TransformerByte(const Scalar square_length,

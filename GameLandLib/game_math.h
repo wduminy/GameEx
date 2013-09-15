@@ -20,7 +20,7 @@ namespace game {
 	using std::array;
 
 	typedef GLfloat Scalar;
-	typedef unsigned char Byte;
+	typedef unsigned char Byte; /**< type for 8-bit values. */
 	extern const Scalar zero;
 	extern const Scalar unity;
 	extern const Scalar pi;   // pi is 180 degrees
@@ -105,7 +105,8 @@ namespace game {
 
 
 	/**
-	 * Coordinate system: x - increase to west, y increases north, z increases up
+	 A value in 3D space. 
+	 Coordinate system: x - increase to west, y increases north, z increases up
 	 */
 	class Vector : public Vector2 {
 		public:
@@ -120,6 +121,7 @@ namespace game {
 			friend Vector operator*(const Vector& a, const Scalar &b);
 			friend Scalar dot(const Vector& a, const Vector &b);
 			friend Vector cross_product(const Vector& a, const Vector &b);
+			friend Vector plane_point(const Vector& a, const Vector &b, const Vector &c, const Scalar &x, const Scalar &y);
 			static const Vector origin;
 			static const Vector north;
 			static const Vector west;

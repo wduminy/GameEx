@@ -1,0 +1,39 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 12.04.0 ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(eigen)$
+load(vect)$
+declare([ax,ay,az,bx,by,bz,cx,cy,cz,x,y,z],real)$
+a: [ax,ay,az];
+b: [bx,by,bz];
+c: [cx,cy,cz];
+v: [x,y,z];
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+The vector perpendicular to the plane defined by a,b and c is n = (a - b) x (c - b)
+The equation for the plane, p is (v - b) . n = 0 -- that is all v for which this equation holds
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+n: (a-b) ~ (c-b);
+innerproduct(v-a,n) = 0;
+p: express(%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Given that we have x and y, now we can compute z
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+solve(p,z)[1];
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+
+   [wxMaxima: comment end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

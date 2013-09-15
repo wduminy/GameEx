@@ -2,7 +2,7 @@
  * Copyright 2012 Willem Duminy
  * See LICENCE.txt
  */
-#include "Heightmap.h"
+#include "heightmap.h"
 using namespace game;
 
 namespace terrain {

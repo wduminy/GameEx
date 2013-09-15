@@ -141,4 +141,15 @@ namespace tut {
 		ensure_equals(c,Vector2(0.1,0));
 		ensure_equals(d,Vector2(0.9,0));
 	}
+
+	TEST<13>() {
+		Vector a(0,0,0);
+		Vector b(1,1,1);
+		Vector c(-1,1,1);
+		Vector v = plane_point(a,b,c,0.5f,0.5f);
+		ensure_equals(v, Vector(0.5f,0.5f,0.5f));
+		ensure_equals(plane_point(a,b,c,b.x(),b.y()),b);
+		ensure_equals(plane_point(a,b,c,a.x(),a.y()),a);
+		ensure_equals(plane_point(a,b,c,c.x(),c.y()),c);
+	}
 }

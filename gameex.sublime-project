@@ -20,6 +20,11 @@
 			"name":"GameLandLib",
 			"path": "GameLandLib",
 			"file_include_patterns": ["*.cpp", "*.h"]
+		}, 
+		{
+			"name":"GameLandTests",
+			"path": "GameLandTests",
+			"file_include_patterns": ["*.cpp", "*.h"]
 		}
 	],
 	"build_systems":

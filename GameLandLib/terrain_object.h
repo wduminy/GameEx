@@ -10,6 +10,13 @@
 namespace terrain {
 void render_terrain(const game::Glex& gl, GLuint buffer, size_t cols, size_t rows);
 
+/** 
+ A GameObject that renders a heightmap.  
+ The data is provided in a Heightmap and changed to render coordinates by a Transformer 
+ @tparam elemT is produced by the transformer
+ @tparam heightmapT contains the data
+ @tparam tranformerT transforms data coordinates to render coordinates  
+ */
 template <typename elemT, typename heightmapT, typename transformerT> class TerrainObject
 		: public game::GameObject {
 public:
@@ -40,6 +47,7 @@ public:
 		render_terrain(dc.gl(),_buffer,_hmap->count_columns(), _hmap->count_rows());
 		_program.end();
 	}
+
 protected:
 	std::unique_ptr<heightmapT> _hmap;
 private:

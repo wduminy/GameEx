@@ -12,6 +12,9 @@ TERRAIN_DEMO := $(TARGET_DIR)/TerrainDemo.exe
 SNEAKY := $(TARGET_DIR)/Sneaky.exe
 .PHONY : clean all run_sneaky run_terrain run_test dox 
 
+run_tests:  $(GAME_LAND_TEST)
+	cd $(TARGET_DIR); ./GameLandTests.exe
+	
 run_terrain: $(TERRAIN_DEMO)
 	cd $(TARGET_DIR); ./TerrainDemo.exe
 
@@ -28,8 +31,6 @@ $(SNEAKY): $(OBJS) $(GAME_LAND_LIB)
 $(TERRAIN_DEMO): $(OBJS) $(GAME_LAND_LIB)
 	g++ $(wildcard TerrainDemo/*.o) -o $@ -lGameLandLib $(LINK_ARGS)  
 
-run_tests:  $(GAME_LAND_TEST)
-	cd $(TARGET_DIR); ./GameLandTests.exe
 
 $(GAME_LAND_TEST): $(OBJS) $(TUT_LIB) 
 	g++ $(wildcard GameLandTests/*.o) -o $@ -lGameLandLib -lTutLib $(LINK_ARGS)  

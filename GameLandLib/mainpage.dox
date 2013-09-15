@@ -1,0 +1,11 @@
+/**
+\mainpage 
+GameEx is a library you can you use to develop a game if you want to use _SDL_.  It is not complete, but is already of some use.  If you want to use it in this current, incomplete state, I suggest you create a fork of the [GitHub repository](https://github.com/codespear/GameEx).
+
+The following software is used by GameEx:
+	- [Doxygen](http://www.stack.nl/~dimitri/doxygen/)
+	- [Minimilist GNU for Windows](http://www.mingw.org/)
+	- [OpenGL](http://www.opengl.org/)
+	- [Simple Direct Media Layer](http://www.libsdl.org/)
+	- [Template Unit Test Framework] (http://tut-framework.sourceforge.net/)
+*/

@@ -104,6 +104,19 @@ namespace game {
 		return Vector(a.y() * b.z() - b.y()*a.z(), a.z() * b.x() - b.z() * a.x(), a.x() * b.y() - b.x() * a.y());
 	}
 
+	/** Determines the point in a plane that intersects with a vertical line.
+	@param a,b,c the points that defines the plane.
+	@param x,y the position through which the vertical line goes.
+	*/
+	Vector plane_point(const Vector& a, const Vector &b, const Vector &c, const Scalar &x, const Scalar &y) {
+		const auto e1 = ( ( b.x()-a.x()) * c.z()+( a.z()-b.z()) * c.x()+a.x() * b.z()-a.z() * b.x());
+		const auto e2 = ( ( a.y()-b.y()) * c.z()+( b.z()-a.z()) * c.y()-a.y() * b.z()+a.z() * b.y());
+		const auto e3 = ( a.x() * b.y()-a.y() * b.x()) * c.z()+( a.z() * b.x()-a.x() * b.z()) * c.y()+( a.y() * b.z()-a.z() * b.y()) * c.x();
+		const auto e4 = ( b.x()-a.x()) * c.y()+( a.y()-b.y()) * c.x()+a.x() * b.y()-a.y() * b.x();
+		const auto z = (e1 * y + e2 * x +e3)/e4; 
+		return Vector(x,y,z);
+	}
+
 	const size_t diagonals[] = {0,5,10,15};
 	valarray<size_t> diagonal(diagonals,4);
 
