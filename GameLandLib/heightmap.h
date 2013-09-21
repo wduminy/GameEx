@@ -55,6 +55,19 @@ public:
 		}
 	}
 
+  /** Calls a function for the coordinates around a given (c,r). 
+   */ 
+	void fan_triangles(const size_t c, const size_t r, triangle_fun_t fanF) const {
+		static const int sc[] = {-1,-1, 0, 1, 1, 1, 0,-1};
+		static const int sr[] = { 0, 1, 1, 1, 0,-1,-1,-1};
+		for (int i = 0; i < 8; i++) {
+			const size_t cc = c + sc[i];
+			const size_t cr = r + sr[i];
+			if (in_range(cc,cr)) 
+				apply(fanF,cc,cr);
+		}
+	}
+
   /** Calls a function for each vertex in the triangle that contains given coordinates.
   @param c,r the coordinates somewhere in the range (0..m_columns, 0...n_rows)
   @param applyF the function that will be called three times */
@@ -86,8 +99,14 @@ public:
 protected:
 	container_t _elems;
 	void check_range(size_t c, size_t r) const {
-		if (c < 0 || c >= m_columns) throw std::out_of_range("c is invalid");
-		if (r < 0 || r >= n_rows) throw std::out_of_range("r is invalid");
+		if (c >= m_columns) throw std::out_of_range("c is invalid");
+		if (r >= n_rows) throw std::out_of_range("r is invalid");
+	}
+
+	bool in_range(size_t c, size_t r) const {
+		if (c >= m_columns) return false;
+		if (r >= n_rows) return false;
+		return true;
 	}
 
 	void apply(triangle_fun_t applyF, const size_t c, const size_t r) const {

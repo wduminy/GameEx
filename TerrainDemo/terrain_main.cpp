@@ -31,10 +31,8 @@ public:
 		base_terrain_t::initialise(rctx,dctx);
 	}
 
-	void draw(const game::DrawContext& dc) override {
-		base_terrain_t::draw(dc);
-    glLineWidth(10.0f); //size in pixels
-    auto sw = floor_south_west();
+	void draw_cross_poles() {
+		    auto sw = floor_south_west();
     auto ne = floor_north_east();
     const int steps = 2000;
     auto inc = (sw - ne) / (steps * 1.0f);
@@ -52,14 +50,33 @@ public:
       }
     glEnd();
     glColor3f(1,1,1);
-   // draw_wire();
+	}
+
+	void draw(const game::DrawContext& dc) override {
+		base_terrain_t::draw(dc);
+    glLineWidth(3.0f); //size in pixels
+    glBegin(GL_LINES);
+   // draw_cross_poles();
+    _hmap->traverse([&](size_t c, size_t r, Byte v) {
+    	const auto f = _transformer(c,r,v);
+    	auto n = average_normal_at(c,r);
+    	n.normalise();
+    	const auto e = f + n;
+  		glColor3f(0,0,1);
+    	glVertex3f(f.x(),f.y(),f.z());  
+  		glColor3f(1,0,0);
+    	glVertex3f(e.x(),e.y(),e.z());    	    	
+    });
+		glEnd();
+  	glColor3f(1,1,1);
+	 // draw_wire();
 	}
 };
 
 class TerrainController : public MainObject {
 	public:
 	TerrainController() : MainObject(-100,square_size/10.0f,square_size * map_size) {
-		add_part(new SphereCamera(-1,5.0f,3.0f, terrain_center));
+		add_part(new SphereCamera(-1,10.0f,7.0f, terrain_center));
 		add_part(new DemoTerrain());
 	}
 };

@@ -64,6 +64,7 @@ namespace game {
 		virtual Scalar norm() const = 0;
 		void normalise();
 		bool operator==(const ScalarValueArray& other) const;
+	  void operator+=(const ScalarValueArray& source) {_data += source.data();}
 	 	friend ostream& operator<<(ostream& out, const ScalarValueArray &m);
 	 	bool is_zero() const;
 	protected:

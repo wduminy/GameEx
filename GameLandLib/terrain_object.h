@@ -104,6 +104,32 @@ public:
 		return cross_product(a, b);
 	}
 
+
+  /**
+  Calculates the avarage of the norms arround the given heightmap coordinates (x,y).
+  The result is not normalised.
+  */
+	Vector average_normal_at(const size_t c, const size_t r) const {
+		int count = 0;
+		Vector sum;
+		Vector previous;
+		const auto middle = _transformer(c,r,(*_hmap)(c,r));
+		_hmap->fan_triangles(c,r,
+			[&] (size_t cc, size_t cr, Byte v) { 
+				 const auto current = _transformer(cc,cr,v); 
+				 if (count > 0) {
+				 		const auto a = previous - middle;
+				 		const auto b = current - middle;
+				 		auto n = cross_product(a,b);
+					 	sum += n;
+				 //		sum.normalise();
+				 }
+				 count++;
+				 previous = current;
+			});
+			return sum;		
+	}
+
 	/**
 	The point at the floor in the north-east corner of the terrain.
 	*/
@@ -120,8 +146,8 @@ public:
 
 protected:
 	std::unique_ptr<heightmapT> _hmap;
-private:
 	const transformerT _transformer;
+private:
 	GLuint _buffer;
 	game::ShaderProgram _program;
 };
