@@ -70,8 +70,8 @@ namespace game {
 		 explicit ScalarValueArray(const valarray<Scalar>& source) : _data(source) {}
 		 explicit ScalarValueArray(size_t size) : _data(size) {}
 		 void set(size_t i, Scalar v) {assert(i < _data.size()); _data[i] = v;};
-		 Scalar get(size_t i) const {assert(i < _data.size()); return _data[i];}
-  		 const valarray<Scalar> & data() const {return _data;}
+	 Scalar get(size_t i) const {assert(i < _data.size()); return _data[i];}
+  	 const valarray<Scalar> & data() const {return _data;}
 	private:
 	 	 valarray<Scalar> _data;
 	};
@@ -115,13 +115,17 @@ namespace game {
 			Scalar z() const {return get(2);}
 			void set_z(Scalar v) {set(2,v);}
 			Scalar norm() const override {return sqrt(sqr(x()) + sqr(y()) + sqr(z()));}
+			void assign(const Scalar x, const Scalar y, const Scalar z) {
+				set_x(x);set_y(y);set_z(z);
+			}
 		public:
 			friend Vector operator+(const Vector& a, const Vector &b);
 			friend Vector operator-(const Vector& a, const Vector &b);
-			friend Vector operator*(const Vector& a, const Scalar &b);
+			friend Vector operator*(const Vector& a, const Scalar b);
+		 	friend Vector operator/(const Vector& a, const Scalar b);
 			friend Scalar dot(const Vector& a, const Vector &b);
 			friend Vector cross_product(const Vector& a, const Vector &b);
-			friend Vector plane_point(const Vector& a, const Vector &b, const Vector &c, const Scalar &x, const Scalar &y);
+			friend Vector plane_point(const Vector& a, const Vector &b, const Vector &c, const Scalar x, const Scalar y);
 			static const Vector origin;
 			static const Vector north;
 			static const Vector west;

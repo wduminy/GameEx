@@ -11,7 +11,7 @@
 #include <list>  
 #include <memory>
 #define PREVENT_COPY(X) private: X(const X &source); X & operator=(const X&);
-#define ENSURE(P,M) if (!(P)) throw std::runtime_error(M)
+#define ENSURE(P,M) if (!(P)) throw systemex::runtime_error_ex("%s %s %d", M, __FILE__,__LINE__)
 #ifdef NDEBUG
 #define ASSERT(P) /*SKIP*/
 #else

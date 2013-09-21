@@ -5,9 +5,14 @@
 
 #pragma once
 #include <game.h>
+#include <game_math.h>
 #include <log.h> 
 
 namespace terrain {
+	using game::Vector;
+	using game::Byte;
+	using game::Scalar;
+
 void render_terrain(const game::Glex& gl, GLuint buffer, size_t cols, size_t rows);
 
 /** 
@@ -47,6 +52,34 @@ public:
 		render_terrain(dc.gl(),_buffer,_hmap->count_columns(), _hmap->count_rows());
 		_program.end();
 	}
+
+  /** 
+  The point of intersection at the world coordinates (x,y).
+  */
+ 	Vector floor_at(const Scalar x, const Scalar y) const {
+		Vector triangle_coords[3];
+		int at = 0;
+		_hmap->apply_triangle(_transformer.inverse_x(x),_transformer.inverse_y(y),
+			[&] (int c, int r, Byte v) { 
+				triangle_coords[at++] = _transformer(c,r,v); 
+			});
+		return plane_point(triangle_coords[0], triangle_coords[1], triangle_coords[2],x,y);
+	}
+
+	/**
+	The point at the floor in the north-east corner of the terrain.
+	*/
+	Vector floor_north_east() const {
+		return floor_at(_transformer.x(0),_transformer.y(_hmap->count_rows()-1));
+	}
+
+	/**
+	The point at the floor in the south-west corner of the terrain.
+	*/
+	Vector floor_south_west() const {
+		return floor_at(_transformer.x(_hmap->count_columns()-1),_transformer.y(0));
+	}
+
 
 protected:
 	std::unique_ptr<heightmapT> _hmap;

@@ -44,5 +44,10 @@
             "cmd": ["make","-j4"],
             "working_dir": "$project_path"
         }
-  ]
+  ],
+	"settings":
+	{
+	     "sublimegdb_workingdir": "${folder:${project_path:RunDir/TerrainDemo.exe}}",
+	     "sublimegdb_commandline": "gdb --interpreter=mi TerrainDemo.exe"
+	}
 }

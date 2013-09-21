@@ -1,31 +1,61 @@
 
+#include <math.h>
 #include <log.h>
 #include <iostream>
 #include <game.h>
 #include <terrain.h>
 #include "terrain_object.h"
+
 using namespace game;
 using namespace terrain;
 
-typedef HeightmapWithByte<128,128> demo_hm_t;
+const size_t map_size = 128;
 
-class DemoTerrain : public TerrainObject<Byte,demo_hm_t,TransformerByte> {
+typedef HeightmapWithByte<map_size,map_size> demo_hm_t;
+
+typedef TerrainObject<Byte,demo_hm_t,TransformerByte> base_terrain_t;
+
+const float square_size = 0.5f;
+
+const Vector terrain_center(square_size*map_size/2,-square_size*map_size/2,0.0f);
+
+class DemoTerrain : public base_terrain_t {
 public:
 	DemoTerrain() : TerrainObject(
 			new demo_hm_t(),
-			TransformerByte(0.5f,0.0f,10.0f))  {}
+			TransformerByte(square_size,0.0f,10.0f))  {}
 
 	void initialise(const ResourceContext & rctx, const DrawContext& dctx) override {
 		_hmap->read_from_bmp(rctx.dir() + "test_terrain.bmp");
 		_hmap->normalise();
-		TerrainObject<Byte,demo_hm_t,TransformerByte>::initialise(rctx,dctx);
+		base_terrain_t::initialise(rctx,dctx);
+	}
+
+	void draw(const game::DrawContext& dc) override {
+		base_terrain_t::draw(dc);
+    glLineWidth(10.0f); //size in pixels
+    auto sw = floor_south_west();
+    auto ne = floor_north_east();
+    const int steps = 200;
+    auto inc = (sw - ne) / (steps * 1.0f);
+    LOG << sw << " -> " << ne << ": " << inc;
+    glBegin(GL_LINES); 
+      for (int i=0;i<steps;i++) {
+      	auto vi = ne + (inc*i);
+      	auto fi = floor_at(vi.x(),vi.y());
+    		glColor3f(0,0,1);
+      	glVertex3f(fi.x(),fi.y(),fi.z());  
+    		glColor3f(1,0,0);
+      	glVertex3f(fi.x(),fi.y(),fi.z()+1);    	
+      }
+    glEnd();
 	}
 };
 
 class TerrainController : public MainObject {
 	public:
-	TerrainController() : MainObject(-100,0.3,100) {
-		add_part(new SphereCamera(-1,10.0f,50.0f, Vector(25.0f,-25.0f,0.0f)));
+	TerrainController() : MainObject(-100,square_size/10.0f,square_size * map_size) {
+		add_part(new SphereCamera(-1,20.0f,15.0f, terrain_center));
 		add_part(new DemoTerrain());
 	}
 };

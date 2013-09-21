@@ -1,5 +1,8 @@
 TARGET_DIR = RunDir
-COMPILE_ARGS = -I"C:\development\cpp\libraries\SDL-1.2.15\include" -ITutLib -IGameLandLib -O3 -Wall -c -fmessage-length=0 -std=c++0x
+# choose a debug option -- the first one is for debugging ... the orther for fastest
+DEBUG = -O0 -g3
+# DEBUG = 
+COMPILE_ARGS = -I"C:\development\cpp\libraries\SDL-1.2.15\include" -ITutLib -IGameLandLib -Wall -c -fmessage-length=0 -std=c++0x $(DEBUG)
 LINK_ARGS = -L"C:\development\cpp\libraries\SDL-1.2.15\lib" -L$(TARGET_DIR) -lmingw32 -lwsock32 -lglu32 -lopengl32 -lSDLmain -lSDL_ttf -lSDL.dll 
 DIRS = GameLandLib GameLandTests TutLib TerrainDemo Sneaky
 SOURCES := $(foreach e, $(DIRS), $(wildcard $(e)/*.cpp))
@@ -12,12 +15,12 @@ TERRAIN_DEMO := $(TARGET_DIR)/TerrainDemo.exe
 SNEAKY := $(TARGET_DIR)/Sneaky.exe
 .PHONY : clean all run_sneaky run_terrain run_test dox 
 
-run_tests:  $(GAME_LAND_TEST)
-	cd $(TARGET_DIR); ./GameLandTests.exe
-	
 run_terrain: $(TERRAIN_DEMO)
 	cd $(TARGET_DIR); ./TerrainDemo.exe
 
+run_tests:  $(GAME_LAND_TEST)
+	cd $(TARGET_DIR); ./GameLandTests.exe
+	
 dox: 
 	rm -f -r ../codespear.github.io/gameex/html
 	cd docs; doxygen doxy.txt

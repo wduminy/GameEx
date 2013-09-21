@@ -3,7 +3,6 @@
 #include <functional>
 #include "game_base.h"
 #include "game_math.h"
-
 namespace terrain {
 using namespace std;
 using game::Scalar;
@@ -13,7 +12,7 @@ using game::Vector;
 template <typename elemT, size_t m_columns, size_t n_rows > class Heightmap {
 public:
 	typedef std::array<elemT, n_rows * m_columns> container_t;
-	typedef std::function<void (int c, int r, elemT h)> triangle_fun_t;
+	typedef std::function<void (size_t c, size_t r, elemT h)> triangle_fun_t;
 
 	Heightmap(const elemT& zero_value) : _elems() {_elems.fill(zero_value);}
 	const container_t& elems() const {return _elems;}
@@ -59,26 +58,42 @@ public:
   /** Calls a function for each vertex in the triangle that contains given coordinates.
   @param c,r the coordinates somewhere in the range (0..m_columns, 0...n_rows)
   @param applyF the function that will be called three times */
-	void apply_triangle(const Scalar& r, const Scalar& c, triangle_fun_t applyF) {
-		const int fc = (int) floor(c);
-		const int fr = (int) floor(r);
-		const int rc = (int) round(c);
-		if (fc == rc) {
-			applyF(fc+1,fr,_elems.at(fr * n_rows + fc+1));
-			applyF(fc,fr,_elems.at(fr * n_rows + fc));
-			applyF(fc,fr+1,_elems.at((fr+1) * n_rows + fc));
+	void apply_triangle(const Scalar c, const Scalar r, triangle_fun_t applyF) const {
+		if (r == n_rows - 1 || c == m_columns - 1) {
+			auto new_c = (c == m_columns-1)?(c - 0.001f):c;
+			auto new_r = (r == n_rows-1)?(r - 0.001f):r;
+			apply_triangle(new_c,new_r,applyF);
 		} else {
-			applyF(fc,fr,_elems.at(fr * n_rows + fc));
-			applyF(fc+1,fr+1,_elems.at((fr+1) * n_rows + fc+1));
-			applyF(fc,fr+1,_elems.at((fr+1) * n_rows + fc));			
+			ASSERT(r >= 0);
+			ASSERT(c >= 0);
+			const int fc = (int) floor(c);
+			const int fr = (int) floor(r);
+			const Scalar x = c - fc;
+			const Scalar y = r - fr;
+			if (y <= x) {
+				apply(applyF,fc+1,fr);
+				apply(applyF,fc,fr);
+				apply(applyF,fc+1,fr+1);
+			} else {
+				apply(applyF,fc,fr);
+				apply(applyF,fc+1,fr+1);
+				apply(applyF,fc,fr+1);
+			}
 		}
 	}
+
 
 protected:
 	container_t _elems;
 	void check_range(size_t c, size_t r) const {
 		if (c < 0 || c >= m_columns) throw std::out_of_range("c is invalid");
 		if (r < 0 || r >= n_rows) throw std::out_of_range("r is invalid");
+	}
+
+	void apply(triangle_fun_t applyF, size_t c, size_t r) const {
+		ASSERT(c < m_columns);
+		ASSERT(r < n_rows);
+		applyF(c,r,_elems.at(r * n_rows + c));
 	}
 };
 
@@ -111,7 +126,7 @@ public:
 		const float offset = -min;
 		const float scale = 255.0f / (max - min);
 		auto &elems = Heightmap<game::Byte,m_columns,n_rows>::elems();
-		for_each(e,elems) {*e = (*e + offset) * scale;}
+		for_each(e,elems) {*e = round((*e + offset) * scale);}
 	}
 };
 
@@ -124,8 +139,10 @@ public:
 	Transformer(const Scalar square_length, const Scalar height_scale, const Scalar height_min = 0)
 		: _square_length(square_length), _height_scale(height_scale), _height_min(height_min) {}
 	Scalar x(int c) const { return c * _square_length; }
-	Scalar y(int r) const { return r * _square_length * (-1); }
+	Scalar y(int r) const { return r * _square_length * (-1.0f); }
 	Scalar z(int h) const { return h * _height_scale + _height_min; }
+	Scalar inverse_x(const Scalar& v) const { return v / _square_length;}
+	Scalar inverse_y(const Scalar& v) const { return v / _square_length * (-1.0f);}
 	Vector operator()(int c, int r, elemT h) const {
 		return Vector(x(c),y(r),z(h));
 	}
@@ -141,7 +158,7 @@ class TransformerByte : public Transformer<game::Byte> {
 public:
 	TransformerByte(const Scalar square_length,
 			const Scalar height_min, const Scalar height_max)
-	:Transformer<game::Byte>(square_length, (height_max - height_min)/255, height_min){}
+	:Transformer<game::Byte>(square_length, (height_max - height_min)/255.0f, height_min){}
 };
 
 }

@@ -4,16 +4,20 @@
 		"selected_items":
 		[
 			[
+				"Terra",
+				"TerrainDemo"
+			],
+			[
+				"tr",
+				"triangle_coords"
+			],
+			[
 				"en",
 				"ensure_equals"
 			],
 			[
 				"TEST",
 				"TESTDATA"
-			],
-			[
-				"tr",
-				"triangle_fun_t"
 			],
 			[
 				"r",
@@ -71,15 +75,15 @@
 			"file": "/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/terrain-surface.md",
 			"settings":
 			{
-				"buffer_size": 5762,
+				"buffer_size": 6335,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "GameLandTests/game_test.cpp",
+			"file": "TerrainDemo/terrain_main.cpp",
 			"settings":
 			{
-				"buffer_size": 4463,
+				"buffer_size": 1694,
 				"line_ending": "Windows"
 			}
 		},
@@ -92,26 +96,26 @@
 			}
 		},
 		{
-			"file": "GameLandLib/heightmap.h",
+			"file": "GameLandLib/terrain_object.h",
 			"settings":
 			{
-				"buffer_size": 5233,
+				"buffer_size": 2554,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "GameLandLib/heightmap.cpp",
+			"file": "gameex.sublime-project",
 			"settings":
 			{
-				"buffer_size": 1210,
-				"line_ending": "Windows"
+				"buffer_size": 1215,
+				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "GameLandTests/terrain_test.cpp",
+			"file": "RunDir/log.txt",
 			"settings":
 			{
-				"buffer_size": 1026,
+				"buffer_size": 220,
 				"line_ending": "Windows"
 			}
 		}
@@ -119,9 +123,17 @@
 	"build_system": "Packages/Makefile/Make.sublime-build",
 	"command_palette":
 	{
-		"height": 73.0,
+		"height": 390.0,
 		"selected_items":
 		[
+			[
+				"gdb",
+				"SublimeGDB: Open Breakpoint View"
+			],
+			[
+				"debug",
+				"SublimeGDB: Start Debugging"
+			],
 			[
 				"wra",
 				"Word Wrap: Toggle"
@@ -243,7 +255,7 @@
 				"Set Syntax: Makefile"
 			]
 		],
-		"width": 699.0
+		"width": 545.0
 	},
 	"console":
 	{
@@ -265,29 +277,33 @@
 	},
 	"file_history":
 	[
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/SublimeGDB/SublimeGDB.sublime-settings",
+		"/C/Users/willemd/Documents/GitHub/GameEx/gameex.sublime-project",
+		"/C/Users/willemd/Documents/GitHub/GameEx/log.txt",
+		"/C/Users/willemd/Documents/GitHub/GameEx/RunDir/log.txt",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/heightmap.h",
+		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_posts/2013-07-13-terrain-rendering-basics.md",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/terrain_object.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/terrain_test.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/game_test.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_math.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/heightmap.cpp",
 		"/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/array",
 		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/test_util.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_math.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/terrain_object.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/terrain.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/heightmap.h",
 		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/terrain-surface.md",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/terrain_test.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/docs/header.html",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_math.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/docs/doxy.txt",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/mainpage.dox",
 		"/C/Users/willemd/Documents/GitHub/GameEx/README.md",
-		"/C/Users/willemd/Documents/GitHub/GameEx/RunDir/log.txt",
 		"/C/Users/willemd/Documents/GitHub/GameEx/makefile",
 		"/C/Users/willemd/Documents/GitHub/GameEx/TerrainDemo/terrain_main.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/gameex.sublime-project",
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Users/willemd/Documents/GitHub/GameEx/docs/footer.html",
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/ColorScheme/iPlastic.tmTheme",
-		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_posts/2013-07-13-terrain-rendering-basics.md",
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/font.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/TerrainDemo/terrain_object.h",
@@ -347,7 +363,7 @@
 	],
 	"find":
 	{
-		"height": 46.0
+		"height": 36.0
 	},
 	"find_in_files":
 	{
@@ -364,6 +380,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"ne",
+			");\n",
+			"TerrainObject<Byte,demo_hm_t,TransformerByte>",
+			";\n",
 			" ",
 			"b",
 			"a",
@@ -472,7 +492,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -488,8 +508,8 @@
 						"selection":
 						[
 							[
-								850,
-								850
+								780,
+								780
 							]
 						],
 						"settings":
@@ -497,7 +517,7 @@
 							"syntax": "Packages/Makefile/Makefile.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 372.0,
+						"translation.y": 50.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -508,15 +528,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5762,
+						"buffer_size": 6335,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1582,
-								1582
+								3712,
+								3712
 							]
 						],
 						"settings":
@@ -529,26 +549,26 @@
 							"syntax": "Packages/Markdown/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 534.0,
+						"translation.y": 1286.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "GameLandTests/game_test.cpp",
+					"file": "TerrainDemo/terrain_main.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4463,
+						"buffer_size": 1694,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4197,
-								4197
+								1694,
+								1694
 							]
 						],
 						"settings":
@@ -557,7 +577,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 302.0,
+						"translation.y": 1316.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -575,8 +595,8 @@
 						"selection":
 						[
 							[
-								4702,
-								4702
+								4055,
+								4055
 							]
 						],
 						"settings":
@@ -585,26 +605,26 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 3451.0,
+						"translation.y": 2940.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "GameLandLib/heightmap.h",
+					"file": "GameLandLib/terrain_object.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5233,
+						"buffer_size": 2554,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2722,
-								2286
+								1983,
+								1983
 							]
 						],
 						"settings":
@@ -613,66 +633,81 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1707.0,
+						"translation.y": 1344.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 5,
-					"file": "GameLandLib/heightmap.cpp",
+					"file": "gameex.sublime-project",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1210,
+						"buffer_size": 1215,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								70,
-								70
+								973,
+								973
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/C++/C++.tmLanguage"
+							"spell_check": true,
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 840.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 6,
-					"file": "GameLandTests/terrain_test.cpp",
+					"file": "RunDir/log.txt",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1026,
+						"buffer_size": 220,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								983,
-								983
+								20,
+								20
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 561.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				}
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		},
+		{
+			"sheets":
+			[
 			]
 		}
 	],
@@ -691,18 +726,39 @@
 			[
 				0,
 				0,
-				1,
+				3,
 				1
+			],
+			[
+				0,
+				1,
+				1,
+				2
+			],
+			[
+				1,
+				1,
+				2,
+				2
+			],
+			[
+				2,
+				1,
+				3,
+				2
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.421145833333,
+			0.66,
 			1.0
 		],
 		"rows":
 		[
 			0.0,
+			0.75,
 			1.0
 		]
 	},
@@ -722,6 +778,30 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"lo",
+				"All\\RunDir\\log.txt"
+			],
+			[
+				"log",
+				"All\\RunDir\\log.txt"
+			],
+			[
+				"hei",
+				"GameLandLib\\heightmap.h"
+			],
+			[
+				"terrabas",
+				"Blog\\_posts\\2013-07-13-terrain-rendering-basics.md"
+			],
+			[
+				"terra",
+				"GameLandTests\\terrain_test.cpp"
+			],
+			[
+				"game",
+				"GameLandTests\\game_test.cpp"
+			],
 			[
 				"tesutil",
 				"All\\TutLib\\test_util.h"
@@ -755,10 +835,6 @@
 				"Blog\\_drafts\\terrain-surface.md"
 			],
 			[
-				"hei",
-				"GameLandLib\\heightmap.h"
-			],
-			[
 				"doxy",
 				"All\\docs\\doxy.txt"
 			],
@@ -785,10 +861,6 @@
 			[
 				"tertest",
 				"GameLandTests\\terrain_test.cpp"
-			],
-			[
-				"terra",
-				"TerrainDemo\\terrain_main.cpp"
 			],
 			[
 				"he",
@@ -900,7 +972,7 @@
 		[
 			[
 				"",
-				"C:\\Users\\willemd\\Documents\\GitHub\\codespear.github.io\\codespear.sublime-project"
+				"G:\\my_sublime.sublime-project"
 			]
 		],
 		"width": 475.0
@@ -939,15 +1011,6 @@
 	},
 	"settings":
 	{
-		"last_automatic_layout":
-		[
-			[
-				0,
-				0,
-				1,
-				1
-			]
-		]
 	},
 	"show_minimap": false,
 	"show_open_files": true,
