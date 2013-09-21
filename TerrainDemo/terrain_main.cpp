@@ -36,26 +36,30 @@ public:
     glLineWidth(10.0f); //size in pixels
     auto sw = floor_south_west();
     auto ne = floor_north_east();
-    const int steps = 200;
+    const int steps = 2000;
     auto inc = (sw - ne) / (steps * 1.0f);
-    LOG << sw << " -> " << ne << ": " << inc;
     glBegin(GL_LINES); 
       for (int i=0;i<steps;i++) {
       	auto vi = ne + (inc*i);
       	auto fi = floor_at(vi.x(),vi.y());
+      	auto ni = normal_at(vi.x(),vi.y());
+      	ni.normalise();
+      	auto ei = fi + ni;
     		glColor3f(0,0,1);
       	glVertex3f(fi.x(),fi.y(),fi.z());  
     		glColor3f(1,0,0);
-      	glVertex3f(fi.x(),fi.y(),fi.z()+1);    	
+      	glVertex3f(ei.x(),ei.y(),ei.z()+1);    	
       }
     glEnd();
+    glColor3f(1,1,1);
+   // draw_wire();
 	}
 };
 
 class TerrainController : public MainObject {
 	public:
 	TerrainController() : MainObject(-100,square_size/10.0f,square_size * map_size) {
-		add_part(new SphereCamera(-1,20.0f,15.0f, terrain_center));
+		add_part(new SphereCamera(-1,5.0f,3.0f, terrain_center));
 		add_part(new DemoTerrain());
 	}
 };

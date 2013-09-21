@@ -76,8 +76,8 @@ public:
 				apply(applyF,fc+1,fr+1);
 			} else {
 				apply(applyF,fc,fr);
-				apply(applyF,fc+1,fr+1);
 				apply(applyF,fc,fr+1);
+				apply(applyF,fc+1,fr+1);
 			}
 		}
 	}
@@ -90,9 +90,7 @@ protected:
 		if (r < 0 || r >= n_rows) throw std::out_of_range("r is invalid");
 	}
 
-	void apply(triangle_fun_t applyF, size_t c, size_t r) const {
-		ASSERT(c < m_columns);
-		ASSERT(r < n_rows);
+	void apply(triangle_fun_t applyF, const size_t c, const size_t r) const {
 		applyF(c,r,_elems.at(r * n_rows + c));
 	}
 };

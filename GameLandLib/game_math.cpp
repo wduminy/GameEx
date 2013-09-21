@@ -105,7 +105,10 @@ namespace game {
 	}
 
 	Vector cross_product(const Vector& a, const Vector &b) {
-		return Vector(a.y() * b.z() - b.y()*a.z(), a.z() * b.x() - b.z() * a.x(), a.x() * b.y() - b.x() * a.y());
+		return Vector(
+			a.y() * b.z() - b.y() * a.z(), 
+			a.z() * b.x() - b.z() * a.x(), 
+			a.x() * b.y() - b.x() * a.y());
 	}
 
 	/** Determines the point in a plane that intersects with a vertical line.

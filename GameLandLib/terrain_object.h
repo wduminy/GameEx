@@ -53,6 +53,26 @@ public:
 		_program.end();
 	}
 
+  /**
+  Draw a wire grid.  Call this for debugging your scene.
+   */
+	void draw_wire() {
+		glPolygonMode(GL_FRONT, GL_LINE);
+ 		glEnable(GL_LINE_SMOOTH);
+ 		glLineWidth(2);
+    	glBegin(GL_TRIANGLE_STRIP);
+ 		_hmap->traverse_triangles([&](int c, int r, Byte h) {
+ 			if (c == -1) {
+ 				glEnd();
+ 				glBegin(GL_TRIANGLE_STRIP);
+ 			} else {
+ 				const Vector v = _transformer(c,r,h);
+ 				glVertex3f(v.x(),v.y(),v.z());
+ 			}
+ 		});
+ 		glEnd();
+	}
+
   /** 
   The point of intersection at the world coordinates (x,y).
   */
@@ -64,6 +84,24 @@ public:
 				triangle_coords[at++] = _transformer(c,r,v); 
 			});
 		return plane_point(triangle_coords[0], triangle_coords[1], triangle_coords[2],x,y);
+	}
+
+	/** 
+  The surface normal at the world coordinates (x,y).
+  If (x,y) is a touches more than one triangle, the choice of
+  which one is used to determine the normal is stable but arbitrary.
+  The result is not normalised.
+  */
+ 	Vector normal_at(const Scalar x, const Scalar y) const {
+		Vector triangle_coords[3];
+		int at = 0;
+		_hmap->apply_triangle(_transformer.inverse_x(x),_transformer.inverse_y(y),
+			[&] (int c, int r, Byte v) { 
+				triangle_coords[at++] = _transformer(c,r,v); 
+			});
+		const auto a = triangle_coords[0] - triangle_coords[2];
+		const auto b = triangle_coords[1] - triangle_coords[2];
+		return cross_product(a, b);
 	}
 
 	/**
@@ -80,11 +118,10 @@ public:
 		return floor_at(_transformer.x(_hmap->count_columns()-1),_transformer.y(0));
 	}
 
-
 protected:
 	std::unique_ptr<heightmapT> _hmap;
 private:
-	transformerT _transformer;
+	const transformerT _transformer;
 	GLuint _buffer;
 	game::ShaderProgram _program;
 };
