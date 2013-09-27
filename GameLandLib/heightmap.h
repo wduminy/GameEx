@@ -22,7 +22,12 @@ public:
 		check_range(c,r);return _elems.at(r * n_rows + c);}
 	size_t count_rows() const {return n_rows; }
 	size_t count_columns() const {return m_columns; }
-	size_t size_traverse_triangles() const {return m_columns * n_rows * 2;}
+	/** The number of times a vertex is drawn while traversing the heightmap */
+	size_t size_traverse_triangles() const {return (m_columns-1) * n_rows * 2;}
+	/** The number of element in the heightmap */
+	size_t size() const {return m_columns * n_rows;}
+	/** The index of an element in the heightmap */
+	size_t index_of(size_t c, size_t r) const {return r * n_rows + c;}
 	elemT max_height() const {
 		auto result = _elems.front();
 		for_each(e, _elems) { if (*e > result) result = *e; }

@@ -7,13 +7,13 @@
 #include <game.h>
 #include <game_math.h>
 #include <log.h> 
-
+#include <GL/gl.h>
 namespace terrain {
 	using game::Vector;
 	using game::Byte;
 	using game::Scalar;
 
-void render_terrain(const game::Glex& gl, GLuint buffer, size_t cols, size_t rows);
+void render_terrain(const game::Glex& gl, GLuint array, size_t cols, size_t rows);
 
 /** 
  A GameObject that renders a heightmap.  
@@ -26,40 +26,61 @@ template <typename elemT, typename heightmapT, typename transformerT> class Terr
 		: public game::GameObject {
 public:
 	TerrainObject(heightmapT * hmap, const transformerT& transformer)
-		: _hmap(hmap), _transformer(transformer), _buffer(0), _program() {}
+		: _hmap(hmap), _transformer(transformer), _array(0), _index_buffer(0), _program() {}
 
 	void initialise(const game::ResourceContext & rc, const game::DrawContext& dc) override {
-		dc.gl().glGenBuffers(1,&_buffer);
-		const auto b_size = _hmap->size_traverse_triangles()*3;
-		std::vector<GLfloat> verts(b_size);
+		const auto vert_size = _hmap->size()*3;
+		std::vector<GLfloat> verts(vert_size);
+		_hmap->traverse([&](int c, int r, elemT h) {
+				const size_t idx = _hmap->index_of(c,r) * 3;
+				const auto v = _transformer(c,r,h);
+				ASSERT(idx < vert_size);
+				verts[idx] = v.x();
+				verts[idx + 1] = v.y();
+				verts[idx + 2] = v.z();
+		});
+		const auto index_size = _hmap->size_traverse_triangles();
+		std::vector<GLuint> indices(index_size);
 		int i = 0;
 		_hmap->traverse_triangles([&](int c, int r, elemT h) {
 			if (c != -1) {
-				const game::Vector v = _transformer(c,r,h);
-				verts[i++] = v.x();
-				verts[i++] = v.y();
-				verts[i++] = v.z();
-			}
+				const size_t idx = _hmap->index_of(c,r);
+				ASSERT(idx < index_size);
+				indices[i++] = static_cast<GLuint>(idx);
+			} 
 		});
-		dc.gl().glBindBuffer(GL_ARRAY_BUFFER, _buffer);  
-		dc.gl().glBufferData(GL_ARRAY_BUFFER,b_size*sizeof(GLfloat), (void*) verts.data(),GL_STATIC_DRAW);
-		dc.gl().glBindBuffer(GL_ARRAY_BUFFER,0);
 		_program.initialise(dc,rc.load_text("terrain.vert"), rc.load_text("terrain.frag"));
+		auto position = _program.attribute_location("position");
+		dc.gl().glGenVertexArrays(1, &_array);
+		dc.gl().glBindVertexArray(_array); 
+
+		dc.gl().glGenBuffers(1,&_vertex_buffer);
+		dc.gl().glBindBuffer(GL_ARRAY_BUFFER, _vertex_buffer);  
+		dc.gl().glBufferData(GL_ARRAY_BUFFER,vert_size*sizeof(GLfloat), (void*) verts.data(),GL_STATIC_DRAW);
+		dc.gl().glEnableVertexAttribArray(position);
+		dc.gl().glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+		dc.gl().glGenBuffers(1,&_index_buffer);
+		dc.gl().glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _index_buffer);  
+		dc.gl().glBufferData(GL_ELEMENT_ARRAY_BUFFER,index_size*sizeof(GLuint), (void*) indices.data(),GL_STATIC_DRAW);
 	}
 
 	void draw(const game::DrawContext& dc) override {
 		_program.begin();
-		render_terrain(dc.gl(),_buffer,_hmap->count_columns(), _hmap->count_rows());
+		render_terrain(dc.gl(),_array,_hmap->count_columns(), _hmap->count_rows());
 		_program.end();
 	}
 
   /**
   Draw a wire grid.  Call this for debugging your scene.
    */
-	void draw_wire() {
+	void draw_wire(const game::DrawContext& dc) {
 		glPolygonMode(GL_FRONT, GL_LINE);
+		glColor3f(0,1,0);
  		glEnable(GL_LINE_SMOOTH);
- 		glLineWidth(2);
+ 		glLineWidth(1);
+		render_terrain(dc.gl(),_array,_hmap->count_columns(), _hmap->count_rows());
+		glColor3f(1,0,0);
     	glBegin(GL_TRIANGLE_STRIP);
  		_hmap->traverse_triangles([&](int c, int r, Byte h) {
  			if (c == -1) {
@@ -148,7 +169,7 @@ protected:
 	std::unique_ptr<heightmapT> _hmap;
 	const transformerT _transformer;
 private:
-	GLuint _buffer;
+	GLuint _array,_index_buffer,_vertex_buffer;
 	game::ShaderProgram _program;
 };
 

@@ -4,6 +4,134 @@
 		"selected_items":
 		[
 			[
+				"loc",
+				"location"
+			],
+			[
+				"G",
+				"GLchar"
+			],
+			[
+				"GLU",
+				"GLuint"
+			],
+			[
+				"get",
+				"getGLProc"
+			],
+			[
+				"_",
+				"_vertex_buffer"
+			],
+			[
+				"GLF",
+				"GLF_S_PU"
+			],
+			[
+				"i",
+				"idx"
+			],
+			[
+				"ve",
+				"vert"
+			],
+			[
+				"szie",
+				"size_t"
+			],
+			[
+				"n",
+				"normalise"
+			],
+			[
+				"flo",
+				"floor_at"
+			],
+			[
+				"gl",
+				"glBegin"
+			],
+			[
+				"s",
+				"size_t"
+			],
+			[
+				"cr",
+				"cross_product"
+			],
+			[
+				"pr",
+				"previous"
+			],
+			[
+				"tri",
+				"triangle_fun_t"
+			],
+			[
+				"se",
+				"seq_r"
+			],
+			[
+				"sq",
+				"seq_c"
+			],
+			[
+				"squ",
+				"square_size"
+			],
+			[
+				"terr",
+				"terrain_center"
+			],
+			[
+				"m_",
+				"map_size"
+			],
+			[
+				"map",
+				"map_size"
+			],
+			[
+				"set",
+				"set_x"
+			],
+			[
+				"siz",
+				"size_t"
+			],
+			[
+				"si",
+				"size_t"
+			],
+			[
+				"in",
+				"inc	#include \"…\""
+			],
+			[
+				"st",
+				"steps"
+			],
+			[
+				"app",
+				"applyF"
+			],
+			[
+				"ne",
+				"new_r"
+			],
+			[
+				"m",
+				"m_columns"
+			],
+			[
+				"enu",
+				"ensure_equals"
+			],
+			[
+				"ro",
+				"n_rows"
+			],
+			[
 				"Terra",
 				"TerrainDemo"
 			],
@@ -40,10 +168,6 @@
 				"GameLandLib"
 			],
 			[
-				"in",
-				"include"
-			],
-			[
 				"Main",
 				"MainPage"
 			],
@@ -67,31 +191,56 @@
 			"file": "makefile",
 			"settings":
 			{
-				"buffer_size": 1871,
+				"buffer_size": 2020,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/terrain-surface.md",
+			"file": "/C/MINGW/include/GL/glext.h",
 			"settings":
 			{
-				"buffer_size": 6335,
+				"buffer_size": 234006,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/MINGW/include/GL/gl.h",
+			"settings":
+			{
+				"buffer_size": 79874,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "TutLib/tut/tut.hpp",
+			"settings":
+			{
+				"buffer_size": 13293,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "TerrainDemo/terrain_main.cpp",
+			"file": "/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/terrain-using-indexes.md",
 			"settings":
 			{
-				"buffer_size": 1694,
+				"buffer_size": 6650,
+				"line_ending": "Windows",
+				"name": "terrain-using-indexes.md"
+			}
+		},
+		{
+			"file": "GameLandLib/gl_objects.h",
+			"settings":
+			{
+				"buffer_size": 3239,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "GameLandLib/game_math.h",
+			"file": "GameLandLib/gl_objects.cpp",
 			"settings":
 			{
-				"buffer_size": 7312,
+				"buffer_size": 10560,
 				"line_ending": "Windows"
 			}
 		},
@@ -99,15 +248,31 @@
 			"file": "GameLandLib/terrain_object.h",
 			"settings":
 			{
-				"buffer_size": 2554,
+				"buffer_size": 5417,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "gameex.sublime-project",
+			"file": "GameLandLib/terrain_object.cpp",
 			"settings":
 			{
-				"buffer_size": 1215,
+				"buffer_size": 786,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/tuple",
+			"settings":
+			{
+				"buffer_size": 35553,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/development/cpp/libraries/SDL-1.2.15/include/SDL/SDL_opengl.h",
+			"settings":
+			{
+				"buffer_size": 336544,
 				"line_ending": "Unix"
 			}
 		},
@@ -115,7 +280,15 @@
 			"file": "RunDir/log.txt",
 			"settings":
 			{
-				"buffer_size": 220,
+				"buffer_size": 316,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "RunDir/media/terrain/terrain.vert",
+			"settings":
+			{
+				"buffer_size": 228,
 				"line_ending": "Windows"
 			}
 		}
@@ -126,6 +299,14 @@
 		"height": 390.0,
 		"selected_items":
 		[
+			[
+				"gls",
+				"Set Syntax: GLSL"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
 			[
 				"gdb",
 				"SublimeGDB: Open Breakpoint View"
@@ -140,10 +321,6 @@
 			],
 			[
 				"ins",
-				"Package Control: Install Package"
-			],
-			[
-				"install",
 				"Package Control: Install Package"
 			],
 			[
@@ -259,7 +436,7 @@
 	},
 	"console":
 	{
-		"height": 209.0,
+		"height": 509.0,
 		"history":
 		[
 			"make",
@@ -277,37 +454,64 @@
 	},
 	"file_history":
 	[
-		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/SublimeGDB/SublimeGDB.sublime-settings",
-		"/C/Users/willemd/Documents/GitHub/GameEx/gameex.sublime-project",
+		"/C/Users/willemd/Documents/GitHub/GameEx/RunDir/media/terrain/terrain.vert",
 		"/C/Users/willemd/Documents/GitHub/GameEx/log.txt",
-		"/C/Users/willemd/Documents/GitHub/GameEx/RunDir/log.txt",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/heightmap.h",
-		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_posts/2013-07-13-terrain-rendering-basics.md",
+		"/C/development/cpp/libraries/SDL-1.2.15/include/SDL/._SDL_opengl.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/TerrainDemo/terrain_main.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/terrain_object.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/terrain_object.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/heightmap.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/RunDir/media/terrain/terrain.frag",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/gl_objects.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/RunDir/log.txt",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/gl_objects.h",
+		"/C/MINGW/include/GL/glext.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_base.h",
+		"/c/mingw/include/GL/gl.h",
+		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/terrain-lighting-opengl.md",
+		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/better-camera.md",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/terrain_test.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/game_test.cpp",
+		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_posts/2013-09-21-terrain-surface.md",
+		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/faster-terrain-rendering.md",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_math.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/heightmap.cpp",
+		"/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/functional",
+		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/faster-terrain-rendering",
+		"/C/Users/willemd/Documents/GitHub/GameEx/docs/terrain_surface.wxm",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_math.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_objects.cpp",
+		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/terrain-surface.md",
+		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_posts/2013-07-13-terrain-rendering-basics.md",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/ColorScheme/Monokai_WD.tmTheme",
+		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_posts/2013-08-18-terrain-rendering-with-GLSL.md",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/systemex.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/log.h",
+		"/c/users/willemd/documents/github/gameex/gamelandlib/game_math.h",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Program Files/Sublime Text 3/Packages/Theme - Default.sublime-package",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/array",
+		"/c/users/willemd/documents/github/gameex/terraindemo/terrain_main.cpp",
+		"/c/users/willemd/documents/github/gameex/gamelandlib/gl_objects.cpp",
+		"/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/bits/unique_ptr.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/systemex.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/snake.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/gameex.sublime-project",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/SublimeGDB/SublimeGDB.sublime-settings",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/game_test.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/heightmap.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/test_util.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_math.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/terrain.h",
-		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/terrain-surface.md",
 		"/C/Users/willemd/Documents/GitHub/GameEx/docs/header.html",
 		"/C/Users/willemd/Documents/GitHub/GameEx/docs/doxy.txt",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/mainpage.dox",
 		"/C/Users/willemd/Documents/GitHub/GameEx/README.md",
 		"/C/Users/willemd/Documents/GitHub/GameEx/makefile",
-		"/C/Users/willemd/Documents/GitHub/GameEx/TerrainDemo/terrain_main.cpp",
-		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Users/willemd/Documents/GitHub/GameEx/docs/footer.html",
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/ColorScheme/iPlastic.tmTheme",
-		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/font.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/TerrainDemo/terrain_object.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_base.h",
 		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_posts/2013-09-09-notable-make-features.md",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/font.depends",
 		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/notable-make-features.md",
@@ -363,7 +567,7 @@
 	],
 	"find":
 	{
-		"height": 36.0
+		"height": 52.0
 	},
 	"find_in_files":
 	{
@@ -380,6 +584,59 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"glBindAttribLocation",
+			"PFNGLBIND",
+			"PFNGLGENBUFFERSPROC",
+			"_buffer",
+			"_BUFFER",
+			"_buffer",
+			"GL_VERSION",
+			"GL_VERSION_1_",
+			";\n",
+			"PFNGLB",
+			"			PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer;\n",
+			"PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer;",
+			"_BUFFER",
+			"_buffer",
+			");\n",
+			";\n",
+			"previous",
+			";\n",
+			"fc",
+			"fc+1,fr",
+			"fi",
+			"heightmap",
+			"markdown",
+			"md",
+			"128",
+			");\n",
+			";\n",
+			"vi",
+			"isnan",
+			"throw",
+			"=(",
+			"lin",
+			"selected",
+			"high",
+			"line",
+			"sw",
+			"point",
+			";",
+			"apply(",
+			"apply",
+			");\n",
+			"1,0,1",
+			"col",
+			"c3",
+			"c2",
+			"c1",
+			"c",
+			"col",
+			"_elems.at",
+			"applyF",
+			"x",
+			"ensure_equals",
+			"LOG",
 			"ne",
 			");\n",
 			"TerrainObject<Byte,demo_hm_t,TransformerByte>",
@@ -454,27 +711,7 @@
 			"LIB",
 			"Lib",
 			"LIB",
-			"lib",
-			"LIB",
-			"Lib",
-			"lib",
-			"LIB",
-			"[]\n",
-			"GameLandLib",
-			"$@",
-			")\n",
-			"MainPage",
-			"GameObject",
-			"GameObjectChainLink",
-			"ruler",
-			"systemex",
-			"DualityScene",
-			"our",
-			"L009",
-			"L010",
-			"lineID",
-			"Steel Merchants",
-			"dm )go"
+			"lib"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -486,13 +723,13 @@
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": true,
+		"whole_word": false,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -501,15 +738,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1871,
+						"buffer_size": 2020,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								780,
-								780
+								655,
+								655
 							]
 						],
 						"settings":
@@ -517,114 +754,145 @@
 							"syntax": "Packages/Makefile/Makefile.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 50.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/terrain-surface.md",
+					"file": "/C/MINGW/include/GL/glext.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6335,
+						"buffer_size": 234006,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3712,
-								3712
+								135266,
+								135272
 							]
 						],
 						"settings":
 						{
-							"rulers":
-							[
-								80
-							],
-							"spell_check": false,
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+							"syntax": "Packages/C++/C++.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1286.0,
+						"translation.y": 98412.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "TerrainDemo/terrain_main.cpp",
+					"file": "/C/MINGW/include/GL/gl.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1694,
+						"buffer_size": 79874,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1694,
-								1694
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/C++/C++.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1316.0,
+						"translation.y": 29721.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "GameLandLib/game_math.h",
+					"file": "TutLib/tut/tut.hpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7312,
+						"buffer_size": 13293,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4055,
-								4055
+								4134,
+								4134
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2940.0,
+						"translation.y": 6336.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "GameLandLib/terrain_object.h",
+					"file": "/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/terrain-using-indexes.md",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2554,
+						"buffer_size": 6650,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1983,
-								1983
+								2273,
+								2273
+							],
+							[
+								2353,
+								2353
+							],
+							[
+								2419,
+								2419
+							]
+						],
+						"settings":
+						{
+							"auto_name": "terrain-using-indexes.md",
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 714.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "GameLandLib/gl_objects.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3239,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1827,
+								1779
 							]
 						],
 						"settings":
@@ -633,54 +901,168 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1344.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "gameex.sublime-project",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1215,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								973,
-								973
-							]
-						],
-						"settings":
-						{
-							"spell_check": true,
-							"syntax": "Packages/JavaScript/JSON.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 840.0,
+						"translation.y": 1298.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 6,
-					"file": "RunDir/log.txt",
+					"file": "GameLandLib/gl_objects.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 220,
+						"buffer_size": 10560,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								20,
-								20
+								5558,
+								5558
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4043.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "GameLandLib/terrain_object.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5417,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1627,
+								1644
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3424.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "GameLandLib/terrain_object.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 786,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								341,
+								355
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/tuple",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 35553,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								28386,
+								28386
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 28810.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "/C/development/cpp/libraries/SDL-1.2.15/include/SDL/SDL_opengl.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 336544,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								150789,
+								150809
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 118064.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "RunDir/log.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 316,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								28,
+								28
 							]
 						],
 						"settings":
@@ -692,28 +1074,40 @@
 						"zoom_level": 1.0
 					},
 					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "RunDir/media/terrain/terrain.vert",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 228,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13,
+								13
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/OpenGL Shading Language (GLSL)/GLSL.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
 				}
-			]
-		},
-		{
-			"sheets":
-			[
-			]
-		},
-		{
-			"sheets":
-			[
-			]
-		},
-		{
-			"sheets":
-			[
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 36.0
+		"height": 42.0
 	},
 	"input":
 	{
@@ -726,51 +1120,30 @@
 			[
 				0,
 				0,
-				3,
+				1,
 				1
-			],
-			[
-				0,
-				1,
-				1,
-				2
-			],
-			[
-				1,
-				1,
-				2,
-				2
-			],
-			[
-				2,
-				1,
-				3,
-				2
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.421145833333,
-			0.66,
 			1.0
 		],
 		"rows":
 		[
 			0.0,
-			0.75,
 			1.0
 		]
 	},
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 264.0
+		"height": 268.0
 	},
 	"project": "gameex.sublime-project",
 	"replace":
 	{
-		"height": 68.0
+		"height": 80.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -779,12 +1152,124 @@
 		"selected_items":
 		[
 			[
+				".vert",
+				"All\\RunDir\\media\\terrain\\terrain.vert"
+			],
+			[
+				"log",
+				"All\\log.txt"
+			],
+			[
+				"vert",
+				"All\\RunDir\\media\\terrain\\terrain.vert"
+			],
+			[
+				"gl_",
+				"GameLandLib\\gl_objects.h"
+			],
+			[
+				"gl.h",
+				"GameLandLib\\gl_objects.h"
+			],
+			[
+				"terrvert",
+				"All\\RunDir\\media\\terrain\\terrain.vert"
+			],
+			[
+				"terrobc",
+				"GameLandLib\\terrain_object.cpp"
+			],
+			[
+				"terrain.",
+				"All\\RunDir\\media\\terrain\\terrain.frag"
+			],
+			[
 				"lo",
 				"All\\RunDir\\log.txt"
 			],
 			[
-				"log",
-				"All\\RunDir\\log.txt"
+				"terrainob",
+				"GameLandLib\\terrain_object.cpp"
+			],
+			[
+				"terrmain",
+				"TerrainDemo\\terrain_main.cpp"
+			],
+			[
+				"terr",
+				"GameLandTests\\terrain_test.cpp"
+			],
+			[
+				"math",
+				"GameLandLib\\game_math.h"
+			],
+			[
+				"terrsur",
+				"Blog\\_posts\\2013-09-21-terrain-surface.md"
+			],
+			[
+				"heigh",
+				"GameLandLib\\heightmap.h"
+			],
+			[
+				"terrasu",
+				"Blog\\_posts\\2013-09-21-terrain-surface.md"
+			],
+			[
+				"terrsu",
+				"Blog\\_posts\\2013-09-21-terrain-surface.md"
+			],
+			[
+				"teraino",
+				"GameLandLib\\terrain_object.h"
+			],
+			[
+				"terrred",
+				"Blog\\_posts\\2013-07-13-terrain-rendering-basics.md"
+			],
+			[
+				"logt",
+				"All\\log.txt"
+			],
+			[
+				"sys",
+				"GameLandLib\\systemex.h"
+			],
+			[
+				"h",
+				"GameLandLib\\heightmap.h"
+			],
+			[
+				"terra",
+				"TerrainDemo\\terrain_main.cpp"
+			],
+			[
+				"ter",
+				"GameLandLib\\terrain_object.h"
+			],
+			[
+				"sy",
+				"GameLandLib\\systemex.h"
+			],
+			[
+				"terrtes",
+				"GameLandTests\\terrain_test.cpp"
+			],
+			[
+				"termain",
+				"TerrainDemo\\terrain_main.cpp"
+			],
+			[
+				"he",
+				"GameLandLib\\heightmap.h"
+			],
+			[
+				"syste",
+				"GameLandLib\\systemex.h"
+			],
+			[
+				"syst",
+				"GameLandLib\\systemex.cpp"
 			],
 			[
 				"hei",
@@ -793,10 +1278,6 @@
 			[
 				"terrabas",
 				"Blog\\_posts\\2013-07-13-terrain-rendering-basics.md"
-			],
-			[
-				"terra",
-				"GameLandTests\\terrain_test.cpp"
 			],
 			[
 				"game",
@@ -819,16 +1300,8 @@
 				"GameLandLib\\heightmap.h"
 			],
 			[
-				"terr",
-				"GameLandLib\\terrain.h"
-			],
-			[
 				"make",
 				"All\\makefile"
-			],
-			[
-				"math",
-				"GameLandLib\\game_math.h"
 			],
 			[
 				"sur",
@@ -855,16 +1328,8 @@
 				"All\\RunDir\\log.txt"
 			],
 			[
-				"ter",
-				"GameLandLib\\terrain.h"
-			],
-			[
 				"tertest",
 				"GameLandTests\\terrain_test.cpp"
-			],
-			[
-				"he",
-				"GameLandLib\\heightmap.h"
 			],
 			[
 				"surface",
@@ -979,7 +1444,7 @@
 	},
 	"select_symbol":
 	{
-		"height": 129.0,
+		"height": 390.0,
 		"selected_items":
 		[
 			[

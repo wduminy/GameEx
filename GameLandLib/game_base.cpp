@@ -161,13 +161,16 @@ Game::Game(MainObject * primaryPart,
 
 int Game::run() {
 	try {
+		LOG << "running";
 		_primary->initialise(*_resource, *_draw);
+		LOG << "initialise done";
 		std::deque<GameObject *> objects;
 		_primary->collect(objects);
 		// to fix draw order, sort the object
 		std::sort(objects.begin(), objects.end(),
 				[](const GameObject * a, const GameObject * b) {
 					return a->draw_order() < b->draw_order();});
+		LOG << "starting game loop";
 		_update->tick();
 		while (_primary->is_active()) {
 			if (_update->is_update_step()) {

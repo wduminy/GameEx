@@ -9,6 +9,8 @@
 #include "systemex.h"
 #include "sdl_objects.h"
 typedef const GLfloat* GLfloat_ptr;
+typedef void (APIENTRYP GLF_S_PU) (GLsizei n, GLuint *buffers);
+typedef void (APIENTRYP GLF_U) (GLuint id);
 
 namespace game {
 	using std::string;
@@ -45,6 +47,11 @@ namespace game {
 			PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray;
 			PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray;
 			PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer;
+			GLF_U glBindVertexArray;
+			GLF_S_PU glGenVertexArrays;
+			PFNGLBINDATTRIBLOCATIONPROC glBindAttribLocation;
+			PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation;
+			
 			void check_error(const std::string& what = "") const;
 			void setViewRange(const float&, const float&);
 		private:
@@ -82,6 +89,8 @@ namespace game {
 			void begin();
 			void end();
 			bool is_first_time() const { return _first_time; }
+			void bind_attribute(GLuint location, const GLchar * name);
+			GLuint attribute_location(const GLchar * name);
 			~ShaderProgram();
 		private:
 			void destroy_shaders();

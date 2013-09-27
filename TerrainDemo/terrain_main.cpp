@@ -29,6 +29,7 @@ public:
 		_hmap->read_from_bmp(rctx.dir() + "test_terrain.bmp");
 		_hmap->normalise();
 		base_terrain_t::initialise(rctx,dctx);
+    LOG << "initialised terrain with " << map_size * map_size << " vertices";
 	}
 
 	void draw_cross_poles() {
@@ -52,37 +53,42 @@ public:
     glColor3f(1,1,1);
 	}
 
-	void draw(const game::DrawContext& dc) override {
-		base_terrain_t::draw(dc);
+  void draw_normals() {
     glLineWidth(3.0f); //size in pixels
     glBegin(GL_LINES);
-   // draw_cross_poles();
-    _hmap->traverse([&](size_t c, size_t r, Byte v) {
-    	const auto f = _transformer(c,r,v);
-    	auto n = average_normal_at(c,r);
-    	n.normalise();
-    	const auto e = f + n;
-  		glColor3f(0,0,1);
-    	glVertex3f(f.x(),f.y(),f.z());  
-  		glColor3f(1,0,0);
-    	glVertex3f(e.x(),e.y(),e.z());    	    	
+       _hmap->traverse([&](size_t c, size_t r, Byte v) {
+      const auto f = _transformer(c,r,v);
+      auto n = average_normal_at(c,r);
+      n.normalise();
+      const auto e = f + n;
+      glColor3f(0,0,1);
+      glVertex3f(f.x(),f.y(),f.z());  
+      glColor3f(1,0,0);
+      glVertex3f(e.x(),e.y(),e.z());            
     });
-		glEnd();
-  	glColor3f(1,1,1);
-	 // draw_wire();
-	}
+    glEnd();
+    glColor3f(1,1,1);
+  }
+	// void draw(const game::DrawContext& dc) override {
+	// 	base_terrain_t::draw(dc);
+ //   // draw_normals();
+ //   // draw_cross_poles();
+ // 	  //draw_wire(dc);
+ //    //base_terrain_t::draw(dc);
+	// }
 };
 
 class TerrainController : public MainObject {
 	public:
-	TerrainController() : MainObject(-100,square_size/10.0f,square_size * map_size) {
-		add_part(new SphereCamera(-1,10.0f,7.0f, terrain_center));
+	TerrainController() : MainObject(-100,square_size/10.0f,square_size * map_size*10) {
+		add_part(new SphereCamera(-1,10.0f,25.0f, terrain_center));
 		add_part(new DemoTerrain());
 	}
 };
 
 int main( int , char* [] ) {
 	LOG << "started terrain demo";
+  LOG << sizeof(GLuint);
 	try {
 		game::Game g(new TerrainController(), "terrain/", 50, 5000);
 		return g.run();
@@ -94,5 +100,4 @@ int main( int , char* [] ) {
         return EXIT_FAILURE;
     }
 	return EXIT_SUCCESS;
-
 }

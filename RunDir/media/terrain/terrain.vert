@@ -1,8 +1,12 @@
-#version 330
+#version 140
+
+in vec3 position;
+
 varying float height;
 void main()
 {
-	gl_Position = (gl_ModelViewProjectionMatrix * gl_Vertex);
+	vec4 vertex = vec4(position.xyz,1);
+	gl_Position = (gl_ModelViewProjectionMatrix * vertex);
 	// normalize height component
-	height = (gl_Vertex.z + 1)/10;
+	height = (position.z + 1)/10;
 } 

@@ -4,26 +4,20 @@
  */
 
 #include "terrain_object.h"
+#include <GL/gl.h>
+ 
 namespace terrain {
-	void render_strips(const game::Glex& gl, GLuint buffer, size_t cols, size_t rows) {
-		gl.glBindBuffer(GL_ARRAY_BUFFER,buffer);
-		gl.glEnableVertexAttribArray(0);
-		gl.glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	void render_strips(const game::Glex& gl, GLuint array, size_t cols, size_t rows) {
+		gl.glBindVertexArray(array);
 		// draw column per column
-		const auto prims = rows * 2;
-		for (size_t i = 0; i < cols;i++)
-			glDrawArrays(GL_TRIANGLE_STRIP,i*prims,prims);
+		const auto prims = rows * 2 * sizeof(GLuint);
+		for (size_t i = 0; i < cols-1;i++)
+			glDrawElements(GL_TRIANGLE_STRIP,rows*2,GL_UNSIGNED_INT,(void*)(i*prims));
+		gl.glBindVertexArray(0);
 
-		gl.glDisableVertexAttribArray(0);
 	}
 }
-void terrain::render_terrain(const game::Glex& gl, GLuint buffer, size_t cols, size_t rows) {
+void terrain::render_terrain(const game::Glex& gl, GLuint array, size_t cols, size_t rows) {
 	glPolygonMode(GL_FRONT, GL_FILL);
-	glColor3b(100,100,100);
-	render_strips(gl,buffer,cols, rows);
-//	glPolygonMode(GL_FRONT, GL_LINE);
-//	glEnable(GL_LINE_SMOOTH);
-//	glLineWidth(2);
-//	glColor3b(50,0,0);
-//	render_strips(gl,buffer,cols, rows);
+	render_strips(gl,array,cols, rows);
 }

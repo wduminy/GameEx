@@ -125,8 +125,10 @@ Glex::Glex()
 	, glEnableVertexAttribArray ((PFNGLENABLEVERTEXATTRIBARRAYPROC) getGLProc("glEnableVertexAttribArray"))
  	, glDisableVertexAttribArray ((PFNGLDISABLEVERTEXATTRIBARRAYPROC) getGLProc("glDisableVertexAttribArray"))
  	, glVertexAttribPointer ((PFNGLVERTEXATTRIBPOINTERPROC) getGLProc("glVertexAttribPointer"))
-{
-}
+	, glBindVertexArray ((GLF_U) getGLProc("glBindVertexArray"))
+	, glGenVertexArrays ((GLF_S_PU) getGLProc("glGenVertexArrays"))
+	, glBindAttribLocation ((PFNGLBINDATTRIBLOCATIONPROC) getGLProc("glBindAttribLocation")) 
+	, glGetAttribLocation ((PFNGLGETATTRIBLOCATIONPROC) getGLProc("glGetAttribLocation")) {}
 
 Texture::Texture(Glex * context) : _context(context), _texture(0), _texture_index(-1)  {
 	glGenTextures(1, &_texture);
@@ -281,6 +283,21 @@ void ShaderProgram::destroy_shaders() {
 	if (_fragmentShader)
 		_context->glDeleteShader(_fragmentShader);
 	_fragmentShader = 0;
+}
+
+void ShaderProgram::bind_attribute(GLuint location, const GLchar * name) {
+	CHECK_CONTEXT;
+	_context->glBindAttribLocation(_program,location,name);
+	_context->check_error("bind attribute");
+}
+
+GLuint ShaderProgram::attribute_location(const GLchar * name) {
+	CHECK_CONTEXT;
+	const auto result = _context->glGetAttribLocation(_program, name);
+	_context->check_error();
+	if (result == -1)
+		throw runtime_error_ex("could not find name '%s'" , name);
+	return result;
 }
 
 ShaderProgram::~ShaderProgram() {
