@@ -11,6 +11,11 @@
 	 		"folder_include_patterns": ["_drafts","_posts"],
 	 		"file_include_patterns": ["*.md"]
 	 	},
+	 	{
+			"name":"Shooter",
+			"path": "shooter",
+			"file_include_patterns": ["*.cpp", "*.h","*.md"]
+		}, 
 		{
 			"name":"TerrainDemo",
 			"path": "TerrainDemo",

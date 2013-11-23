@@ -5,7 +5,7 @@ MAX_SPEED = -O3 -DNDEBUG
 FLAGS = $(MAX_SPEED) 
 COMPILE_ARGS = -I"C:\development\cpp\libraries\SDL-1.2.15\include" -ITutLib -IGameLandLib -Wall -c -fmessage-length=0 -std=c++0x $(FLAGS)
 LINK_ARGS = -L"C:\development\cpp\libraries\SDL-1.2.15\lib" -L$(TARGET_DIR) -lmingw32 -lwsock32 -lglu32 -lopengl32 -lSDLmain -lSDL_ttf -lSDL.dll 
-DIRS = GameLandLib GameLandTests TutLib TerrainDemo Sneaky
+DIRS = GameLandLib GameLandTests TutLib TerrainDemo Sneaky shooter
 SOURCES := $(foreach e, $(DIRS), $(wildcard $(e)/*.cpp))
 DEPS := $(patsubst %.cpp, %.depends, $(SOURCES))
 OBJS := $(patsubst %.cpp, %.o, $(SOURCES))
@@ -14,7 +14,15 @@ TUT_LIB := $(TARGET_DIR)/libTutLib.a
 GAME_LAND_TEST := $(TARGET_DIR)/GameLandTests.exe
 TERRAIN_DEMO := $(TARGET_DIR)/TerrainDemo.exe
 SNEAKY := $(TARGET_DIR)/Sneaky.exe
-.PHONY : clean all run_sneaky run_terrain run_test dox 
+SHOOTER := $(TARGET_DIR)/Shooter.exe
+.PHONY : clean all run_sneaky run_terrain run_test dox run_shooter
+
+
+run_shooter: $(SHOOTER)
+	cd $(TARGET_DIR); ./Shooter.exe
+
+$(SHOOTER): $(OBJS) $(GAME_LAND_LIB)
+	g++ $(wildcard shooter/*.o) -o $@ -lGameLandLib $(LINK_ARGS)  
 
 run_terrain: $(TERRAIN_DEMO)
 	cd $(TARGET_DIR); ./TerrainDemo.exe

@@ -88,7 +88,6 @@ class TerrainController : public MainObject {
 
 int main( int , char* [] ) {
 	LOG << "started terrain demo";
-  LOG << sizeof(GLuint);
 	try {
 		game::Game g(new TerrainController(), "terrain/", 50, 5000);
 		return g.run();

@@ -16,6 +16,10 @@ using std::string;
 
 typedef std::unique_ptr<SDL_Surface> SDL_Surface_u_ptr;
 
+/**
+ * The ResourceContext keeps the resources.
+ * The folder where the resources are is specified in the constructor.
+ */
 class ResourceContext {
 public:
 
@@ -26,6 +30,8 @@ public:
 
 	string load_text(const char * filename) const;
 	const string& dir() const {return _root_directory;};
+	/** Returns the path to a media file */
+	string path_to(const char * file_name) const {return _root_directory + file_name; } 
 	ShaderProgram * load_program(Glex * gl, const char * filePrefix) const;
 
 	/**
@@ -165,7 +171,7 @@ public:
  destroyed.  However, this destruction occurs only when the game loop terminates.  This means
  that it is safe to reference these pointers while the game is in progress. 
    The hierarchy formed by this containment is used to manage the visibility and the active 
- status. This means that hiding and object will hide its children and deactivating an object 
+ status. This means that hiding an object will hide its children and deactivating an object 
  deactivates it children.
    There is a subtle but important difference between the visibility and the active status 
  hierarchy when a child disagrees with its parent.  The active status of the parent overrides 

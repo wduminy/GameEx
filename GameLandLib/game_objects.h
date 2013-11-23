@@ -34,22 +34,37 @@ namespace game {
 	};
 
 	/**
-	 * Panels are drawn on screen.  Coordinates are: centre = (0,0) left-top = (-1,1)
+	 * A Panel is a two dimensional surface drawn using screen coordinates.  
+	 * This coordinate system is such that (-1,1) is left top, (0,0) is the middle of the screen
+	 * and (1,-1) is right bottom.
+	 * In your media (see ResourceContext) must include a shader named
+	 * "panel" (vert and frag).
+	 * After construction, you typically draw on the surface() and then call
+	 * update_buffer() to copy the surface to the OpenGL buffer.
 	 */
 	class Panel : public GameObject {
 	public:
+		/**
+		 * \param x and y is the left top position of the panel (using Panel coordinates)
+		 * \param width and height is the width and height (also in Panel coordinates)
+		 * \param pixelW and pixelH is the number of pixels in the SDL_Surface
+		 */
 		Panel(const Scalar x, Scalar y, const Scalar width, const Scalar height, int pixelW, int pixelH);
+		/** The underlying Surface -- in normal memory.  After you make updates
+		 * you must call update_buffer() before the rendering changes  
+		 */
+		Surface& surface() {return *_surface;}
+		/** Convenient accessor for surface() */
 		operator SDL_Surface& () {return *_surface;}
 		void initialise(const ResourceContext &rc, const DrawContext& dc) override;
 		void draw(const DrawContext &dc) override;
-		// call this to display updates made to the surface
+		/** Copy the surface() from normal memory to GPU memory. */
 		void update_buffer() {_tex->copy_from_2d(*_surface);}
-
 	private:
 		TriangleStrip _rectangle;
 		ShaderProgram::u_ptr _program;
 		Texture::u_ptr _tex;
-	    Surface::u_ptr _surface;
+	  Surface::u_ptr _surface;
 		GLfloat _left;
 		GLfloat _top;
 		GLfloat _width;
