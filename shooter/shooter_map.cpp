@@ -13,7 +13,7 @@ namespace {
 	// positions graphics inside bmp
 	const int GROUND_TILE_0_X = 277;
 	const int GROUND_TILE_0_Y = 10;
-	const int GROUND_ZERO_GUTTER = 2;
+	const int GROUND_ZERO_GUTTER = 3;
 	const int GROUND_TILE_SIZE = TILE_SIZE + GROUND_ZERO_GUTTER;
 	class TileSet {
 	public:
@@ -55,15 +55,21 @@ void ShooterMap::initialise (const game::ResourceContext &rctx, const game::Draw
 	_map_left = (dc.width()/2) - MAP_WIDTH_PX/2;
 	ENSURE(_map_top + MAP_HEIGHT_PX <= dc.height(),"map is too high for screen");
 	ENSURE(_map_left + MAP_WIDTH_PX <= dc.width(), "map is too wide for screen");
-	_draw_dst.x = _map_left;
-	_draw_dst.y = _map_top;
-	tiles.blit_ground(0,0,dc.screen(),_draw_dst);
-	_draw_dst.x = _map_left + TILE_SIZE;
-	_draw_dst.y = _map_top + TILE_SIZE;
-	tiles.blit_ground(0,0,dc.screen(),_draw_dst);
-	//SDL_BlitSurface(tiles._image->sdl_p(),0,dc.screen(),&_draw_dst);
+	draw_ground(dc);
 }
 
+void ShooterMap::draw_ground(const game::DrawContext &dc) {
+	_draw_dst.x = _map_left;
+	_draw_dst.y = _map_top;
+	for (int i = 0; i < MAP_WIDTH; i++) {
+		for (int j = 0; j < MAP_HEIGHT; j++) {
+			tiles.blit_ground(0,2,dc.screen(),_draw_dst);
+			_draw_dst.y += TILE_SIZE;
+		}
+		_draw_dst.x += TILE_SIZE;
+		_draw_dst.y = _map_top;
+	}
+}
 
 void ShooterMap::draw(const game::DrawContext &dc) {
 }

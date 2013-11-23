@@ -8,6 +8,7 @@ public:
 	void draw(const game::DrawContext &dc) override;
 	void update(const game::UpdateContext &uc) override;
 private:
+	void draw_ground(const game::DrawContext &dc);
 	SDL_Rect _draw_dst;
 	int _map_top;
 	int _map_left;
