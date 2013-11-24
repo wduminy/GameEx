@@ -3,16 +3,18 @@
 #include "shooter_map.h"
 
 namespace {
-	const int WINDOW_WIDTH = 800;
-	const int WINDOW_HEIGHT = 600;
+
 	const float WH_RATIO = WINDOW_WIDTH * 1.0f / WINDOW_HEIGHT;
 }
 
 class ShooterController : public game::MainObject {
 	public:
-	ShooterController() : game::MainObject() {
-		add_part(new ShooterMap());
+	ShooterController() : game::MainObject(), _state(new LevelStateObject()) {
+		add_part(_state);
+		add_part(new ShooterMapView(_state));
 	}
+private:
+	LevelStateObject * _state;
 };
 
 
@@ -26,8 +28,8 @@ int main( int count, char* args[] ) {
 			fullscreen = a == "-fullscreen";
 		}
 		game::Game shooter(new ShooterController(), "shooter/", 
-			20, // ups 
-			20, // fps
+			30, // ups 
+			30, // fps
 			fullscreen, 
 			WINDOW_WIDTH,
 			WINDOW_HEIGHT,

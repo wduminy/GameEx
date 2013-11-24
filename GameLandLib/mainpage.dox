@@ -2,10 +2,36 @@
 \mainpage 
 GameEx is a library you can you use to develop a game if you want to use _SDL_.  It is not complete, but is already of some use.  If you want to use it in this current, incomplete state, I suggest you create a fork of the [GitHub repository](https://github.com/codespear/GameEx).
 
+
+
 The following software is used by GameEx:
 	- [Doxygen](http://www.stack.nl/~dimitri/doxygen/)
 	- [Minimilist GNU for Windows](http://www.mingw.org/)
 	- [OpenGL](http://www.opengl.org/)
 	- [Simple Direct Media Layer](http://www.libsdl.org/)
 	- [Template Unit Test Framework] (http://tut-framework.sourceforge.net/)
+
+\sa \ref using_gameobjects \ref using_collision_mgr 
+
+\page using_gameobjects Using GameObjects
+
+At the foundation of GameEx there is a class called game::GameObject.  Many of the features of GameEx requires you to use of implement subclasses of GameObject.  When starting out with a new game, it is not always clear where it will end up.  As a hobbyist you want to experiment, enjoy yourself, not design everything to the last detail.  But, how do you decide which concepts inherit from GameObject and which don't?  This is what this section is about. 
+
+The first thing to understand is that the GameObject is your link to the main game loop.  This loop updates and draws. If you have something that changes over time or when the user interacts with it you want it to be updated via the game loop.   If something must be shown or can be heard, then you want it to be drawn via the game loop.  Generally, everything your write for your game is either drawn or updated.  This does not mean all objects are instances of GameObject.                 
+ 
+For a particular game, there is a set of concepts that forms the essence of the game. Let's call an implementation of these concepts  the game model.  The game model classes do not have to be instances of GameObject.  The model has no visual elements and no control elements -- it describes the game, its rules and so on.  However, the model cannot run or be seen.  It is the work of the GameObject classes to link the model to the controllers and the views. In theory you could take the game model and implement it using any game engine.  However, pragmatically that is not possible.  The model functions within the context of a game framework (or engine), and this context changes its design.  
+
+In a very simple game, there may be exactly one GameObject.  That object updates and draws the model. One reason you might want to create another GameObject is that your game has visual aspects that does not form part of the game essence.  This is not only about rendering.  For instance: in a shoot-em-up game the background is not is not part of the game model.  It does not not influence the score and cannot be collided with.  But the background changes over time and has complex rendering logic.  So now you need another GameObject instance.  And is must be drawn before the GameObject that renders the game model.
+
+\sa \ref using_collision_mgr 
+
+\page using_collision_mgr Using the collision manager
+In your game, there is likely to be collisions. If you want to, you can use game::CollisionManagerWithBoxes for this. In order to use this collision manager, your game model must contain an instance of this manager.  Collectable objects (instances of game::CollidablePolygon) are added to it and removed from it. Keep in mind that the collision manager does not track the movements of objects within it.  It must be told that an object has moved.  
+
+Typically you would add game::CollidablePolygon instances for the static geometry.  For example, if your play area is a square you need four border objects.  Static objects may overlap.  Now you'll add the dynamic elements.  As the game runs, the instance of game::CollisionManagerWithBoxes must be updated all the time.  For each object, the logic is as follows: remove it from the manger, change its location, then add it to the manager. The game::CollisionManager::check_and_add() will report a collision if there is one.  If there is a collision the object can take another action -- including removing itself from the manager.  
+
+The thing to keep in mind is that the initiating object causes and notices the collision. Consider carefully which object in a collision pair will take action on collision.  For example, if a bullet his an enemy; is that collision handled when the enemy moves or when the bullet moves?  Or is there a separate collision resolver required? Also be aware of the sizes and the jump distances of your objects.  Are there scenarios where the collisions will not be noticed by the collision manager?       
+
+Sound and visual effects can be implemented by using the game::CollisionListener that belongs to the game::CollisionManager. This could help to keep your code a bit leaner.
+
 */

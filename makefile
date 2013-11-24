@@ -19,7 +19,7 @@ SHOOTER := $(TARGET_DIR)/Shooter.exe
 
 
 run_shooter: $(SHOOTER)
-	cd $(TARGET_DIR); ./Shooter.exe
+	cd $(TARGET_DIR); ./Shooter.exe -nfullscreen; cat log.txt
 
 $(SHOOTER): $(OBJS) $(GAME_LAND_LIB)
 	g++ $(wildcard shooter/*.o) -o $@ -lGameLandLib $(LINK_ARGS)  

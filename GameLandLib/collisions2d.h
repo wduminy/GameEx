@@ -11,11 +11,18 @@ namespace game {
 	using std::list;
 	using std::vector;
 /**
- * A bounded box has a left-top and a right-bottom location
+ * A two dimensional bound. It has a left-top and a right-bottom location
  */
 class BoundedBox2 {
 public:
+	/**
+	 * Constructor for left top and right bottom.
+	 */
 	BoundedBox2(const Vector2& lt, const Vector2& rb);
+	/**
+	 * Constructor for left top and size dimensions.
+	 */
+	BoundedBox2(const Scalar x, const Scalar y, const Scalar w, const Scalar h) : BoundedBox2(Vector2(x,y),Vector2(x+w,y+h)) {}
 	BoundedBox2() : BoundedBox2(Vector2::origin, Vector2::origin) {}
 	const Vector2 left_top() const {return _lt;}
 	const Vector2 right_bottom() const {return _rb;}
@@ -73,7 +80,8 @@ public:
 };
 
 /**
- * If a collidable is updated, the collision manager must be told about it
+ * A Polygon with a BoundedBox2.  
+ * It is typically added to CollisionManager.  
  */
 class CollidablePolygon : public BoundedBox2, public Polygon {
 public:
@@ -95,6 +103,7 @@ inline ostream& operator<<(ostream& s, const CollidablePolygon& v) {
 	return s << dynamic_cast<const Polygon&> (v);
 }
 
+/** Listens to collisions */
 class CollisionListener {
 public:
 	virtual void on_collide(CollidablePolygon &a, CollidablePolygon &b) {};
@@ -111,7 +120,10 @@ public:
 
 class CollisionManager {
 public:
-	CollisionManager(CollisionListener::u_ptr listener);
+	CollisionManager(CollisionListener * listener);
+	/** Checks for a collision and adds object.  \
+	  * This method is the one that causes collision events 
+	  */
 	bool check_and_add(CollidablePolygon * collidable, const bool ignoreIfCollide = false);
 	virtual void add(CollidablePolygon * collidable) = 0;
 	virtual void remove(CollidablePolygon * collidable) = 0;
@@ -130,7 +142,7 @@ public:
 
 class SimpleCollisionManager : public CollisionManager {
 public:
-	SimpleCollisionManager(CollisionListener::u_ptr listener);
+	SimpleCollisionManager(CollisionListener * listener);
 	void add(CollidablePolygon * collidable) override;
 	void remove(CollidablePolygon * collidable) override;
 	void clear() override {_items.clear();}
@@ -152,10 +164,21 @@ public:
 	const int _ye;
 };
 
-
+/** A collision managers that resolves collisions using boxes.
+ * Essentially the ground is divided into equally sized boxes.  When checking for a collision
+ * related boxes are checked - not all objects in the manager.  Keep in mind that an object may be in 
+ * many boxes -- because it is larger than a box, or on a box boundary.
+ * \sa \ref using_collision_mgr
+ */
 class CollisionManagerWithBoxes : public CollisionManager {
 public:
-	CollisionManagerWithBoxes(CollisionListener::u_ptr listener, const BoundedBox2 & bounds, const unsigned int division_count);
+	/**
+	 * Construct a CollisionManagerWithBoxes.
+	 * \param listener is called when a collision occurs (see check_and_add()).  This instance is owned by the manager. Cannot be null.
+	 * \param bounds is a BoundedBox2 that determines the boxed area.  Object may still be placed out of bounds; but collision checking will note be optimal for these.
+	 * \param division_count defines how many boxes will be created.  Tweak this for your game -- how many objects is there in a box? 
+	 */
+	CollisionManagerWithBoxes(CollisionListener * listener, const BoundedBox2 & bounds, const unsigned int division_count);
 	void add(CollidablePolygon * collidable) override;
 	void remove(CollidablePolygon * collidable) override;
 	void clear() override;

@@ -117,19 +117,23 @@ class Drawable {
 };
 
 /**
- Use this as base class for all objects that are updated and drawn in your game. It is not 
+ Use this as base class for all objects that are updated or drawn in your game. It is not 
  the base class of all objects you need for your  game. Rather the GameObject instances forms 
  a runtime structure that defines the basic composition of your game. Instances cannot be 
  copied.  You keep exactly one instance for each important game concept in memory. 
+
    The most important members to take note of are update() and draw().  These functions are 
  called during the update and draw phases of the game loop.  If the object should not be 
  called during update it can be deactivated. Also, if it is not to be drawn, it can be hidden.  
  These states are independent; e.g. an object that is not active can still be visible. 
+
    The calls to update() is done in the order in which the GameObject instances are added 
  to their container but the calls to draw() is different.  The draw order of all game objects
  are decided when the game starts and is based on the value given during construction.  It is 
  therefore possible to have a draw order for your objects that is entirely different from the
- update order 
+ update order.
+
+ \sa \ref using_gameobjects
 */
 class GameObject : Drawable {
 PREVENT_COPY(GameObject)

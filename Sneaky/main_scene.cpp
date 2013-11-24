@@ -96,7 +96,7 @@ public:
 };
 
 PlayScene::PlayScene() :
-		_col_mgr(CollisionListener::u_ptr(new DualityListener()),
+		_col_mgr(new DualityListener(),
 		         BoundedBox2(toVec(leftBack), toVec(rightFront)),5),
 		_snake(new SnakeObject(_col_mgr)),
 		_fence(new Fence())

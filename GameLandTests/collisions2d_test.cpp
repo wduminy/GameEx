@@ -40,7 +40,7 @@ namespace tut {
 	}
 
 	struct CollisionData {
-		CollisionData() : mgr(CollisionListener::u_ptr(new TestListener())) {};
+		CollisionData() : mgr(new TestListener()) {};
 		virtual ~CollisionData(){}
 		const TestListener& listener() const { return (TestListener&)  mgr.listener();}
 		SimpleCollisionManager mgr;

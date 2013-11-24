@@ -143,8 +143,8 @@ std::ostream& operator <<(ostream& s, const Polygon& v) {
 	return s;
 }
 
-CollisionManager::CollisionManager(CollisionListener::u_ptr listener) :
-		_listener(std::move(listener)) {
+CollisionManager::CollisionManager(CollisionListener* listener) :
+		_listener(listener) {
 }
 
 bool CollisionManager::check_and_add(CollidablePolygon* collidable,
@@ -162,8 +162,8 @@ bool CollisionManager::check_and_add(CollidablePolygon* collidable,
 }
 
 SimpleCollisionManager::SimpleCollisionManager(
-		CollisionListener::u_ptr listener) :
-		CollisionManager(std::move(listener)), _items() {
+		CollisionListener * listener) :
+		CollisionManager(listener), _items() {
 }
 
 void SimpleCollisionManager::remove(CollidablePolygon* collidable) {
@@ -192,7 +192,7 @@ CollidablePolygon* CollidablePolygonPList::collider_or_null(
 }
 
 CollisionManagerWithBoxes::CollisionManagerWithBoxes(
-		CollisionListener::u_ptr listener, const BoundedBox2 & bounds,
+		CollisionListener * listener, const BoundedBox2 & bounds,
 		const unsigned int division_count) :
 		CollisionManager(std::move(listener)), _bounds(bounds), _boxes(
 				division_count * division_count), _division_count(
