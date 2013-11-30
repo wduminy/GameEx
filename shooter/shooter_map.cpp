@@ -23,6 +23,7 @@ namespace {
 		}
 		void load_image(const std::string& path, SDL_Surface * screen) { 
 			_image.reset(new game::Surface(path,screen));
+			_image->set_transparent(0,0,0);
 	 		_image->write_properties(LOG << "Loaded tiles:");
 		}
 		bool has_image() const {return _image.get() != nullptr;}
@@ -165,31 +166,6 @@ void ShooterMapView::initialise(const game::ResourceContext &rctx, const game::D
 	update_tile_indexes();
 }
 
-void ShooterMapView::draw_ground(const game::DrawContext &dc) {
-	const int bottom_px = _state->shooter().bottom() + SHOOTER_GUTTER;
-	const int bottom_row = bottom_px / TILE_SIZE_PX;
-	const int top_row = bottom_row - MAP_HEIGHT;
-	const int offset = bottom_row * TILE_SIZE_PX - bottom_px;   
-	const int top_px = bottom_px - MAP_HEIGHT_PX;
-
-	_draw_dst.x = _map_left;
-	_draw_dst.y = offset;
-
-	for (int i = 0; i < MAP_WIDTH; i++) {
-		for (int j = 0; j <= MAP_HEIGHT; j++) {
-			size_t ix = MAP_WIDTH * (top_row+j) + i;
-			_draw_dst.y = j * TILE_SIZE_PX + offset;
-			tiles.blit_ground(_tile_x[ix],_tile_y[ix],dc.screen(),_draw_dst);
-		}
-		_draw_dst.x += TILE_SIZE_PX;
-	}
-
-	_draw_dst.x = _map_left + MAP_WIDTH_PX / 2 - SHOOTER_WIDTH_PX/2;
-	_draw_dst.y = _state->shooter().bottom() - top_px - SHOOTER_HEIGHT_PX;
-
-	tiles.blit_shooter(dc.screen(),_draw_dst);
-}
-
 void ShooterMapView::update_tile_indexes() {
 	int cx = 0;
 	int cy = 0;
@@ -204,9 +180,32 @@ void ShooterMapView::update_tile_indexes() {
 
 
 void ShooterMapView::draw(const game::DrawContext &dc) {
-	draw_ground(dc);
+	const int bottom_px = _state->shooter().bottom() + SHOOTER_GUTTER;
+	const int bottom_row = bottom_px / TILE_SIZE_PX;
+	const int top_row = bottom_row - MAP_HEIGHT;
+	const int offset = bottom_row * TILE_SIZE_PX - bottom_px;   
+	const int top_px = bottom_px - MAP_HEIGHT_PX;
+
+	_draw_dst.x = _map_left;
+	_draw_dst.y = offset;
+
+	for (int i = 0; i < MAP_WIDTH; i++) {
+		for (int j = 0; j < MAP_HEIGHT; j++) {
+			size_t ix = MAP_WIDTH * (top_row+j) + i;
+			_draw_dst.y = j * TILE_SIZE_PX + offset;
+			if (ix < LEVEL_SIZE)
+				tiles.blit_ground(_tile_x[ix],_tile_y[ix],dc.screen(),_draw_dst);
+			else
+				tiles.blit_ground(2,0,dc.screen(),_draw_dst);
+		}
+		_draw_dst.x += TILE_SIZE_PX;
+	}
+
+	_draw_dst.x = _map_left + _state->shooter().left();
+	_draw_dst.y = _state->shooter().bottom() - top_px - SHOOTER_HEIGHT_PX;
+
+	tiles.blit_shooter(dc.screen(),_draw_dst);
 }
 
-void ShooterMapView::update(const game::UpdateContext &uc) {
-}
+void ShooterMapView::update(const game::UpdateContext &uc) {}
 

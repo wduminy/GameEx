@@ -28,6 +28,7 @@ namespace game {
 		int height() const {return _surface->h; }
 		/** Length of the scan line */
 		int pitch() const {return _surface->pitch; }
+		void set_transparent(const Uint8 r, const Uint8 g, const Uint8 b);
 		void write_properties(std::ostream &os);
 		/** Copy a rectangle from another surface into this one. 
 		 * The width and height in src_rect determine the size of the copied rectangle. 
@@ -37,10 +38,12 @@ namespace game {
 		/** Copy a rectangle from this one surface into another surface one. 
 		 * The width and height in src_rect determine the size of the copied rectangle. 
 		 * Only the position is used in the dst_rect (the width and height are ignored). 
+		 * The way the blitting is done depends on a call to set_transparent().
 		 */	
 		void blit_to(SDL_Rect & src_rect, SDL_Surface * dst_surface, SDL_Rect & dst_rect); 
 		~Surface();
 	private:
+		void set_alpha(const Uint32 flag,const Uint8 alpha);
 		SDL_Surface * _surface;
     public:
         typedef std::unique_ptr<Surface> u_ptr;

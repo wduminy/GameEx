@@ -27,6 +27,10 @@ namespace game {
 	extern const Scalar piX2; // pi times two
 	extern const Scalar degrees45;
 
+	template <typename T> T clamp(const T x, const T a, const T b) {
+		return x < a ? a : (x > b ? b : x);
+	}
+	
 	inline Scalar sqr(const Scalar& v) {return v * v;}
 	inline bool overlap_proper(const Scalar& a1, const Scalar& a2, const Scalar& b1, const Scalar& b2) {
 		return (b1 < a2 && b1 > a1)

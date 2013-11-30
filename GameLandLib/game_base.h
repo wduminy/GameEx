@@ -47,6 +47,7 @@ public:
 	typedef std::unique_ptr<ResourceContext> u_ptr;
 };
 
+/** Provides detail of what the state of input devices */
 class InputEvent {
 public:
 	const SDL_Event& event() const { return _event;}
@@ -64,6 +65,9 @@ private:
 	SDL_Event _event;
 };
 
+/**
+ * The context in which the main game loop calls update.
+ * For a client class the input() query may the the most interesting */
 class UpdateContext {
 public:
 	UpdateContext(unsigned int targetUpdatesPerSecond, unsigned int targetFramesPerSecond);
@@ -74,6 +78,7 @@ public:
 	double seconds_per_update() const { return 1.0 / updates_per_second();}
 	void tick();
 	void log_statistics() const;
+	/** Provides access to the latest user input */
 	const InputEvent& input() const {return _event;}
 private:
 	InputEvent _event;

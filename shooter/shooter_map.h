@@ -13,7 +13,6 @@ public:
 private:
 	void update_tile_indexes();
 	void calculate_tile(const int x, const int y, int &t_x, int &t_y); 
-	void draw_ground(const game::DrawContext &dc);
 	SDL_Rect _draw_dst;
 	int _map_left;
 	int _row_at_top;

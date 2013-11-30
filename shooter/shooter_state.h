@@ -1,5 +1,6 @@
 #pragma once
 #include <game_base.h>
+#include <game_math.h>
 #include <collisions2d.h>
 
 #define WINDOW_WIDTH 1024
@@ -14,12 +15,13 @@
 #define LEVEL_HEIGHT_PX LEVEL_HEIGHT*TILE_SIZE_PX
 #define SHOOTER_WIDTH_PX 30*2
 #define SHOOTER_HEIGHT_PX 18*2
+#define SHOOTER_MAX_LEFT_PX LEVEL_WIDTH_PX - SHOOTER_WIDTH_PX
 // the shooter is never lower than this point
 #define SHOOTER_GUTTER TILE_SIZE_PX*2
 // the number of seconds to scroll through a level
 #define SECONDS_PER_LEVEL 20
 #define PIXELS_PER_SECOND LEVEL_HEIGHT_PX/SECONDS_PER_LEVEL 
-
+#define HOR_PIXELS_PER_SECOND LEVEL_WIDTH_PX/3.0 
 #define LEVEL_SIZE MAP_WIDTH*LEVEL_HEIGHT
 
 enum class GroundCover {Road,Sand,Water,Grass,Scrub,Bush};  
@@ -45,18 +47,23 @@ class Level {
 		GroundMap _ground_map;
 };
 
+
+enum class SteerDir{Left,Right,None};
+
 /** Shooter moves from south to north -- decrementing y */
 class Shooter {
 public:
 	Shooter();
 	double bottom() const {return _bottom;};
-	void move(double lapse) {
-			_bottom -= _speed * lapse;
-			if (_bottom < SHOOTER_HEIGHT_PX) _bottom = SHOOTER_HEIGHT_PX;
-	}
+	double left() const {return _left;}
+	void move(double lapse);
+	void set_dir(const SteerDir dir);
 private:
-	double _bottom;
-	double _speed;
+	double 
+	_bottom,
+	_left,
+	_vs, // vertical speed -- pixels per second
+	_hs; // horizontal speed -- pixels per second
 };
 
 class LevelState {
@@ -73,7 +80,10 @@ protected:
 
 class LevelStateObject : public game::GameObject, public LevelState {
 public:
+	LevelStateObject();
 	void initialise(const game::ResourceContext &rctx, const game::DrawContext &dc) override;
 	void update(const game::UpdateContext & uc) override;
 	void draw(const game::DrawContext &dc) override {};
+private:
+	bool _left_key_down, _right_key_down;	
 };
