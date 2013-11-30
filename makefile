@@ -2,7 +2,7 @@ TARGET_DIR = RunDir
 # choose a debug option -- the first one is for debugging ... the orther for fastest
 DEBUG = -O0 -g3
 MAX_SPEED = -O3 -DNDEBUG
-FLAGS = $(MAX_SPEED) 
+FLAGS = $(DEBUG) 
 COMPILE_ARGS = -I"C:\development\cpp\libraries\SDL-1.2.15\include" -ITutLib -IGameLandLib -Wall -c -fmessage-length=0 -std=c++0x $(FLAGS)
 LINK_ARGS = -L"C:\development\cpp\libraries\SDL-1.2.15\lib" -L$(TARGET_DIR) -lmingw32 -lwsock32 -lglu32 -lopengl32 -lSDLmain -lSDL_ttf -lSDL.dll 
 DIRS = GameLandLib GameLandTests TutLib TerrainDemo Sneaky shooter

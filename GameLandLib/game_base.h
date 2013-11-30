@@ -187,7 +187,7 @@ class GameObjectWithParts: public GameObject {
 public:
 	GameObjectWithParts(const int drawOrder = 0) :
 			GameObject(drawOrder), _parts() {}
-	/** Call initialise() for every child. */
+	/** Call initialise() for every child.  In the order in which the children were added */
 	virtual void initialise(const ResourceContext &rctx, const DrawContext& dctx) override {
 		for (auto p = _parts.begin(); p != _parts.end(); p++) (*p)->initialise(rctx,dctx);
 	};
@@ -195,16 +195,24 @@ public:
 	void update(const UpdateContext &context) override;
 
 	void add_part(GameObject::u_ptr object) {
-		_parts.emplace_after(_parts.before_begin(), std::move(object));
+		auto before_end = _parts.before_begin();
+		for (auto& _ : _parts)
+  		if (_) ++ before_end;
+		_parts.emplace_after(before_end, std::move(object));
 	};
+
 	/** Add a part to this composite.
 	 * Note that this memory of this part is is managed by this
 	 * containing object.
 	 * @param object
 	 */
 	void add_part(GameObject * object) {
-		_parts.emplace_after(_parts.before_begin(), GameObject::u_ptr(object));
+		auto before_end = _parts.before_begin();
+		for (auto& _ : _parts)
+  		if (_) ++ before_end;
+		_parts.emplace_after(before_end, GameObject::u_ptr(object));
 	}
+
 	void collect(std::deque<GameObject*> &c);
 	/** Default draw method does nothing.  Note that it does not draw the children.*/
 	void draw(const DrawContext&) override {};

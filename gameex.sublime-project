@@ -52,7 +52,7 @@
   ],
 	"settings":
 	{
-	     "sublimegdb_workingdir": "${folder:${project_path:RunDir/TerrainDemo.exe}}",
-	     "sublimegdb_commandline": "gdb --interpreter=mi TerrainDemo.exe"
+	     "sublimegdb_workingdir": "${folder:${project_path:RunDir/Shooter.exe}}",
+	     "sublimegdb_commandline": "gdb --interpreter=mi Shooter.exe"
 	}
 }
