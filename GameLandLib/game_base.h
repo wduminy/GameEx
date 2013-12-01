@@ -52,9 +52,9 @@ class InputEvent {
 public:
 	const SDL_Event& event() const { return _event;}
 	/** The key that is pressed down */
-	SDLKey key_down() const;
+	SDL_Keycode key_down() const;
 	/** The key that has been released */
-	SDLKey key_up() const;
+	SDL_Keycode key_up() const;
 	/** Is the control key pressed? */
 	bool is_ctl_down() const; 
 	/** True when the window is closed. Used in the game loop. See SDL_QUIT for info.*/

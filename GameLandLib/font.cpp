@@ -55,7 +55,7 @@ void Font::loadChar(int c) {
 				&glyphs[c].miny, &glyphs[c].maxy, &glyphs[c].advance);
 		g0 = TTF_RenderText_Shaded(ttfFont, letter, foreground, background);
 		if (g0) {
-			g1 = SDL_DisplayFormat(g0);
+			g1 = SDL_ConvertSurface(g0,g0->format,0);
 			SDL_FreeSurface(g0);
 		}
 		if (g1) {
@@ -69,13 +69,13 @@ void Font::loadChar(int c) {
 	}
 }
 
-Font::Font(const char *address, int length, int pointSize, int style,
-		float fgRed, float fgGreen, float fgBlue, float bgRed, float bgGreen,
-		float bgBlue) :
-		height(height), ascent(ascent), descent(descent), lineSkip(lineSkip), address(
-				address), length(length), pointSize(pointSize), style(style), fgRed(
-				fgRed), fgGreen(fgGreen), fgBlue(fgBlue), bgRed(bgRed), bgGreen(
-				bgGreen), bgBlue(bgBlue), ttfFont(), foreground(), background() {
+Font::Font(const char *aaddress, int alength, int apointSize, int astyle,
+		float afgRed, float afgGreen, float afgBlue, float abgRed, float abgGreen,
+		float abgBlue) :
+		height(), ascent(), descent(), lineSkip(), address(
+				aaddress), length(alength), pointSize(apointSize), style(astyle), fgRed(
+				afgRed), fgGreen(afgGreen), fgBlue(afgBlue), bgRed(abgRed), bgGreen(
+				abgGreen), bgBlue(abgBlue), ttfFont(), foreground(), background() {
 	int i;
 
 	ttfFont = open_font(address, pointSize);

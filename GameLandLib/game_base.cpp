@@ -5,6 +5,11 @@
 #include "game.h"
 #include "log.h"
 #include <windows.h>
+namespace {
+	SDL_Renderer *renderer;
+	SDL_Texture *texture;
+	SDL_Window *window;
+}
 
 namespace game {
 using systemex::string_from_file;
@@ -14,23 +19,40 @@ SDL_Surface * initSDL(const bool fullscreen, const int w, const int h,
 	atexit(SDL_Quit);
 	check(TTF_Init());
 	atexit(TTF_Quit);
-	auto version = SDL_Linked_Version();
-	LOG<< "Using SDL version " << (int) version->major << "." << (int) version->minor << "." << (int) version->patch;
-	auto info = SDL_GetVideoInfo();
-	auto bpp = info->vfmt->BitsPerPixel;
+
+	SDL_version version;
+	SDL_version compiled;
+	SDL_VERSION(&compiled);
+	SDL_GetVersion(&version);
+	ENSURE(compiled.major == version.major 
+		&& compiled.minor == version.minor
+		&& compiled.patch == version.patch
+		, "Compiled and linked version mismatch");
+	LOG<< "Linking against SDL version " << (int) version.major << "." << (int) version.minor << "." << (int) version.patch;
+
 	int flags = SDL_SWSURFACE;
 	if (fullscreen)
-		flags |= SDL_FULLSCREEN;
+		flags |= SDL_WINDOW_FULLSCREEN;
 	if (use_opengl) {
-		flags |= SDL_OPENGL;
+		flags |= SDL_WINDOW_OPENGL;
 		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
 		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	}
-	SDL_Surface * screen = SDL_SetVideoMode(w, h, bpp, flags);
+	window = SDL_CreateWindow("GameEx Game",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,w,h,flags);
+	check(window);
+	renderer = SDL_CreateRenderer(window, -1, 0);
+	check(renderer);
+	SDL_Surface * screen = SDL_CreateRGBSurface(0, w, h, 32,0x00FF0000,0x0000FF00,0x000000FF,0xFF000000);
 	check(screen);
+	if (use_opengl) 
+		SDL_GL_CreateContext(window);
+	else {
+		texture = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STREAMING,w, h);
+		check(texture);
+	}
 	return screen;
 }
 
@@ -48,9 +70,13 @@ Glex& DrawContext::gl() const {
 
 void DrawContext::swap() {
 	if (has_opengl())
-		SDL_GL_SwapBuffers();
-	else
-		SDL_Flip(_screen);
+	 	SDL_GL_SwapWindow(window);
+	else {
+		SDL_UpdateTexture(texture, NULL, _screen->pixels, _screen->pitch);
+		SDL_RenderClear(renderer);
+		SDL_RenderCopy(renderer, texture, NULL, NULL);
+		SDL_RenderPresent(renderer);
+	}
 }
 
 DrawContext::~DrawContext() {
@@ -75,14 +101,14 @@ bool InputEvent::is_quit() const {
 	return _event.type == SDL_QUIT;
 }
 
-SDLKey InputEvent::key_down() const {
+SDL_Keycode InputEvent::key_down() const {
 	if (_event.type != SDL_KEYDOWN)
 		return SDLK_UNKNOWN;
 	else
 		return _event.key.keysym.sym;
 }
 
-SDLKey InputEvent::key_up() const {
+SDL_Keycode InputEvent::key_up() const {
 	if (_event.type != SDL_KEYUP)
 		return SDLK_UNKNOWN;
 	else
@@ -224,7 +250,7 @@ void MainObject::update(const UpdateContext& ctx) {
 	auto i = ctx.input();
 	if (i.is_quit() || (i.key_down() == SDLK_c && i.is_ctl_down()))
 		deactivate();
-	if (ctx.input().key_down() == SDLK_PRINT)
+	if (ctx.input().key_down() == SDL_SCANCODE_PRINTSCREEN)
 		_print_screen = true;
 }
 

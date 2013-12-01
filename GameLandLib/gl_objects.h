@@ -3,9 +3,9 @@
  * See LICENCE.txt
  */
 #pragma once
-#include <SDL/SDL_opengl.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <SDL2/SDL_opengl.h>
 #include "systemex.h"
 #include "sdl_objects.h"
 typedef const GLfloat* GLfloat_ptr;

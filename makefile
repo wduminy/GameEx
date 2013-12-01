@@ -2,9 +2,11 @@ TARGET_DIR = RunDir
 # choose a debug option -- the first one is for debugging ... the orther for fastest
 DEBUG = -O0 -g3
 SPEED = -O3 -DNDEBUG
-FLAGS = $(SPEED) 
-COMPILE_ARGS = -I"C:\development\cpp\libraries\SDL-1.2.15\include" -ITutLib -IGameLandLib -Wall -c -fmessage-length=0 -std=c++0x $(FLAGS)
-LINK_ARGS = -L"C:\development\cpp\libraries\SDL-1.2.15\lib" -L$(TARGET_DIR) -lmingw32 -lwsock32 -lglu32 -lopengl32 -lSDLmain -lSDL_ttf -lSDL.dll 
+FLAGS = $(DEBUG) 
+SDL = C:\development\cpp\libraries\SDL2-2.0.1\i686-w64-mingw32
+SDL_FLAGS = -Dmain=SDL_main -mwindows
+COMPILE_ARGS = -Dmain=SDL_main -mwindows -I"$(SDL)\include" -ITutLib -IGameLandLib -Wall -c -fmessage-length=0 -std=c++11 $(FLAGS)
+LINK_ARGS = -L"$(SDL)\lib" -L$(TARGET_DIR) -lmingw32 -lwsock32 -lglu32 -lopengl32 -lSDL2 -lSDL2main -lSDL2_ttf -lSDL2.dll 
 DIRS = GameLandLib GameLandTests TutLib TerrainDemo Sneaky shooter
 SOURCES := $(foreach e, $(DIRS), $(wildcard $(e)/*.cpp))
 DEPS := $(patsubst %.cpp, %.depends, $(SOURCES))
@@ -17,15 +19,18 @@ SNEAKY := $(TARGET_DIR)/Sneaky.exe
 SHOOTER := $(TARGET_DIR)/Shooter.exe
 .PHONY : clean all run_sneaky run_terrain run_test dox run_shooter
 
-
 run_shooter: $(SHOOTER)
 	cd $(TARGET_DIR); ./Shooter.exe -nfullscreen; cat log.txt
+
+run_sneaky: $(SNEAKY)
+	cd $(TARGET_DIR); ./Sneaky.exe
+
+run_terrain: $(TERRAIN_DEMO)
+	cd $(TARGET_DIR); ./TerrainDemo.exe
 
 $(SHOOTER): $(OBJS) $(GAME_LAND_LIB)
 	g++ $(wildcard shooter/*.o) -o $@ -lGameLandLib $(LINK_ARGS)  
 
-run_terrain: $(TERRAIN_DEMO)
-	cd $(TARGET_DIR); ./TerrainDemo.exe
 
 run_tests:  $(GAME_LAND_TEST)
 	cd $(TARGET_DIR); ./GameLandTests.exe
@@ -34,8 +39,6 @@ dox:
 	rm -f -r ../codespear.github.io/gameex/html
 	cd docs; doxygen doxy.txt
 
-run_sneaky: $(SNEAKY)
-	cd $(TARGET_DIR); ./Sneaky.exe
 
 $(SNEAKY): $(OBJS) $(GAME_LAND_LIB)
 	g++ $(wildcard Sneaky/*.o) -o $@ -lGameLandLib $(LINK_ARGS)  

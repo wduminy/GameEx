@@ -40,13 +40,10 @@ void game::Surface::blit_to(SDL_Rect & src_rect, SDL_Surface * dst_surface, SDL_
   check(SDL_BlitSurface(_surface,&src_rect,dst_surface,&dst_rect));
 }
 
-void game::Surface::set_alpha(const Uint32 flag,const Uint8 alpha) {
-  check(SDL_SetAlpha(_surface,flag,alpha));
-}
 
 void game::Surface::set_transparent(const Uint8 r, const Uint8 g, const Uint8 b) {
   auto colorKey = SDL_MapRGB(_surface->format,r,g,b);
-  check(SDL_SetColorKey(_surface,SDL_SRCCOLORKEY,colorKey));
+  check(SDL_SetColorKey(_surface,SDL_TRUE,colorKey));
 }
 
 

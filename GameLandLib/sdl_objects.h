@@ -3,8 +3,8 @@
  * See LICENCE.txt
  */
 #pragma once
-#include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include "systemex.h"
 namespace game {
@@ -43,7 +43,6 @@ namespace game {
 		void blit_to(SDL_Rect & src_rect, SDL_Surface * dst_surface, SDL_Rect & dst_rect); 
 		~Surface();
 	private:
-		void set_alpha(const Uint32 flag,const Uint8 alpha);
 		SDL_Surface * _surface;
     public:
         typedef std::unique_ptr<Surface> u_ptr;
