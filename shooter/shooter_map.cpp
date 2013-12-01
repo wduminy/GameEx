@@ -16,29 +16,30 @@ namespace {
 	const int GROUND_TILE_SIZE = TILE_SIZE_PX + GROUND_ZERO_GUTTER;
 	class TileSet {
 	public:
-		TileSet() : _image(), _src() {
+		TileSet() : _tex(), _src() {
 			_src.x = _src.y = 0;
 			_src.w = TILE_SIZE_PX;
 			_src.h = TILE_SIZE_PX;
 		}
-		void load_image(const std::string& path, SDL_Surface * screen) { 
-			_image.reset(new game::Surface(path,screen));
-			_image->set_transparent(0,0,0);
-	 		_image->write_properties(LOG << "Loaded tiles:");
+		void load_image(const std::string& path, const game::Renderer& r) { 
+	 		_tex.reset(new game::SDLTexture(r.create_texture_from_bmp(path)));
+	 		_tex->blend_mode(SDL_BLENDMODE_BLEND);
 		}
-		bool has_image() const {return _image.get() != nullptr;}
-		void blit_ground(const int pos_x, const int pos_y, SDL_Surface * dst_s, SDL_Rect & dst_r) {
+		bool has_image() const {return _tex.get() != nullptr;}
+		void blit_ground(const int pos_x, const int pos_y, const game::Renderer& r, SDL_Rect & dst_r) {
 			_src.x = GROUND_TILE_0_X + pos_x * GROUND_TILE_SIZE;
 			_src.y = GROUND_TILE_0_Y + pos_y * GROUND_TILE_SIZE;
-			_image->blit_to(_src,dst_s,dst_r);
+			r.copy_from(*_tex,_src,dst_r);
 		}
-		void blit_shooter(SDL_Surface * dst_s, SDL_Rect & dst_r) {
+		void blit_shooter(const game::Renderer& r, SDL_Rect & dst_r) {
+			//static SDL_Rect src = {835*2,255*2,SHOOTER_WIDTH_PX,SHOOTER_HEIGHT_PX};
 			static SDL_Rect src = {835*2,255*2,SHOOTER_WIDTH_PX,SHOOTER_HEIGHT_PX};
-			_image->blit_to(src,dst_s,dst_r);
-
+			SDL_Rect des = {dst_r.x,dst_r.y,SHOOTER_WIDTH_PX,SHOOTER_HEIGHT_PX};
+			r.copy_from(*_tex,src,des);
 		}
+
 	public:	 
-		game::Surface::u_ptr _image;	
+		std::unique_ptr<game::SDLTexture> _tex;
 	private:
 		SDL_Rect _src;
 	};
@@ -160,7 +161,7 @@ ShooterMapView::ShooterMapView(const LevelState * state)
 void ShooterMapView::initialise(const game::ResourceContext &rctx, const game::DrawContext &dc) {
 	GameObject::initialise(rctx,dc);
 	if (!tiles.has_image())
-		tiles.load_image(rctx.path_to("Master484.bmp"),dc.screen());
+		tiles.load_image(rctx.path_to("Master484.bmp"),dc.render());
 	_map_left = (dc.width()/2) - MAP_WIDTH_PX/2;
 	ENSURE(_map_left + MAP_WIDTH_PX <= dc.width(), "map is too wide for screen");
 	update_tile_indexes();
@@ -188,15 +189,17 @@ void ShooterMapView::draw(const game::DrawContext &dc) {
 
 	_draw_dst.x = _map_left;
 	_draw_dst.y = offset;
+	_draw_dst.w = TILE_SIZE_PX;
+	_draw_dst.h = TILE_SIZE_PX;
 
 	for (int i = 0; i < MAP_WIDTH; i++) {
 		for (int j = 0; j < MAP_HEIGHT; j++) {
 			size_t ix = MAP_WIDTH * (top_row+j) + i;
 			_draw_dst.y = j * TILE_SIZE_PX + offset;
 			if (ix < LEVEL_SIZE)
-				tiles.blit_ground(_tile_x[ix],_tile_y[ix],dc.screen(),_draw_dst);
+				tiles.blit_ground(_tile_x[ix],_tile_y[ix],dc.render(),_draw_dst);
 			else
-				tiles.blit_ground(2,0,dc.screen(),_draw_dst);
+				tiles.blit_ground(2,0,dc.render(),_draw_dst);
 		}
 		_draw_dst.x += TILE_SIZE_PX;
 	}
@@ -204,7 +207,8 @@ void ShooterMapView::draw(const game::DrawContext &dc) {
 	_draw_dst.x = _map_left + _state->shooter().left();
 	_draw_dst.y = _state->shooter().bottom() - top_px - SHOOTER_HEIGHT_PX;
 
-	tiles.blit_shooter(dc.screen(),_draw_dst);
+	tiles.blit_shooter(dc.render(),_draw_dst);
+
 }
 
 void ShooterMapView::update(const game::UpdateContext &uc) {}

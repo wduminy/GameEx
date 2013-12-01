@@ -22,6 +22,47 @@ namespace {
   }
 }
 
+namespace game {
+  SDLTexture::SDLTexture(SDL_Texture * texture) : _texture(texture) {
+    ASSERT(texture);
+  }
+
+  SDLTexture::~SDLTexture() {
+    SDL_DestroyTexture(_texture);
+  }
+
+  Renderer::Renderer(SDL_Window * window): _renderer(0) {
+    SDL_Renderer * r = SDL_CreateRenderer(window,-1,0);
+    check(r);
+    _renderer = r;
+  }
+
+  void Renderer::copy_from(SDL_Texture* texture,
+    const SDL_Rect* srcrect,const SDL_Rect* dstrect) const {
+    check(SDL_RenderCopy(_renderer, texture, srcrect, dstrect));
+  }
+
+  SDL_Texture* Renderer::create_texture(const Uint32 format,const int access,
+    const int w,const int h) {
+    auto r = SDL_CreateTexture(_renderer,format,access,w,h);
+    check(r);
+    return r;
+  }
+
+  SDL_Texture* Renderer::create_texture_from_bmp(const std::string& file_name) const {
+    auto surface = SDL_LoadBMP(file_name.c_str());
+    check(surface);
+    auto r = SDL_CreateTextureFromSurface(_renderer, surface);
+    SDL_FreeSurface(surface);
+    return r;
+  }
+
+  Renderer::~Renderer() {
+    if (_renderer)
+      SDL_DestroyRenderer(_renderer);
+   } 
+}
+
 game::Surface::Surface(const std::string& path_to_bmp)
   : _surface(SDL_LoadBMP(path_to_bmp.c_str())) {
 	check(_surface);

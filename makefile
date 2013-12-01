@@ -2,7 +2,7 @@ TARGET_DIR = RunDir
 # choose a debug option -- the first one is for debugging ... the orther for fastest
 DEBUG = -O0 -g3
 SPEED = -O3 -DNDEBUG
-FLAGS = $(DEBUG) 
+FLAGS = $(SPEED) 
 SDL = C:\development\cpp\libraries\SDL2-2.0.1\i686-w64-mingw32
 SDL_FLAGS = -Dmain=SDL_main -mwindows
 COMPILE_ARGS = -Dmain=SDL_main -mwindows -I"$(SDL)\include" -ITutLib -IGameLandLib -Wall -c -fmessage-length=0 -std=c++11 $(FLAGS)

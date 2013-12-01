@@ -98,23 +98,25 @@ public:
 class DrawContext {
 	PREVENT_COPY(DrawContext)
 public:
-	DrawContext(const bool fullscreen, const int width, const int height, bool opengl);
+	DrawContext(const bool fullscreen, const int width, const int height, const bool opengl);
 	~DrawContext();
 	Glex& gl() const;
 	operator Glex*() const {return _glex.get();}
-	SDL_Surface * screen() const {return _screen;}
 	int width() const {return _width;}
 	int height() const {return _height;}
 	bool has_opengl() const {return _glex.get();}
 	void swap();
 	void screen_to_bmp(const std::string& filename) const;
+	Renderer& render() const {return *_renderer;}
 private:
-	SDL_Surface * _screen;
+	SDL_Window * _window;
 	Glex::u_ptr _glex;
 	int _width;
 	int _height;
+	std::unique_ptr<Renderer> _renderer;
 public:
 	typedef std::unique_ptr<DrawContext> u_ptr;
+
 };
 
 class Drawable {

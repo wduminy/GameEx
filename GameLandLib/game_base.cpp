@@ -5,15 +5,10 @@
 #include "game.h"
 #include "log.h"
 #include <windows.h>
-namespace {
-	SDL_Renderer *renderer;
-	SDL_Texture *texture;
-	SDL_Window *window;
-}
 
 namespace game {
 using systemex::string_from_file;
-SDL_Surface * initSDL(const bool fullscreen, const int w, const int h,
+SDL_Window * initSDL(const bool fullscreen, const int w, const int h,
 		bool use_opengl) {
 	check(SDL_Init(SDL_INIT_VIDEO));
 	atexit(SDL_Quit);
@@ -41,25 +36,18 @@ SDL_Surface * initSDL(const bool fullscreen, const int w, const int h,
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	}
-	window = SDL_CreateWindow("GameEx Game",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,w,h,flags);
+	auto window = SDL_CreateWindow("GameEx Game",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,w,h,flags);
 	check(window);
-	renderer = SDL_CreateRenderer(window, -1, 0);
-	check(renderer);
-	SDL_Surface * screen = SDL_CreateRGBSurface(0, w, h, 32,0x00FF0000,0x0000FF00,0x000000FF,0xFF000000);
-	check(screen);
-	if (use_opengl) 
-		SDL_GL_CreateContext(window);
-	else {
-		texture = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STREAMING,w, h);
-		check(texture);
-	}
-	return screen;
+	return window;
 }
 
-DrawContext::DrawContext(const bool fullscreen, const int width,
-		const int height, bool opengl) :
-		_screen(initSDL(fullscreen, width, height, opengl)), _glex(
-				opengl ? new Glex() : 0), _width(width), _height(height) {
+DrawContext::DrawContext(const bool fullscreen, const int w,	const int h, const bool opengl) :
+		_glex(opengl ? new Glex() : 0), _width(w), _height(h), _renderer() {
+	auto window = initSDL(fullscreen, w, h, opengl);	
+	_renderer.reset(new Renderer(window));
+	_renderer->set_logical_size(w,h);
+	if (opengl) 
+		SDL_GL_CreateContext(window);
 }
 
 Glex& DrawContext::gl() const {
@@ -70,13 +58,9 @@ Glex& DrawContext::gl() const {
 
 void DrawContext::swap() {
 	if (has_opengl())
-	 	SDL_GL_SwapWindow(window);
-	else {
-		SDL_UpdateTexture(texture, NULL, _screen->pixels, _screen->pitch);
-		SDL_RenderClear(renderer);
-		SDL_RenderCopy(renderer, texture, NULL, NULL);
-		SDL_RenderPresent(renderer);
-	}
+	 	SDL_GL_SwapWindow(_window);
+	else 
+		_renderer->present();
 }
 
 DrawContext::~DrawContext() {
@@ -262,7 +246,7 @@ void MainObject::draw(const DrawContext& dc) {
 		/* We don't want to modify the projection matrix. */
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-	}
+	} 
 	if (_print_screen) {
 		dc.screen_to_bmp("screen.bmp");
 	}

@@ -11,6 +11,41 @@ namespace game {
  	void check(int sdl_result);
 	void check(void * p);
 
+  /** Encapsulates SDL_Texture */
+	class SDLTexture {
+		PREVENT_COPY(SDLTexture)
+	public:
+		explicit SDLTexture(SDL_Texture * texture);
+		void blend_mode(SDL_BlendMode mode) {SDL_SetTextureBlendMode(_texture,mode);} 
+		virtual ~SDLTexture();
+		SDL_Texture * sdl() { return _texture; }
+	private:
+		SDL_Texture * _texture;
+	};
+
+  /** Encapsulates SDL_Renderer */
+	class Renderer {
+		PREVENT_COPY(Renderer)
+	public:
+		explicit Renderer(SDL_Window* window);
+		void set_logical_size(const int w, const int h) {check(SDL_RenderSetLogicalSize(_renderer,w,h));}
+		void copy_from(SDL_Texture* texture,const SDL_Rect* srcrect,const SDL_Rect* dstrect) const;
+		void copy_from(SDLTexture& texture,const SDL_Rect& srcrect,const SDL_Rect& dstrect) const {
+			copy_from(texture.sdl(),&srcrect,&dstrect);
+		}
+		void copy_from(SDLTexture& texture) const {
+			copy_from(texture.sdl(),0,0);
+		}
+		void present() {SDL_RenderPresent(_renderer);}
+		void clear() {check(SDL_RenderClear(_renderer));}
+		SDL_Texture* create_texture(const Uint32 format, const int access, const int w,const int h);
+		SDL_Texture* create_texture_from_bmp(const std::string& file_name) const;
+		virtual ~Renderer();
+	private:
+		SDL_Renderer * _renderer;	
+	};
+
+
   /** 
    * A Surface encapsulates an SDL_Surface.
    */
