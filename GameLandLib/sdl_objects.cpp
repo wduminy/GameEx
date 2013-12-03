@@ -1,4 +1,5 @@
 #include "sdl_objects.h"
+#include <SDL2/SDL_image.h>
 #include "systemex.h"
 namespace game {
  	void check(int sdl_result) {
@@ -51,6 +52,14 @@ namespace game {
 
   SDL_Texture* Renderer::create_texture_from_bmp(const std::string& file_name) const {
     auto surface = SDL_LoadBMP(file_name.c_str());
+    check(surface);
+    auto r = SDL_CreateTextureFromSurface(_renderer, surface);
+    SDL_FreeSurface(surface);
+    return r;
+  }
+
+  SDL_Texture* Renderer::create_texture_from_image(const std::string& file_name) const {
+    auto surface = IMG_Load(file_name.c_str());
     check(surface);
     auto r = SDL_CreateTextureFromSurface(_renderer, surface);
     SDL_FreeSurface(surface);

@@ -23,7 +23,7 @@
 		{
 			"name":"GameLandLib",
 			"path": "GameLandLib",
-			"file_include_patterns": ["*.cpp", "*.h"]
+			"file_include_patterns": ["*.cpp", "*.h","*.dox"]
 		}, 
 		{
 			"name":"GameLandTests",

@@ -11,6 +11,7 @@ The following software is used by GameEx:
 	- [Simple Direct Media Layer](http://www.libsdl.org/)
 	- [Template Unit Test Framework] (http://tut-framework.sourceforge.net/)
 	- [SDL TTF](http://www.libsdl.org/projects/SDL_ttf/docs/index.html)
+	- [SDL Image](http://www.libsdl.org/projects/SDL_image/)
 
 \sa \ref using_gameobjects \ref using_collision_mgr 
 

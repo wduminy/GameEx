@@ -22,7 +22,7 @@ namespace {
 			_src.h = TILE_SIZE_PX;
 		}
 		void load_image(const std::string& path, const game::Renderer& r) { 
-	 		_tex.reset(new game::SDLTexture(r.create_texture_from_bmp(path)));
+	 		_tex.reset(new game::SDLTexture(r.create_texture_from_image(path)));
 	 		_tex->blend_mode(SDL_BLENDMODE_BLEND);
 		}
 		bool has_image() const {return _tex.get() != nullptr;}
@@ -161,7 +161,7 @@ ShooterMapView::ShooterMapView(const LevelState * state)
 void ShooterMapView::initialise(const game::ResourceContext &rctx, const game::DrawContext &dc) {
 	GameObject::initialise(rctx,dc);
 	if (!tiles.has_image())
-		tiles.load_image(rctx.path_to("Master484.bmp"),dc.render());
+		tiles.load_image(rctx.path_to("Master484.png"),dc.render());
 	_map_left = (dc.width()/2) - MAP_WIDTH_PX/2;
 	ENSURE(_map_left + MAP_WIDTH_PX <= dc.width(), "map is too wide for screen");
 	update_tile_indexes();

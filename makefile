@@ -6,7 +6,7 @@ FLAGS = $(SPEED)
 SDL = C:\development\cpp\libraries\SDL2-2.0.1\i686-w64-mingw32
 SDL_FLAGS = -Dmain=SDL_main -mwindows
 COMPILE_ARGS = -Dmain=SDL_main -mwindows -I"$(SDL)\include" -ITutLib -IGameLandLib -Wall -c -fmessage-length=0 -std=c++11 $(FLAGS)
-LINK_ARGS = -L"$(SDL)\lib" -L$(TARGET_DIR) -lmingw32 -lwsock32 -lglu32 -lopengl32 -lSDL2 -lSDL2main -lSDL2_ttf -lSDL2.dll 
+LINK_ARGS = -L"$(SDL)\lib" -L$(TARGET_DIR) -lmingw32 -lwsock32 -lglu32 -lopengl32 -lSDL2 -lSDL2main -lSDL2_ttf -lSDL2.dll -lSDL2_image
 DIRS = GameLandLib GameLandTests TutLib TerrainDemo Sneaky shooter
 SOURCES := $(foreach e, $(DIRS), $(wildcard $(e)/*.cpp))
 DEPS := $(patsubst %.cpp, %.depends, $(SOURCES))

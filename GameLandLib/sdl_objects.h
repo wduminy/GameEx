@@ -40,6 +40,7 @@ namespace game {
 		void clear() {check(SDL_RenderClear(_renderer));}
 		SDL_Texture* create_texture(const Uint32 format, const int access, const int w,const int h);
 		SDL_Texture* create_texture_from_bmp(const std::string& file_name) const;
+		SDL_Texture* create_texture_from_image(const std::string& file_name) const;
 		virtual ~Renderer();
 	private:
 		SDL_Renderer * _renderer;	
