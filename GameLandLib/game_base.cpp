@@ -25,7 +25,7 @@ SDL_Window * initSDL(const bool fullscreen, const int w, const int h,
 		, "Compiled and linked version mismatch");
 	LOG<< "Linking against SDL version " << (int) version.major << "." << (int) version.minor << "." << (int) version.patch;
 
-	int flags = SDL_SWSURFACE;
+	int flags =0;
 	if (fullscreen)
 		flags |= SDL_WINDOW_FULLSCREEN;
 	if (use_opengl) {
@@ -125,24 +125,20 @@ UpdateContext::UpdateContext(unsigned int updatesPerSec,
 
 void UpdateContext::tick() {
 	_tick_time = SDL_GetTicks();
-	if (_tick_time >= next_update) {
-		update = true;
+	if (update = (_tick_time >= next_update)) {
 		//this could be a problem ... events on SDL is queued and will be
 		//processed one at a time of the update loop. so, if the input seems
 		//jittery, it could be that the SDL events must be processed in a different
 		//way -- maybe an 'input context' would be a good idea
 		_event.poll();
-		unsigned int delta = _tick_time - next_update;
-		next_update = _tick_time + _update_interval - delta;
+		next_update = _tick_time + _update_interval;
 		_updates++;
-	} else
-		update = false;
-	if (_tick_time >= next_draw) {
-		draw = true;
+	}
+
+	if (draw = (_tick_time >= next_draw)) {
 		next_draw = _tick_time + _draw_interval;
 		_draws++;
-	} else
-		draw = false;
+	} 
 }
 
 void UpdateContext::log_statistics() const {
@@ -246,7 +242,8 @@ void MainObject::draw(const DrawContext& dc) {
 		/* We don't want to modify the projection matrix. */
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-	} 
+	} else
+		dc.render().clear();
 	if (_print_screen) {
 		dc.screen_to_bmp("screen.bmp");
 	}

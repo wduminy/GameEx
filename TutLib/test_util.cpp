@@ -17,6 +17,10 @@ void ensure_contains(const char * text, const char * sought) {
 	}
 }
 
+void ensure_not_null(const void * p) {
+	ensure("value cannot be null",p!=0);
+}
+
 void ensure_contains(const std::exception & error, const char * sought) {
 	ensure_contains(error.what(), sought);
 }

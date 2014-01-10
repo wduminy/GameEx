@@ -1,32 +1,49 @@
 #include <game_base.h>
 #include <log.h>
-#include "shooter_map.h"
-
-namespace {
-
-	const float WH_RATIO = WINDOW_WIDTH * 1.0f / WINDOW_HEIGHT;
-}
+#include "shooter_view.h"
+#include <tut/tut.hpp>
+#include <tut/tut_reporter.hpp>
 
 class ShooterController : public game::MainObject {
 	public:
-	ShooterController() : game::MainObject(), _state(new LevelStateObject()) {
-		add_part(_state);
-		add_part(new ShooterMapView(_state));
+	ShooterController() : game::MainObject() {
+		add_part(new ShooterView());
 	}
-private:
-	LevelStateObject * _state;
 };
 
+void run_tests() {
+	tut::console_reporter reporter(systemex::Log::instance().file());
+	tut::runner.get().set_callback(&reporter);
+	tut::runner.get().run_tests();
+	if (reporter.all_ok())
+		LOG << "Unit tests passed";
+	else
+		LOG << "Unit tests failed!";
+}
 
+class Args {
+private:
+	char ** _args;
+	int _count;
+public:
+	Args(int count, char ** args) : _args(args),_count(count) {};
+	bool contains(const std::string &v) const {
+		for (int i=0;i<_count;i++)
+			if (v == _args[i])
+				return true;
+		return false;	
+	}	
+};
 
 int main( int count, char* args[] ) {
-	LOG << "started shooter";
 	try {
-		bool fullscreen = false;
-		if (count > 1) {
-			const std::string a = args[1];
-			fullscreen = a == "-fullscreen";
+		Args runArgs(count,args);
+		if (runArgs.contains("-test")) {
+			run_tests();
+			return 0;
 		}
+		LOG << "started shooter";
+		const bool fullscreen = runArgs.contains("-fullscreen");
 		game::Game shooter(new ShooterController(), "shooter/", 
 			30, // ups 
 			30, // fps

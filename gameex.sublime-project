@@ -1,57 +1,114 @@
 {
-	"folders":
-	[
-		{ "name": "Root",
-		  "path": ".",
-		  "folder_exclude_patterns": ["*"]
-		 },
-		{ "name": "Blog",
-	 		"path" : "C:\\Users\\willemd\\Documents\\GitHub\\codespear.github.io",
-	 		"folder_include_patterns": ["_drafts","_posts"],
-	 		"file_include_patterns": ["*.md"]
-	 	},
-	 	{
-			"name":"Shooter",
-			"path": "shooter",
-			"file_include_patterns": ["*.cpp", "*.h","*.md"]
-		}, 
-		{
-			"name":"TerrainDemo",
-			"path": "TerrainDemo",
-			"file_include_patterns": ["*.cpp", "*.h"]
-		}, 
-		{
-			"name":"GameLandLib",
-			"path": "GameLandLib",
-			"file_include_patterns": ["*.cpp", "*.h","*.dox"]
-		}, 
-		{
-			"name":"GameLandTests",
-			"path": "GameLandTests",
-			"file_include_patterns": ["*.cpp", "*.h"]
-		}
-	],
 	"build_systems":
 	[
-		    {
-            "name": "Terrain Demo",
-            "cmd": ["make","run_terrain"],
-            "working_dir": "$project_path"
-        },
-		    {
-            "name": "Library Tests",
-            "cmd": ["make","run_tests"],
-            "working_dir": "$project_path"
-        },
-	      {
-            "name": "Make Multi-threaded",
-            "cmd": ["make","-j4"],
-            "working_dir": "$project_path"
-        }
-  ],
+		{
+			"cmd":
+			[
+				"make",
+				"run_terrain"
+			],
+			"name": "Terrain Demo",
+			"working_dir": "$project_path"
+		},
+		{
+			"cmd":
+			[
+				"make",
+				"run_tests"
+			],
+			"name": "Library Tests",
+			"working_dir": "$project_path"
+		},
+		{
+			"cmd":
+			[
+				"make",
+				"-j4"
+			],
+			"name": "Make Multi-threaded",
+			"working_dir": "$project_path"
+		}
+	],
+	"folders":
+	[
+		{
+			"folder_exclude_patterns":
+			[
+				"*"
+			],
+			"follow_symlinks": true,
+			"name": "Root",
+			"path": "C:\\Users\\willemd\\Documents\\GitHub\\GameEx"
+		},
+		{
+			"follow_symlinks": true,
+			"name": "RunDir",
+			"path": "rundir"
+		},
+		{
+			"file_include_patterns":
+			[
+				"*.md"
+			],
+			"folder_include_patterns":
+			[
+				"_drafts",
+				"_posts"
+			],
+			"follow_symlinks": true,
+			"name": "Blog",
+			"path": "C:\\Users\\willemd\\Documents\\GitHub\\codespear.github.io"
+		},
+		{
+			"file_include_patterns":
+			[
+				"*.cpp",
+				"*.h",
+				"*.md"
+			],
+			"follow_symlinks": true,
+			"name": "Shooter",
+			"path": "shooter"
+		},
+		{
+			"file_include_patterns":
+			[
+				"*.cpp",
+				"*.h"
+			],
+			"follow_symlinks": true,
+			"name": "TerrainDemo",
+			"path": "TerrainDemo"
+		},
+		{
+			"file_include_patterns":
+			[
+				"*.cpp",
+				"*.h",
+				"*.dox"
+			],
+			"follow_symlinks": true,
+			"name": "GameLandLib",
+			"path": "GameLandLib"
+		},
+		{
+			"file_include_patterns":
+			[
+				"*.cpp",
+				"*.h"
+			],
+			"follow_symlinks": true,
+			"name": "GameLandTests",
+			"path": "GameLandTests"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "TutLib"
+		}
+	],
 	"settings":
 	{
-	     "sublimegdb_workingdir": "${folder:${project_path:RunDir/Shooter.exe}}",
-	     "sublimegdb_commandline": "gdb --interpreter=mi Shooter.exe"
+		"sublimegdb_commandline": "gdb --interpreter=mi Shooter.exe",
+		"sublimegdb_workingdir": "${folder:${project_path:RunDir/Shooter.exe}}"
 	}
 }

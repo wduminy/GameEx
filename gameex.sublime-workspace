@@ -4,16 +4,64 @@
 		"selected_items":
 		[
 			[
+				"for",
+				"forward_list"
+			],
+			[
+				"Dro",
+				"DromeList"
+			],
+			[
+				"DROME",
+				"DROME_HEIGHT_PX"
+			],
+			[
+				"D",
+				"DROME_WIDTH_PX"
+			],
+			[
+				"In",
+				"IntAttribute"
+			],
+			[
+				"xml",
+				"xml_file_name"
+			],
+			[
+				"a",
+				"args"
+			],
+			[
+				"run",
+				"run_tests"
+			],
+			[
+				"S",
+				"SPEED_FACTOR"
+			],
+			[
+				"SHOO",
+				"SHOOTER_MAX_OFFSET_PX"
+			],
+			[
+				"do",
+				"double"
+			],
+			[
+				"up",
+				"_up_key_down"
+			],
+			[
+				"_",
+				"_down_key_down"
+			],
+			[
 				"_r",
 				"_src"
 			],
 			[
 				"cop",
 				"copy_from"
-			],
-			[
-				"_",
-				"_texture"
 			],
 			[
 				"s",
@@ -26,10 +74,6 @@
 			[
 				"Dr",
 				"DrawContext"
-			],
-			[
-				"for",
-				"format"
 			],
 			[
 				"us",
@@ -164,10 +208,6 @@
 				"float"
 			],
 			[
-				"a",
-				"add"
-			],
-			[
 				"co",
 				"collidable"
 			],
@@ -234,10 +274,6 @@
 			[
 				"SC",
 				"SCREEN_HEIGHT"
-			],
-			[
-				"S",
-				"SCREEN_WIDTH"
 			],
 			[
 				"map_",
@@ -326,10 +362,6 @@
 			[
 				"GL",
 				"GLchar"
-			],
-			[
-				"run",
-				"runtime_error_ex"
 			],
 			[
 				"ch",
@@ -484,18 +516,10 @@
 	"buffers":
 	[
 		{
-			"file": "GameLandLib/game_base.h",
+			"file": "shooter/shooter_test.cpp",
 			"settings":
 			{
-				"buffer_size": 10088,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "GameLandLib/game_base.cpp",
-			"settings":
-			{
-				"buffer_size": 9683,
+				"buffer_size": 1216,
 				"line_ending": "Windows"
 			}
 		},
@@ -503,7 +527,31 @@
 			"file": "makefile",
 			"settings":
 			{
-				"buffer_size": 2331,
+				"buffer_size": 2369,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "shooter/drome.h",
+			"settings":
+			{
+				"buffer_size": 531,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "shooter/drome.cpp",
+			"settings":
+			{
+				"buffer_size": 1088,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "rundir/media/shooter/levels.xml",
+			"settings":
+			{
+				"buffer_size": 180,
 				"line_ending": "Windows"
 			}
 		}
@@ -689,15 +737,53 @@
 	},
 	"file_history":
 	[
-		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_main.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_base.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/test_util.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/test_util.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_constants.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/collisions2d.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/collisions2d.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/drome.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_base.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/tut/tut_assert.hpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/systemex.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/systemex.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/makefile",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/warzone.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/warzone.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/readme.md",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/tinyxml2.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/rundir/media/shooter/levels.xml",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/tinyxml2.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_view.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_main.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/log.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/drome.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/TerrainDemo/terrain_main.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/test_main.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/test_main.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/terrain_test.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/tut/tut_restartable.hpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/tut/tut.hpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_test.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_base.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_state.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_math.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_state.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_view.h",
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/mainpage.dox",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_map.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/RunDir/media/shooter/levels.xml",
+		"/C/Users/willemd/Documents/GitHub/GameEx/gameex.sublime-project",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/base64.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/base64.h",
+		"/S/scratch/untitled.tmx",
+		"/S/scratch/untitled.json",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/sdl_objects.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/sdl_objects.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_map.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_map.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_state.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/makefile",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/gl_objects.h",
 		"/C/development/cpp/libraries/SDL2-2.0.1/i686-w64-mingw32/include/SDL2/SDL_surface.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/.gitignore",
@@ -705,19 +791,15 @@
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/sdl_base.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/sdl_base.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/Release/sdl_base.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/mainpage.dox",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/font.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_math.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/font.cpp",
 		"/C/development/cpp/libraries/SDL2-2.0.1/x86_64-w64-mingw32/include/SDL2/SDL_opengl.h",
 		"/C/development/cpp/libraries/SDL-1.2.15/include/SDL/SDL_opengl.h",
 		"/C/development/cpp/libraries/SDL-1.2.15/include/SDL/._SDL_opengl.h",
 		"/c/mingw/lib/gcc/mingw32/4.8.1/include/c++/bits/c++0x_warning.h",
 		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_posts/2013-09-09-notable-make-features.md",
-		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_state.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/snake.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/snake.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/gameex.sublime-project",
 		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/controller.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/controller.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/main_scene.cpp",
@@ -728,22 +810,14 @@
 		"/c/mingw/lib/gcc/mingw32/4.8.1/include/c++/bits/alloc_traits.h",
 		"/c/mingw/lib/gcc/mingw32/4.8.1/include/c++/bits/forward_list.h",
 		"/c/mingw/lib/gcc/mingw32/4.8.1/include/c++/bits/forward_list.tcc",
-		"/C/Users/willemd/Documents/GitHub/GameEx/TerrainDemo/terrain_main.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_objects.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/systemex.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/tut/tut.hpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/collisions2d_test.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/collisions2d.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/collisions2d.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/gl_objects.cpp",
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/readme.md",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/heightmap.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/RunDir/log.txt",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_objects.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/terrain_test.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/game_test.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/log.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/RunDir/media/duality/panel.frag",
 		"/C/Users/willemd/Documents/GitHub/GameEx/RunDir/media/duality/panel.vert",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game.h",
@@ -752,8 +826,6 @@
 		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/terrain-lighting-opengl.md",
 		"/C/development/github/artiboard/Artiboard/artilib/id3.h",
 		"/C/development/github/artiboard/Artiboard/artilibtest/id3_tests.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/test_main.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/test_util.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/terrain_object.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/terrain_object.h",
 		"/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/tuple",
@@ -775,15 +847,12 @@
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/ColorScheme/Monokai_WD.tmTheme",
 		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_posts/2013-08-18-terrain-rendering-with-GLSL.md",
 		"/c/users/willemd/documents/github/gameex/gamelandlib/game_math.h",
-		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Program Files/Sublime Text 3/Packages/Theme - Default.sublime-package",
 		"/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/array",
 		"/c/users/willemd/documents/github/gameex/terraindemo/terrain_main.cpp",
 		"/c/users/willemd/documents/github/gameex/gamelandlib/gl_objects.cpp",
 		"/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/bits/unique_ptr.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/systemex.cpp",
 		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/SublimeGDB/SublimeGDB.sublime-settings",
-		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/test_util.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/docs/header.html",
 		"/C/Users/willemd/Documents/GitHub/GameEx/docs/doxy.txt",
 		"/C/Users/willemd/Documents/GitHub/GameEx/README.md",
@@ -795,32 +864,11 @@
 		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/notable-make-features.md",
 		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_drafts/useful-makefile.md",
 		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/duality_test.cpp",
-		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Make Para.sublime-build",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/makefile",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/Makefile",
-		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/Debug/makefile",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/terrain/heightmap.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/terrain/heightmap.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/controller.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/my_tasks.todo",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/main_scene.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/font.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/mainpage.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/mainpage.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/collisions2d.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/systemex/systemex.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game_math.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/duality_main.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/game/game_objects.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLand/src/duality/main_scene.h",
-		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
-		"/C/Users/willemd/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings"
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/Make Para.sublime-build"
 	],
 	"find":
 	{
-		"height": 48.0
+		"height": 46.0
 	},
 	"find_in_files":
 	{
@@ -837,6 +885,29 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"ensure_that",
+			"StaticDome",
+			"clear_box",
+			"adjust_box",
+			"Root",
+			"root",
+			"XMLDocument(",
+			"XMLDOc",
+			"\\",
+			"FixedDrome",
+			"SteerDir",
+			"HOR_PIXELS_PER_SECOND",
+			"_hs",
+			"HorizontalDir",
+			"SteerDir",
+			"GroundMap",
+			"level",
+			"Level",
+			"level",
+			"Level",
+			"ShooterMapView",
+			"LevelState",
+			"LevelStateObject",
 			"swap",
 			"texture",
 			"Texture",
@@ -941,30 +1012,7 @@
 			") c",
 			"_",
 			"\\\\",
-			"\\",
-			"\\,",
-			"\\",
-			"\\left(",
-			"x",
-			"y",
-			"z",
-			"x",
-			"*\n",
-			"documentation",
-			"Byte",
-			">\n",
-			"NAMESPACE",
-			"VERSION",
-			"HTML_FILE",
-			"FILE_",
-			"\\",
-			"VERBAT",
-			"SOURCE",
-			"HTML",
-			"latex",
-			"OUTPUT_DIRECTORY",
-			"output",
-			"ΓÇÖ"
+			"\\"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -982,24 +1030,24 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "GameLandLib/game_base.h",
+					"file": "shooter/shooter_test.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 10088,
+						"buffer_size": 1216,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3156,
-								3156
+								1208,
+								1208
 							]
 						],
 						"settings":
@@ -1008,26 +1056,80 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2880.0,
+						"translation.y": 576.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "GameLandLib/game_base.cpp",
+					"file": "makefile",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9683,
+						"buffer_size": 2369,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1325,
-								1325
+								1122,
+								1122
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Makefile/Makefile.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 500.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "shooter/drome.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 531,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								338,
+								338
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "shooter/drome.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1088,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1034,
+								1034
 							]
 						],
 						"settings":
@@ -1036,31 +1138,37 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 940.0,
+						"translation.y": 476.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
-				},
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
 				{
-					"buffer": 2,
-					"file": "makefile",
+					"buffer": 4,
+					"file": "rundir/media/shooter/levels.xml",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2331,
+						"buffer_size": 180,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1111,
-								1111
+								63,
+								63
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Makefile/Makefile.tmLanguage"
+							"syntax": "Packages/XML/XML.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1073,7 +1181,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 38.0
+		"height": 36.0
 	},
 	"input":
 	{
@@ -1088,11 +1196,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.4578125,
 			1.0
 		],
 		"rows":
@@ -1104,12 +1219,12 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 190.0
+		"height": 280.0
 	},
 	"project": "gameex.sublime-project",
 	"replace":
 	{
-		"height": 72.0
+		"height": 68.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1118,16 +1233,96 @@
 		"selected_items":
 		[
 			[
+				"make",
+				"Root\\makefile"
+			],
+			[
+				"testut",
+				"TutLib\\test_util.cpp"
+			],
+			[
+				"wa",
+				"Shooter\\warzone.cpp"
+			],
+			[
+				"drome",
+				"Shooter\\drome.cpp"
+			],
+			[
+				".md",
+				"Shooter\\readme.md"
+			],
+			[
+				"cons",
+				"Shooter\\shooter_constants.h"
+			],
+			[
+				".xml",
+				"RunDir\\media\\shooter\\levels.xml"
+			],
+			[
+				"dro",
+				"Shooter\\drome.cpp"
+			],
+			[
+				"xml",
+				"GameLandLib\\tinyxml2.h"
+			],
+			[
+				"shtest",
+				"Shooter\\shooter_test.cpp"
+			],
+			[
+				"test",
+				"TutLib\\tut\\tut_restartable.hpp"
+			],
+			[
+				"ma",
+				"Root\\makefile"
+			],
+			[
+				"sys",
+				"GameLandLib\\systemex.h"
+			],
+			[
+				"main",
+				"Shooter\\shooter_main.cpp"
+			],
+			[
+				"makefile",
+				"Root\\makefile"
+			],
+			[
+				"mainc",
+				"TerrainDemo\\terrain_main.cpp"
+			],
+			[
+				"zon",
+				"Shooter\\warzone.cpp"
+			],
+			[
+				"collision",
+				"GameLandLib\\collisions2d.h"
+			],
+			[
+				"con",
+				"Shooter\\shooter_constants.h"
+			],
+			[
+				"_view",
+				"Shooter\\shooter_view.cpp"
+			],
+			[
+				"dox",
+				"GameLandLib\\mainpage.dox"
+			],
+			[
 				"mak",
 				"Root\\makefile"
 			],
 			[
 				"ga",
 				"GameLandLib\\game_base.h"
-			],
-			[
-				"make",
-				"Root\\makefile"
 			],
 			[
 				"shoo",
@@ -1162,10 +1357,6 @@
 				"GameLandLib\\game_base.h"
 			],
 			[
-				"sys",
-				"GameLandLib\\systemex.h"
-			],
-			[
 				"ss",
 				"Shooter\\shooter_state.h"
 			],
@@ -1188,10 +1379,6 @@
 			[
 				"coll",
 				"GameLandLib\\collisions2d.h"
-			],
-			[
-				"dox",
-				"All\\GameLandLib\\mainpage.dox"
 			],
 			[
 				"game_base",
@@ -1478,10 +1665,6 @@
 				"All\\GameLandLib\\font.depends"
 			],
 			[
-				"ma",
-				"All\\makefile"
-			],
-			[
 				"tot",
 				"Source\\my_tasks.todo"
 			],
@@ -1547,16 +1730,20 @@
 		[
 			[
 				"",
-				"G:\\my_sublime.sublime-project"
+				"C:\\development\\github\\artiboard\\Artiboard\\artiboard.sublime-project"
 			]
 		],
 		"width": 475.0
 	},
 	"select_symbol":
 	{
-		"height": 390.0,
+		"height": 101.0,
 		"selected_items":
 		[
+			[
+				"XMLNOE",
+				"XMLNode"
+			],
 			[
 				"TerrainO",
 				"TerrainObject"

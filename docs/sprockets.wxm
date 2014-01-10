@@ -1,0 +1,15 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 12.04.0 ] */
+
+/* [wxMaxima: title   start ]
+The sprocket and chain problem
+   [wxMaxima: title   end   ] */
+
+/* [wxMaxima: comment start ]
+Sprocket has s teeth, and the chain has h 'holes'.
+Sprockets are numbered 0..s-1 and holes are numbers 0..h-1.
+Time is one sprocket movement.  At t = 0 we are at sprocket 0 and hole 0
+   [wxMaxima: comment end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

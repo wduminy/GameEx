@@ -18,4 +18,5 @@ namespace tut {
 	void ensure_contains(const std::exception & error, const char * sought);
 	void ensure_equalsf(const char * text, const float& found, const float &expected);
 	void fail_with(const std::ostringstream& s);
+	void ensure_not_null(const void * p);
 }

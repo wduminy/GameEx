@@ -12,6 +12,8 @@ The following software is used by GameEx:
 	- [Template Unit Test Framework] (http://tut-framework.sourceforge.net/)
 	- [SDL TTF](http://www.libsdl.org/projects/SDL_ttf/docs/index.html)
 	- [SDL Image](http://www.libsdl.org/projects/SDL_image/)
+	- [Base64 decoder](https://github.com/ReneNyffenegger/development_misc/tree/master/base64)
+	- [TinyXML 2] (https://github.com/leethomason/tinyxml2)
 
 \sa \ref using_gameobjects \ref using_collision_mgr 
 
@@ -19,11 +21,13 @@ The following software is used by GameEx:
 
 At the foundation of GameEx there is a class called game::GameObject.  Many of the features of GameEx requires you to use of implement subclasses of GameObject.  When starting out with a new game, it is not always clear where it will end up.  As a hobbyist you want to experiment, enjoy yourself, not design everything to the last detail.  But, how do you decide which concepts inherit from GameObject and which don't?  This is what this section is about. 
 
-The first thing to understand is that the GameObject is your link to the main game loop.  This loop updates and draws. If you have something that changes over time or when the user interacts with it you want it to be updated via the game loop.   If something must be shown or can be heard, then you want it to be drawn via the game loop.  Generally, everything your write for your game is either drawn or updated.  This does not mean all objects are instances of GameObject.                 
- 
-For a particular game, there is a set of concepts that forms the essence of the game. Let's call an implementation of these concepts  the game model.  The game model classes do not have to be instances of GameObject.  The model has no visual elements and no control elements -- it describes the game, its rules and so on.  However, the model cannot run or be seen.  It is the work of the GameObject classes to link the model to the controllers and the views. In theory you could take the game model and implement it using any game engine.  However, pragmatically that is not possible.  The model functions within the context of a game framework (or engine), and this context changes its design.  
+The first thing to understand is that the GameObject is your link to the main game loop.  This loop updates and draws. If you have something that changes over time or when the user interacts with it you want it to be updated via the game loop.   If something must be shown or can be heard, then you want it to be drawn via the game loop.  Generally, everything your write for your game is either drawn or updated.  
 
-In a very simple game, there may be exactly one GameObject.  That object updates and draws the model. One reason you might want to create another GameObject is that your game has visual aspects that does not form part of the game essence.  This is not only about rendering.  For instance: in a shoot-em-up game the background is not is not part of the game model.  It does not not influence the score and cannot be collided with.  But the background changes over time and has complex rendering logic.  So now you need another GameObject instance.  And is must be drawn before the GameObject that renders the game model.
+However, this does not mean all objects are instances of GameObject.  At the very minimum you need one instance of game::MainObject.  On the other extreme you can create a GameObject for every identifiable concept in your game.                  
+ 
+One way to structure the code is to code a set of classes that captures the essence of the game - sometimes called the game model. These classes purposely excludes code that creates visuals and audio and also excludes code that handle user input.  Being a game, some of these classes must be aware of time - they typically have state that changes over time.  It is likely that these classes may have a move() or a tick() method that will be called from the game loop.  Some of these dynamic classes may also have a brief lifetime -- they exist for a short time and are then destroyed.  Other classes are less dynamic :- they may contain the details of a map, game rules or policies, and other game state information like the player's score and current level.  For some games the game model can be rather complex, and instances in this model could have a complex interaction with each other.      
+
+It is the work of the GameObject classes to link the model to the games controllers and the views. Consider a very simple game like pong.  Maybe left-bat, the right-bat and the ball are the only dynamic objects, and each of these could be a game::GameObject instance.  But, you can also have one GameObject instance that moves these three objects and draws them.  This is up to you - the only rule is that you need at least one GameObject to have a working game.          
 
 \sa \ref using_collision_mgr 
 

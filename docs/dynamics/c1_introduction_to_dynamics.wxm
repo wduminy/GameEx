@@ -1,0 +1,49 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 12.04.0 ] */
+
+/* [wxMaxima: comment start ]
+1.1 Convert 80kg to Newtons, slugs and pounds 
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+declare(G,constant);
+G:6.673 * (10^-11)$ /* gravitational constant */
+F(m1,m2,r):= G * m1 * m2 / (r*r);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+m_e: 5.976 * (10 ^ 24)$ /* mass of earth */
+r_e: 6.371 * (10 ^ 6)$ /* radius of earth */
+F_e(m) := F(m,m_e,r_e)$
+g: F_e(1)$
+W(m) := m * g$
+W(80);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+1.3 At what altidute h above the north pole is the weigh of an object reduced to 10% of its normal weight?^^
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+f_n:F(m,m_e,R)$
+f_h:F(m,m_e,R+h)$
+f_h = f_n * 0.1;
+a:solve(%,h);
+e:rhs(a[2]),numer;
+subst(r_e,R,e);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+1.9 What is the distance d from the center of the earth where the attraction force is equal from the earth and the moon?
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+m_m: 0.123 * m_e$ /* mass of moon */
+F(m_m,m_m,md-d) = F(m_e,m_e,d)$
+s:solve(%,d),numer;
+subst(384398,md,s),numer;
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

@@ -1,0 +1,115 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 12.04.0 ] */
+
+/* [wxMaxima: comment start ]
+Formulas
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+assume(k>0);
+e2_1: v(t) = 'diff(s(t),t);
+e2_2a: a(t) = 'diff(v(t),t);
+e2_2b: subst([e2_1],e2_2a);
+e2_3:'diff(v(t),v) = 'diff(a(t),s);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Constant accelleration a
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+subst(a,a(t),e2_2a)$
+e1:solve(%,v(t))[1]$
+ep21_1: solve(integrate(e1,t,0,k),v(k))[1];
+subst([%],e2_1)$
+solve(%,s(t))[1]$
+ep21_2: solve(integrate(%,t,0,k),s(k))[1];
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Accelleration is a function a = f(t)
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+assume(k > 0);
+subst(f(t),a(t),e2_2a)$
+solve(%,v(t))[1]$
+ep21_4: solve(integrate(%,t,0,k),v(k))[1];
+subst([ep21_4],e2_1);
+solve(%,s(t))$
+integrate(%,t,0,k)$
+ep22_1:solve(%,s(k))[1];
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Accelleration is a function of velocity a = f(v)
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ep22_2: t = 'integrate(f(v)^-1,v,v0,v1);
+ep22_3: s = s0 + 'integrate(v/f(v),v,v0,v1);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Accelleration as a functon of displacement a = f(s)
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+ep22_4: v ^ 2 = v0^2 + 2 * 'integrate(f(s),s,s0,s1);
+solve(%,v)[2];
+ep22_5: t = 'integrate(1/rhs(%),s,s0,s1);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Sample problem 2.1
+    Given:
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+e0:s(t) = 2 * t^3 - 24*t + 6;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+    Time when v = 72
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+e4: diff(e0,t);
+e2_1;
+subst([e4,v(t)=72],%);
+solve(%,t)[2];
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+  Accelleration when v = 30
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+e1:subst([e4],e2_1);
+e2: diff(%,t);
+subst([v(t)=30],e1);
+e3:solve(%,t)[2];
+e2_2a;
+subst([e2,e3],%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+  displacement from 1 to 4 seconds
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+subst([t=4],rhs(e0)) - subst([t=1],rhs(e0));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Sample problem 2-2
+    Given
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+v0: 50;
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

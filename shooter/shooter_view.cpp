@@ -1,4 +1,4 @@
-#include "shooter_map.h"
+#include "shooter_view.h"
 #include <sdl_objects.h>
 #include <log.h>
 
@@ -32,7 +32,6 @@ namespace {
 			r.copy_from(*_tex,_src,dst_r);
 		}
 		void blit_shooter(const game::Renderer& r, SDL_Rect & dst_r) {
-			//static SDL_Rect src = {835*2,255*2,SHOOTER_WIDTH_PX,SHOOTER_HEIGHT_PX};
 			static SDL_Rect src = {835*2,255*2,SHOOTER_WIDTH_PX,SHOOTER_HEIGHT_PX};
 			SDL_Rect des = {dst_r.x,dst_r.y,SHOOTER_WIDTH_PX,SHOOTER_HEIGHT_PX};
 			r.copy_from(*_tex,src,des);
@@ -78,8 +77,8 @@ namespace {
 #define TILE_DL(sx,sy,all,other) if (m==GroundCover::all && d==GroundCover::other && l==GroundCover::other) {t_x=sx;t_y=sy;return;};
 #define TILE_DR(sx,sy,all,other) if (m==GroundCover::all && d==GroundCover::other && r==GroundCover::other) {t_x=sx;t_y=sy;return;};
 
-void ShooterMapView::calculate_tile(const int x, const int y, int &t_x, int &t_y) {
-  const auto& gmap = _state->level().ground();
+void ShooterView::calculate_tile(const int x, const int y, int &t_x, int &t_y) {
+  const auto& gmap = map();
   auto m = gmap(x,y);
   const auto u = gmap(x,y-1);
   const auto d = gmap(x,y+1);
@@ -152,14 +151,14 @@ void ShooterMapView::calculate_tile(const int x, const int y, int &t_x, int &t_y
 }
 
 
-ShooterMapView::ShooterMapView(const LevelState * state)
-	: _draw_dst(), _map_left(0), _row_at_top(LEVEL_HEIGHT-MAP_HEIGHT), _state(state), _tile_x(), _tile_y(){
+ShooterView::ShooterView()
+	: _draw_dst(), _map_left(0), _row_at_top(LEVEL_HEIGHT-MAP_HEIGHT),  _tile_x(), _tile_y(){
 		_draw_dst.x = 0;
 		_draw_dst.y = 0;
 }
 
-void ShooterMapView::initialise(const game::ResourceContext &rctx, const game::DrawContext &dc) {
-	GameObject::initialise(rctx,dc);
+void ShooterView::initialise(const game::ResourceContext &rctx, const game::DrawContext &dc) {
+	ShooterStateObject::initialise(rctx,dc);
 	if (!tiles.has_image())
 		tiles.load_image(rctx.path_to("Master484.png"),dc.render());
 	_map_left = (dc.width()/2) - MAP_WIDTH_PX/2;
@@ -167,7 +166,7 @@ void ShooterMapView::initialise(const game::ResourceContext &rctx, const game::D
 	update_tile_indexes();
 }
 
-void ShooterMapView::update_tile_indexes() {
+void ShooterView::update_tile_indexes() {
 	int cx = 0;
 	int cy = 0;
 	for (int i = 0; i < MAP_WIDTH; i++) 
@@ -180,8 +179,8 @@ void ShooterMapView::update_tile_indexes() {
 }
 
 
-void ShooterMapView::draw(const game::DrawContext &dc) {
-	const int bottom_px = _state->shooter().bottom() + SHOOTER_GUTTER;
+void ShooterView::draw(const game::DrawContext &dc) {
+	const int bottom_px = shooter().bottom_of_view() + SHOOTER_GUTTER;
 	const int bottom_row = bottom_px / TILE_SIZE_PX;
 	const int top_row = bottom_row - MAP_HEIGHT;
 	const int offset = bottom_row * TILE_SIZE_PX - bottom_px;   
@@ -193,7 +192,7 @@ void ShooterMapView::draw(const game::DrawContext &dc) {
 	_draw_dst.h = TILE_SIZE_PX;
 
 	for (int i = 0; i < MAP_WIDTH; i++) {
-		for (int j = 0; j < MAP_HEIGHT; j++) {
+		for (int j = 0; j <= MAP_HEIGHT; j++) {
 			size_t ix = MAP_WIDTH * (top_row+j) + i;
 			_draw_dst.y = j * TILE_SIZE_PX + offset;
 			if (ix < LEVEL_SIZE)
@@ -204,12 +203,10 @@ void ShooterMapView::draw(const game::DrawContext &dc) {
 		_draw_dst.x += TILE_SIZE_PX;
 	}
 
-	_draw_dst.x = _map_left + _state->shooter().left();
-	_draw_dst.y = _state->shooter().bottom() - top_px - SHOOTER_HEIGHT_PX;
+	_draw_dst.x = _map_left + shooter().left();
+	_draw_dst.y = shooter().top() - top_px;
 
 	tiles.blit_shooter(dc.render(),_draw_dst);
 
 }
-
-void ShooterMapView::update(const game::UpdateContext &uc) {}
 

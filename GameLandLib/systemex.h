@@ -12,6 +12,8 @@
 #include <memory>
 #define PREVENT_COPY(X) private: X(const X &source); X & operator=(const X&);
 #define ENSURE(P,M) if (!(P)) throw systemex::runtime_error_ex("%s %s %d", M, __FILE__,__LINE__)
+#define check_not_null(P) ENSURE(P!=0,"value cannot be null")
+#define check_that(P) ENSURE(P,"predicate is false"); 
 #ifdef NDEBUG
 #define ASSERT(P) /*SKIP*/
 #else
@@ -108,7 +110,8 @@ namespace systemex {
 	template <class E> inline void deleteF(E e) {delete e;}
 
 	template <class T> inline void delete_all(std::list<T> coll) {for_all(coll,deleteF<T>);}
-
 }
+
+
 // note : do not call the second argument of this macro as a function
 #define for_each(I,C) for(auto I = C.begin(); I != C.end(); ++I)

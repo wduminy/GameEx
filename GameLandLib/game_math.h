@@ -30,6 +30,11 @@ namespace game {
 	template <typename T> T clamp(const T x, const T a, const T b) {
 		return x < a ? a : (x > b ? b : x);
 	}
+
+	template <typename T> T lerp(const T x, const T a, const T b, const T o, const T p) {
+		const T f = (x-a)/(b-a);
+		return o + (p-o)*f;
+	}
 	
 	inline Scalar sqr(const Scalar& v) {return v * v;}
 	inline bool overlap_proper(const Scalar& a1, const Scalar& a2, const Scalar& b1, const Scalar& b2) {

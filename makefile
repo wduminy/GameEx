@@ -1,8 +1,8 @@
 TARGET_DIR = RunDir
-# choose a debug option -- the first one is for debugging ... the orther for fastest
+# choose a debug option -- the first one is for debugging ... the other for fastest
 DEBUG = -O0 -g3
 SPEED = -O3 -DNDEBUG
-FLAGS = $(SPEED) 
+FLAGS = $(DEBUG) 
 SDL = C:\development\cpp\libraries\SDL2-2.0.1\i686-w64-mingw32
 SDL_FLAGS = -Dmain=SDL_main -mwindows
 COMPILE_ARGS = -Dmain=SDL_main -mwindows -I"$(SDL)\include" -ITutLib -IGameLandLib -Wall -c -fmessage-length=0 -std=c++11 $(FLAGS)
@@ -19,8 +19,9 @@ SNEAKY := $(TARGET_DIR)/Sneaky.exe
 SHOOTER := $(TARGET_DIR)/Shooter.exe
 .PHONY : clean all run_sneaky run_terrain run_test dox run_shooter
 
+
 run_shooter: $(SHOOTER)
-	cd $(TARGET_DIR); ./Shooter.exe -nfullscreen; cat log.txt
+	cd $(TARGET_DIR); ./Shooter.exe -test -nfullscreen; cat log.txt
 
 run_sneaky: $(SNEAKY)
 	cd $(TARGET_DIR); ./Sneaky.exe
@@ -28,12 +29,12 @@ run_sneaky: $(SNEAKY)
 run_terrain: $(TERRAIN_DEMO)
 	cd $(TARGET_DIR); ./TerrainDemo.exe
 
-$(SHOOTER): $(OBJS) $(GAME_LAND_LIB)
-	g++ $(wildcard shooter/*.o) -o $@ -lGameLandLib $(LINK_ARGS)  
-
+$(SHOOTER): $(OBJS) $(GAME_LAND_LIB) $(TUT_LIB)
+	g++ $(wildcard shooter/*.o) -o $@ -lGameLandLib $(LINK_ARGS) -lTutLib  
 
 run_tests:  $(GAME_LAND_TEST)
 	cd $(TARGET_DIR); ./GameLandTests.exe
+
 	
 dox: 
 	rm -f -r ../codespear.github.io/gameex/html
@@ -48,7 +49,7 @@ $(TERRAIN_DEMO): $(OBJS) $(GAME_LAND_LIB)
 
 
 $(GAME_LAND_TEST): $(OBJS) $(TUT_LIB) 
-	g++ $(wildcard GameLandTests/*.o) -o $@ -lGameLandLib -lTutLib $(LINK_ARGS)  
+	g++ $(wildcard GameLandTests/*.o) -o $@ -lTutLib -lGameLandLib $(LINK_ARGS)  
 
 $(GAME_LAND_LIB): $(OBJS)
 	ar -r $@ $(wildcard GameLandLib/*.o)

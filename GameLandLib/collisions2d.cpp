@@ -126,12 +126,18 @@ Range Polygon::project(const Vector2& axis) const {
 	return Range(min, max);
 }
 
+void Polygon::set_start(const Vector2& start) {
+	_points.clear();
+	on_clear(start);
+	_points.push_back(start);
+}
+
 void CollidablePolygon::on_add(const Vector2& value) {
 	adjust_box(value);
 }
 
-void CollidablePolygon::on_clear() {
-	clear_box();
+void CollidablePolygon::on_clear(const Vector2& initial) {
+	clear_box(initial);
 }
 std::ostream& operator <<(ostream& s, const Polygon& v) {
 	s << "{" << v._points.size() << ":";

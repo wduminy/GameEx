@@ -35,8 +35,11 @@ public:
 	const Scalar bottom() const {return _rb.y();}
 	const Scalar top() const {return _lt.y();}
 protected:
+	/** Makes the box bigger so that the point p fits into it */
 	void adjust_box(const Vector2& p);
-	void clear_box() {_lt = Vector2::origin; _rb = Vector2::origin;}
+	/** Makes the box a point particle.
+	 * @param v is the location of the point */
+	void clear_box(const Vector2& v) {_lt = _rb = v;}
 private:
 	Vector2 _lt;
 	Vector2 _rb;
@@ -51,7 +54,7 @@ class Polygon {
 public:
 	Polygon(const Vector2& start) : _points() {add(start);}
 	void add(const Vector2& value);
-	void set_start(const Vector2& start) {_points.clear();on_clear();add(start);}
+	void set_start(const Vector2& start); 
 	void add_relative(const Vector2& value);
 	/**
 	 * This method assumes both polygons are convex.
@@ -74,7 +77,7 @@ private:
 	vector<Vector2> _points;
 protected:
 	virtual void on_add(const Vector2& value) {}
-	virtual void on_clear() {}
+	virtual void on_clear(const Vector2& initial) {}
 public:
 	friend ostream& operator<<(ostream& s, const Polygon& v);
 };
@@ -92,7 +95,7 @@ public:
 	virtual ~CollidablePolygon() {}
 protected:
 	void on_add(const Vector2& value) override;
-	void on_clear() override;
+	void on_clear(const Vector2& initial) override;
 private:
 	const unsigned char _type;
 public:
