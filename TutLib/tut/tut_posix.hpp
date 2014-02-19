@@ -348,7 +348,7 @@ private:
 
             std::stringstream ss;
 
-            //TODO: max failure length
+            //fix: max failure length
             char buffer[1024];
             int r = read(pipe, buffer, sizeof(buffer));
             ensure_errno("sanity check on read() failed", r >= 0);

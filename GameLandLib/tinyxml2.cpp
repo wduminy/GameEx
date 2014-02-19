@@ -112,7 +112,7 @@ char* StrPair::ParseText( char* p, const char* endTag, int strFlags )
 {
     TIXMLASSERT( endTag && *endTag );
 
-    char* start = p;	// fixme: hides a member
+    char* start = p;	// fix: hides a member
     char  endChar = *endTag;
     size_t length = strlen( endTag );
 
@@ -235,7 +235,7 @@ const char* StrPair::GetStr()
                             }
                         }
                         if ( i == NUM_ENTITIES ) {
-                            // fixme: treat as error?
+                            // fix: treat as error?
                             ++p;
                             ++q;
                         }
@@ -906,7 +906,7 @@ XMLNode* XMLText::ShallowClone( XMLDocument* doc ) const
     if ( !doc ) {
         doc = _document;
     }
-    XMLText* text = doc->NewText( Value() );	// fixme: this will always allocate memory. Intern?
+    XMLText* text = doc->NewText( Value() );	// fix: this will always allocate memory. Intern?
     text->SetCData( this->CData() );
     return text;
 }
@@ -953,7 +953,7 @@ XMLNode* XMLComment::ShallowClone( XMLDocument* doc ) const
     if ( !doc ) {
         doc = _document;
     }
-    XMLComment* comment = doc->NewComment( Value() );	// fixme: this will always allocate memory. Intern?
+    XMLComment* comment = doc->NewComment( Value() );	// fix: this will always allocate memory. Intern?
     return comment;
 }
 
@@ -1000,7 +1000,7 @@ XMLNode* XMLDeclaration::ShallowClone( XMLDocument* doc ) const
     if ( !doc ) {
         doc = _document;
     }
-    XMLDeclaration* dec = doc->NewDeclaration( Value() );	// fixme: this will always allocate memory. Intern?
+    XMLDeclaration* dec = doc->NewDeclaration( Value() );	// fix: this will always allocate memory. Intern?
     return dec;
 }
 
@@ -1047,7 +1047,7 @@ XMLNode* XMLUnknown::ShallowClone( XMLDocument* doc ) const
     if ( !doc ) {
         doc = _document;
     }
-    XMLUnknown* text = doc->NewUnknown( Value() );	// fixme: this will always allocate memory. Intern?
+    XMLUnknown* text = doc->NewUnknown( Value() );	// fix: this will always allocate memory. Intern?
     return text;
 }
 
@@ -1472,9 +1472,9 @@ XMLNode* XMLElement::ShallowClone( XMLDocument* doc ) const
     if ( !doc ) {
         doc = _document;
     }
-    XMLElement* element = doc->NewElement( Value() );					// fixme: this will always allocate memory. Intern?
+    XMLElement* element = doc->NewElement( Value() );					// fix: this will always allocate memory. Intern?
     for( const XMLAttribute* a=FirstAttribute(); a; a=a->Next() ) {
-        element->SetAttribute( a->Name(), a->Value() );					// fixme: this will always allocate memory. Intern?
+        element->SetAttribute( a->Name(), a->Value() );					// fix: this will always allocate memory. Intern?
     }
     return element;
 }

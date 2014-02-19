@@ -4,9 +4,9 @@
  */
 
 #pragma once
-#include <game.h>
-#include <game_math.h>
-#include <log.h> 
+#include "game.h"
+#include "game_math.h"
+#include "log.h"
 #include <GL/gl.h>
 namespace terrain {
 	using game::Vector;

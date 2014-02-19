@@ -33,6 +33,6 @@ namespace tut {
 		auto root = doc.RootElement();
 		auto dromes = DromeList(root->FirstChildElement());
 		ensure_not(dromes.statics().empty());
-		const StaticDrome * first = dromes.statics().begin();
+	//	const StaticDrome * first = * C:\development\github\artiboarddromes.statics().begin();
 	END
 }
