@@ -13,7 +13,7 @@ my_*
 *.lai
 *.la
 *.a
-
+*.xmind
 log.txt
 
 .metadata
