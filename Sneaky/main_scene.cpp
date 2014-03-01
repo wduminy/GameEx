@@ -10,7 +10,7 @@ using namespace game;
 const GLdouble PlayScene::NEAREST = ARENA_HALF / 10.0;
 const GLdouble PlayScene::FAREST = CAM_RADIUS * 3;
 const GLfloat FENCE_Z =  FLOOR_Z + ARENA_HALF / 10.0f;
-const unsigned char FENCE_TYPE = 1;
+auto FENCE_TYPE = object_t::Fence;
 
 const GLfloat leftBack[] =   { -ARENA_HALF,  -ARENA_HALF, FLOOR_Z };
 const GLfloat rightBack[] =  { +ARENA_HALF,  -ARENA_HALF, FLOOR_Z };

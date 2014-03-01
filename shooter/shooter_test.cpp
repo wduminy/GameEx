@@ -22,7 +22,7 @@ namespace tut {
 		auto statics = root->FirstChildElement()->FirstChildElement("staticDromes");
 		ensure_not_null(statics);
 		auto first_static = statics->FirstChildElement();
-		StaticDrome d(first_static);
+		Drome d(object_t::StaticDome,first_static);
 		ensure_equals(d.left_top(),Vector2(200.0f,300.0f));
 		ensure_equals(d.right_bottom(),Vector2(260,336));
 	END
@@ -32,7 +32,7 @@ namespace tut {
 		doc.LoadFile(xml_file_name);
 		auto root = doc.RootElement();
 		auto dromes = DromeList(root->FirstChildElement());
-		ensure_not(dromes.statics().empty());
+		ensure_not(dromes.empty());
 	//	const StaticDrome * first = * C:\development\github\artiboarddromes.statics().begin();
 	END
 }

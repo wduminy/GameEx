@@ -8,7 +8,7 @@
 #include <game.h>
 #include <game_math.h>
 #include <collisions2d.h>
-
+enum class game::object_t {Spine,Fence};
 using namespace game;
 
 const size_t SNAKE_MEM_SIZE = 1000;

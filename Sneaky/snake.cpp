@@ -6,7 +6,7 @@
 #include "snake.h"
 #include <log.h>
 
-const unsigned char SPINE = 0;
+auto SPINE = game::object_t::Spine;
 
 SpinePoint::SpinePoint() :
 		_topMiddle(), _bottomLeft(), _bottomRight(),

@@ -10,15 +10,15 @@
 #define BEGIN(Num,Name) template<> template<> void test_group<CollisionData>::object::test<Num>() {set_test_name(Name);
 #define END }
 
-
+enum class game::object_t {Dummy};
 
 namespace tut {
 	using namespace game;
 	using game::Polygon;
-
+	using game::object_t;
 	class Diamond : public CollidablePolygon {
 	public:
-		Diamond(const Vector2 top) : CollidablePolygon(0,top) {
+		Diamond(const Vector2 top) : CollidablePolygon(object_t::Dummy,top) {
 			add_relative(Vector2(1,-1));
 			add_relative(Vector2(-1,-1));
 			add_relative(Vector2(-1,1));
@@ -116,8 +116,8 @@ namespace tut {
 
 
 	BEGIN(9, "polygons with one point must not overlap") {
-		CollidablePolygon a(0,Vector::origin);
-		CollidablePolygon b(0,Vector(0.07,1,0));
+		CollidablePolygon a(object_t::Dummy,Vector::origin);
+		CollidablePolygon b(object_t::Dummy,Vector(0.07,1,0));
 		b.add(Vector(-0.07,1,0));
 		b.add(Vector(0,0,0));
 		ensure_not_overlap_bounds(a,b);
@@ -126,12 +126,12 @@ namespace tut {
 
 	BEGIN(10, "this specific case must overlap") {
 		// 7:> adding {4:(0.13547,0.00201677,0)(0.234465,-0.0969783,0)(0.319318,-0.0121256,0)(0.220323,0.0868695,0)} <:
-		CollidablePolygon a(0,Vector(0.13547,0.00201677,0));
+		CollidablePolygon a(object_t::Dummy,Vector(0.13547,0.00201677,0));
 		a.add(Vector(0.234465,-0.0969783,0));
 		a.add(Vector(0.319318,-0.0121256,0));
 		a.add(Vector(0.220323, 0.0868695,0));
 		// 7:> collides with {4:(0.206181,0.0727274,0)(0.305176,-0.0262677,0)(0.390029,0.058585,0)(0.291034,0.15758,0)} <:
-		CollidablePolygon b(0,Vector(0.206181,0.0727274,0));
+		CollidablePolygon b(object_t::Dummy,Vector(0.206181,0.0727274,0));
 		b.add(Vector(0.305176,-0.0262677,0));
 		b.add(Vector(0.390029, 0.058585,0));
 		b.add(Vector(0.291034, 0.15758,0));
@@ -140,11 +140,11 @@ namespace tut {
 	} END
 
 	BEGIN(11, "this specific case must overlap") {
-		CollidablePolygon a(0,Vector(-0.070,-0.200, 0.000));
+		CollidablePolygon a(object_t::Dummy,Vector(-0.070,-0.200, 0.000));
 		a.add(Vector( 0.070,-0.200, 0.000));
 		a.add(Vector( 0.070,-0.080, 0.000));
 		a.add(Vector(-0.070,-0.080, 0.000));
-		CollidablePolygon b(0,Vector(-0.070,-0.100, 0.000));
+		CollidablePolygon b(object_t::Dummy,Vector(-0.070,-0.100, 0.000));
 		b.add(Vector( 0.070,-0.100, 0.000));
 		b.add(Vector( 0.070, 0.020, 0.000));
 		b.add(Vector(-0.070, 0.020, 0.000));

@@ -22,8 +22,7 @@
 #define OFFSET_PIXELS_PER_SECOND MAX_SPEED
 #define LEVEL_SIZE MAP_WIDTH*LEVEL_HEIGHT
 
-// object types
-#define STATIC_DOME 'S'
 // dome dimensions
 #define DROME_WIDTH_PX 60
 #define DROME_HEIGHT_PX 36
+

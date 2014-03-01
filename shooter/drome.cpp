@@ -1,11 +1,12 @@
 #include "drome.h"
-#include "shooter_constants.h"
 #include <systemex.h>
+#include "shooter_constants.h"
 
 using namespace systemex;
 using game::Vector2;
 
-Drome::Drome(const unsigned char type, const tinyxml2::XMLElement * xml) :
+
+Drome::Drome(const object_t type, const tinyxml2::XMLElement * xml) :
 game::CollidablePolygon(type,game::Vector2::origin) {
 	check_not_null(xml);
 	const auto x = xml->FloatAttribute("x");
@@ -19,17 +20,12 @@ game::CollidablePolygon(type,game::Vector2::origin) {
 	add_relative(Vector2(0,-DROME_HEIGHT_PX));
 }
 
-StaticDrome::StaticDrome(const tinyxml2::XMLElement * xml) 
-	:	Drome(STATIC_DOME,xml) {
-	}
-
-DromeList::DromeList(const tinyxml2::XMLElement * xml) 
-	:	_statics() {
+DromeList::DromeList(const tinyxml2::XMLElement * xml) {
 				auto statics = xml->FirstChildElement("staticDromes");
 		if (statics != nullptr) {
 			auto elem = statics->FirstChildElement();
 			while (elem != nullptr) {
-				_statics.emplace_front(elem);
+				emplace_front(object_t::StaticDome,elem);
 				elem = elem->NextSiblingElement();
 			}
 		}

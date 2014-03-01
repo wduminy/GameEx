@@ -12,7 +12,6 @@
 #define FLOOR_Z 0.0f
 #define CAM_Y ARENA_HALF * 1.5
 #define CAM_RADIUS ARENA_HALF * 1.2
-
 	using namespace game;
 
 	class Fence : public game::GameObject {

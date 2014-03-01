@@ -2,7 +2,7 @@
 ## Story
 You are the pilot of a *Shooter*. Your goal is to cross a large section of terrestrial terrain, occupied by enemy forces. The terrain you must cross is divided into nine zones.  At the end of each *WarZone* your shooter will be repaired - that is if you can reach the end.
 
-Life is not simple: the enemy forces has ground based vehicles names Dromautibles. These are commonly called Dromes.  You can destroy a Drome using your *MarkBomber*  With this weapon you aim at a spot on the ground and launch a *MarkBomb* to that spot.  The MarkBomb is controlled from your Shooter and it will hit its target.  But your MarkBomber can only handle three active MarkBombs concurrently.  If four of these are in the air, your MarkBomber will launch another.      
+Life is not simple: the enemy forces has ground based vehicles names Dromautos (or Dromes for short).  You can destroy a Drome using your *MarkBomber*  With this weapon you aim at a spot on the ground and launch a *MarkBomb* to that spot.  The MarkBomb is controlled from your Shooter and it will hit its target.  But your MarkBomber can only handle three active MarkBombs concurrently.  If four of these are in the air, your MarkBomber will launch another.      
 
 Be careful, the enemy *Drome* launches ballistic weapons called SlowBombs. Lucky thing is that each Drome has a limited number of these bombs.  The *Slobomb* aims to get in your way; and they explode on impact.  That is when you impact them!  A *StaticDrome* is mounted on one spot; but there is also the *RoamingDrome* that moves around; but at least it keeps on the road.  A RoamingDrome is harder to hit because it is moving but these Dromes have less ammunition than a FixedDromes. 
 

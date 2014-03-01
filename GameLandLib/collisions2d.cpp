@@ -50,12 +50,12 @@ bool Polygon::overlaps_with(const Polygon& other) const {
 	return r;
 }
 
-CollidablePolygon::CollidablePolygon(const unsigned char type,
+CollidablePolygon::CollidablePolygon(const object_t type,
 		const Vector2& start) :
 		BoundedBox2(start, start), Polygon(start), _type(type) {
 }
 
-CollidablePolygon::CollidablePolygon(const unsigned char type,
+CollidablePolygon::CollidablePolygon(const object_t type,
 		const Vector2& start, const vector<Vector2> &path) :
 		BoundedBox2(start, start), Polygon(start), _type(type) {
 	for_each(e,path)

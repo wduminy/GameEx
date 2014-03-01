@@ -36,6 +36,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>design.md</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/shooter/design.md</locationURI>
+		</link>
+		<link>
 			<name>shooter</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -89,11 +94,6 @@
 			<name>shooter/drome.h</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/shooter/drome.h</locationURI>
-		</link>
-		<link>
-			<name>shooter/readme.md</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/shooter/readme.md</locationURI>
 		</link>
 		<link>
 			<name>shooter/shooter.cpp</name>

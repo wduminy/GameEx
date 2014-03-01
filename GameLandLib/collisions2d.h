@@ -82,22 +82,24 @@ public:
 	friend ostream& operator<<(ostream& s, const Polygon& v);
 };
 
+enum class object_t;
+
 /**
  * A Polygon with a BoundedBox2.  
- * It is typically added to CollisionManager.  
+ * Instances can be added to a CollisionManager.
  */
 class CollidablePolygon : public BoundedBox2, public Polygon {
 public:
-	CollidablePolygon(const unsigned char type, const Vector2& start);
-	CollidablePolygon(const unsigned char type, const Vector2& start,  const vector<Vector2> &path);
+	CollidablePolygon(const object_t type, const Vector2& start);
+	CollidablePolygon(const object_t type, const Vector2& start,  const vector<Vector2> &path);
 	bool collides_with(const CollidablePolygon& other) const;
-	unsigned char type() const {return _type;}
+	object_t type() const {return _type;}
 	virtual ~CollidablePolygon() {}
 protected:
 	void on_add(const Vector2& value) override;
 	void on_clear(const Vector2& initial) override;
 private:
-	const unsigned char _type;
+	const object_t _type;
 public:
 	typedef std::unique_ptr<CollidablePolygon> u_ptr;
 };

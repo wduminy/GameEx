@@ -2,23 +2,16 @@
 #include <forward_list>
 #include <collisions2d.h>
 #include <tinyxml2.h>
+enum class game::object_t {Shooter, StaticDome};
+using game::object_t;
 
 class Drome : public game::CollidablePolygon  {
-protected:
-	Drome(const unsigned char type, const tinyxml2::XMLElement * xml);
-};
-
-class StaticDrome : public Drome {
 public:
-	StaticDrome(const tinyxml2::XMLElement * xml);
+	Drome(const object_t type, const tinyxml2::XMLElement * xml);
 };
 
-typedef std::forward_list<StaticDrome> StaticDomeList;
 
-class DromeList {
-private:
-	 StaticDomeList _statics;
+class DromeList : public std::forward_list<Drome> {
 public:
 	DromeList(const tinyxml2::XMLElement * xml);
-	const StaticDomeList & statics() {return _statics;}
 };
