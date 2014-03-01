@@ -31,7 +31,8 @@ namespace tut {
 		tinyxml2::XMLDocument doc;
 		doc.LoadFile(xml_file_name);
 		auto root = doc.RootElement();
-		auto dromes = DromeList(root->FirstChildElement());
+		DromeList dromes;
+		dromes.load(root->FirstChildElement());
 		ensure_not(dromes.empty());
 	//	const StaticDrome * first = * C:\development\github\artiboarddromes.statics().begin();
 	END

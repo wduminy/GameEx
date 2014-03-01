@@ -4,22 +4,25 @@
 #include <collisions2d.h>
 #include "shooter.h"
 #include "warzone.h"
+#include "drome.h"
 #include "shooter_constants.h"
 
 /* The container of the game model */
 class ShooterState {
 public:	
 	ShooterState();
-	const Shooter& shooter() const {return *_shooter; }
+	const Shooter& shooter() const {ASSERT(_shooter); return *_shooter; }
 	const WarZone& map() const {ASSERT(_map); return *_map;}
 protected:
 	void load_map(const std::string &file_name);
+	void load_dromes(const std::string &file_name);
 	game::CollisionManagerWithBoxes _col_mgr;
 	std::unique_ptr<Shooter> _shooter;
 	std::unique_ptr<WarZone> _map;
+	DromeList dromes_;
 };
 
-class ShooterStateObject : public game::GameObject, public ShooterState {
+class ShooterStateObject : public game::GameObjectWithParts, public ShooterState {
 public:
 	ShooterStateObject();
 	void initialise(const game::ResourceContext &rctx, const game::DrawContext &dc) override;

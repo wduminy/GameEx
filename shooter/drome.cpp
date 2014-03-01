@@ -19,7 +19,7 @@ Drome::Drome(const object_t type, const tinyxml2::XMLElement * xml) : Animate(ty
 	add_relative(Vector2(0,-DROME_HEIGHT_PX));
 }
 
-DromeList::DromeList(const tinyxml2::XMLElement * xml) {
+void DromeList::load(const tinyxml2::XMLElement * xml) {
 				auto statics = xml->FirstChildElement("staticDromes");
 		if (statics != nullptr) {
 			auto elem = statics->FirstChildElement();

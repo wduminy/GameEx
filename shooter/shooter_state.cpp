@@ -19,9 +19,17 @@ void ShooterState::load_map(const std::string &file_name) {
 	_map.reset(new WarZone(file_name));
 }
 
+void ShooterState::load_dromes(const std::string &file_name) {
+	tinyxml2::XMLDocument doc;
+	doc.LoadFile(file_name.c_str());
+	auto root = doc.RootElement();
+	dromes_.load(root->FirstChildElement());
+}
+
 void ShooterStateObject::initialise(const game::ResourceContext &rctx, const game::DrawContext &dc) {
 	GameObject::initialise(rctx,dc);
-	load_map(rctx.path_to("Level1.bmp"));
+	load_map(rctx.path_to("level1.bmp"));
+	load_dromes(rctx.path_to("level1.xml"));
 }
 
 ShooterStateObject::ShooterStateObject() :
