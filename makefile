@@ -19,6 +19,8 @@ SNEAKY := $(TARGET_DIR)/Sneaky.exe
 SHOOTER := $(TARGET_DIR)/Shooter.exe
 .PHONY : clean all run_sneaky run_terrain run_test dox run_shooter
 
+run_tests:  $(GAME_LAND_TEST)
+	cd $(TARGET_DIR); ./GameLandTests.exe
 
 run_shooter: $(SHOOTER)
 	cd $(TARGET_DIR); ./Shooter.exe -test -nfullscreen; cat log.txt
@@ -32,8 +34,7 @@ run_terrain: $(TERRAIN_DEMO)
 $(SHOOTER): $(OBJS) $(GAME_LAND_LIB) $(TUT_LIB)
 	g++ $(wildcard shooter/*.o) -o $@ -lGameLandLib $(LINK_ARGS) -lTutLib  
 
-run_tests:  $(GAME_LAND_TEST)
-	cd $(TARGET_DIR); ./GameLandTests.exe
+
 
 	
 dox: 
@@ -48,8 +49,8 @@ $(TERRAIN_DEMO): $(OBJS) $(GAME_LAND_LIB)
 	g++ $(wildcard TerrainDemo/*.o) -o $@ -lGameLandLib $(LINK_ARGS)  
 
 
-$(GAME_LAND_TEST): $(OBJS) $(TUT_LIB) 
-	g++ $(wildcard GameLandTests/*.o) -o $@ -lTutLib -lGameLandLib $(LINK_ARGS)  
+$(GAME_LAND_TEST): $(OBJS) $(TUT_LIB) $(GAME_LAND_LIB) 
+	g++ $(wildcard GameLandTests/*.o) -o $@ -lGameLandLib $(LINK_ARGS) -lTutLib   
 
 $(GAME_LAND_LIB): $(OBJS)
 	ar -r $@ $(wildcard GameLandLib/*.o)

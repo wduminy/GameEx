@@ -31,7 +31,7 @@ private:
 public:
 	Shooter();
 	Scalar bottom_of_view() const {return bottom_;};
-	Scalar view_top() const {return bottom_ - top() - SHOOTER_HEIGHT_PX;}
+	Scalar view_top() const {return bottom_ - box().top() - SHOOTER_HEIGHT_PX;}
 	void move(double lapse);
 	void set_dir(const HorizontalDir dir);
 	void set_dir(const VerticalDir dir);

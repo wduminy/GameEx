@@ -56,12 +56,9 @@ CollidablePolygon::CollidablePolygon(const object_t type,
 }
 
 CollidablePolygon::CollidablePolygon(const object_t type,
-		const Vector2& start, const vector<Vector2> &path) :
+		const Vector2& start, std::initializer_list<Vector2> path) :
 		BoundedBox2(start, start), Polygon(start), _type(type) {
-	for_each(e,path)
-	{
-		add(*e);
-	}
+	for_each(e,path) add(*e);
 }
 
 bool CollidablePolygon::collides_with(const CollidablePolygon& other) const {
@@ -69,6 +66,13 @@ bool CollidablePolygon::collides_with(const CollidablePolygon& other) const {
 		return overlaps_with(other);
 	else
 		return false;
+}
+
+
+void CollidablePolygon::move_to(const Vector2& v) {
+	const Vector2 delta = v - left_top();
+	BoundedBox2::move(delta);
+	Polygon::move(delta);
 }
 
 BoundedBox2::BoundedBox2(const Vector2& lt, const Vector2& rb) :
@@ -187,7 +191,7 @@ CollidablePolygon * SimpleCollisionManager::collider_or_null(
 
 CollidablePolygon* CollidablePolygonPList::collider_or_null(
 		CollidablePolygon* collidable) {
-	ASSERT(collidable->point_count() > 0);
+	ASSERT(collidable->poly().point_count() > 0);
 	ASSERT(collidable != 0);
 	for_each(e, (*this))
 	{
@@ -246,8 +250,8 @@ void CollisionManagerWithBoxes::modify_boxes(CollidablePolygon* collidable,
 }
 
 BoxRange CollisionManagerWithBoxes::range_from(CollidablePolygon* collidable) {
-	return BoxRange(box_x(collidable->left()), box_x(collidable->right()),
-			box_y(collidable->top()), box_y(collidable->bottom()));
+	return BoxRange(box_x(collidable->box().left()), box_x(collidable->box().right()),
+			box_y(collidable->box().top()), box_y(collidable->box().bottom()));
 }
 
 CollidablePolygon * CollisionManagerWithBoxes::collider_or_null(

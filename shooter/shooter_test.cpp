@@ -23,8 +23,8 @@ namespace tut {
 		ensure_not_null(statics);
 		auto first_static = statics->FirstChildElement();
 		Drome d(object_t::StaticDome,first_static);
-		ensure_equals(d.left_top(),Vector2(200.0f,300.0f));
-		ensure_equals(d.right_bottom(),Vector2(260,336));
+		ensure_equals(d.box().left_top(),Vector2(200.0f,300.0f));
+		ensure_equals(d.box().right_bottom(),Vector2(260,336));
 	END
 
 	BEGIN(2, "Reading drome List") 

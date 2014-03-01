@@ -36,10 +36,10 @@ void run_tests() {
 #endif
 	WSACleanup();
 }
-
-int main( int , char* [] ) {
+#undef main // http://stackoverflow.com/questions/10803918/undefined-reference-to-sdl-main
+int main( int argc, char* argv[] ) {
 	try {
-		cout << "RUNNING TESTS" << endl;
+		cout << "RUNNING TESTS" << endl; 
 		run_tests();
 	} catch (std::exception &e) {
 		cout << "Error --- " << e.what() << endl;

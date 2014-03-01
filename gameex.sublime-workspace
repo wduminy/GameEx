@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"vect",
+				"Vector2"
+			],
+			[
 				"object",
 				"object_t"
 			],
@@ -510,95 +514,11 @@
 			[
 				"main",
 				"main_page"
-			],
-			[
-				"pro",
-				"project_query_item"
 			]
 		]
 	},
 	"buffers":
 	[
-		{
-			"file": "shooter/shooter_test.cpp",
-			"settings":
-			{
-				"buffer_size": 1257,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "shooter/drome.h",
-			"settings":
-			{
-				"buffer_size": 390,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "shooter/drome.cpp",
-			"settings":
-			{
-				"buffer_size": 990,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "makefile",
-			"settings":
-			{
-				"buffer_size": 2369,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "GameLandTests/collisions2d_test.cpp",
-			"settings":
-			{
-				"buffer_size": 4986,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Sneaky/main_scene.cpp",
-			"settings":
-			{
-				"buffer_size": 3653,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "gameex.sublime-project",
-			"settings":
-			{
-				"buffer_size": 1871,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "Sneaky/main_scene.h",
-			"settings":
-			{
-				"buffer_size": 1050,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Sneaky/snake.cpp",
-			"settings":
-			{
-				"buffer_size": 5661,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "GameLandLib/collisions2d.h",
-			"settings":
-			{
-				"buffer_size": 6831,
-				"line_ending": "Windows"
-			}
-		}
 	],
 	"build_system": "Packages/Makefile/Make.sublime-build",
 	"command_palette":
@@ -781,29 +701,35 @@
 	},
 	"file_history":
 	[
-		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/snake.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/collisions2d.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/snake.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/collisions2d.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_main.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/collisions2d_test.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/makefile",
+		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/test_main.cpp",
+		"/Users/slouken/release/SDL/SDL2-2.0.1-source/src/main/windows/SDL_windows_main.c",
+		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/snake.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/rundir/media/duality/snakeskin.bmp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_constants.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_test.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/drome.h",
+		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/drome.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/main_scene.cpp",
+		"/C/Users/willemd/Documents/GitHub/GameEx/gameex.sublime-project",
+		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/main_scene.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/rundir/media/duality/snake.frag",
 		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/tut/tut_main.hpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_state.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_constants.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/rundir/media/duality/snakeskin.pdn",
-		"/C/Users/willemd/Documents/GitHub/GameEx/rundir/media/duality/snakeskin.bmp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/rundir/media/duality/snake.vert",
 		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/readme.md",
 		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/.settings/org.eclipse.cdt.managedbuilder.core.prefs",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/collisions2d_test.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/tinyxml2.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/terrain_object.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/rundir/media/shooter/levels.xml",
-		"/C/Users/willemd/Documents/GitHub/GameEx/makefile",
-		"/C/Users/willemd/Documents/GitHub/GameEx/gameex.sublime-project",
 		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/test_util.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/test_util.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/collisions2d.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/collisions2d.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/drome.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_base.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/tut/tut_assert.hpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/systemex.h",
@@ -813,14 +739,11 @@
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/tinyxml2.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_view.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/log.h",
-		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/drome.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/TerrainDemo/terrain_main.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/test_main.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/test_main.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandTests/terrain_test.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/tut/tut_restartable.hpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/TutLib/tut/tut.hpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter_test.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_base.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/shooter/shooter.cpp",
@@ -854,8 +777,6 @@
 		"/C/Users/willemd/Documents/GitHub/codespear.github.io/_posts/2013-09-09-notable-make-features.md",
 		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/controller.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/controller.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/main_scene.cpp",
-		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/main_scene.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/game_math.cpp",
 		"/C/Users/willemd/Documents/GitHub/GameEx/GameLandLib/heightmap.h",
 		"/c/mingw/lib/gcc/mingw32/4.8.1/include/c++/ext/new_allocator.h",
@@ -907,8 +828,7 @@
 		"/C/Users/willemd/Documents/GitHub/GameEx/docs/doxy.txt",
 		"/C/Users/willemd/Documents/GitHub/GameEx/README.md",
 		"/C/Users/willemd/Documents/GitHub/GameEx/docs/footer.html",
-		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
-		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/User/ColorScheme/iPlastic.tmTheme"
+		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings"
 	],
 	"find":
 	{
@@ -929,6 +849,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"BoundedBox2",
+			"Polygon",
+			"Diamond",
 			"CollidablePolygon",
 			"ensure_that",
 			"StaticDome",
@@ -1053,10 +976,7 @@
 			"b",
 			"a",
 			"a.",
-			")b",
-			") c",
-			"_",
-			"\\\\"
+			")b"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1074,305 +994,8 @@
 	"groups":
 	[
 		{
-			"selected": 8,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "shooter/shooter_test.cpp",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1257,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 7.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "shooter/drome.h",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 390,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "shooter/drome.cpp",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 990,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "makefile",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2369,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								119,
-								112
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Makefile/Makefile.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "GameLandTests/collisions2d_test.cpp",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4986,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3988,
-								3988
-							],
-							[
-								4294,
-								4294
-							],
-							[
-								4589,
-								4589
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 3619.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "Sneaky/main_scene.cpp",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3653,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								85,
-								85
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": -0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "gameex.sublime-project",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1871,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1328,
-								1328
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1563.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "Sneaky/main_scene.h",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1050,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								274,
-								274
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "Sneaky/snake.cpp",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5661,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								131,
-								131
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 9.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "GameLandLib/collisions2d.h",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6831,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2663,
-								2663
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1876.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -1429,6 +1052,10 @@
 			[
 				"make",
 				"Root\\makefile"
+			],
+			[
+				"coll",
+				"GameLandLib\\collisions2d.h"
 			],
 			[
 				"testut",
@@ -1569,10 +1196,6 @@
 			[
 				"map",
 				"Shooter\\shooter_map.h"
-			],
-			[
-				"coll",
-				"GameLandLib\\collisions2d.h"
 			],
 			[
 				"game_base",

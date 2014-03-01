@@ -40,7 +40,7 @@ protected:
 	/** Makes the box a point particle.
 	 * @param v is the location of the point */
 	void clear_box(const Vector2& v) {_lt = _rb = v;}
-	void move_to(const Vector2& v) {const auto s = _rb-_lt; _lt=v;_rb = v + s;}
+	void move(const Vector2& delta) {_lt += delta; _rb+= delta; }
 private:
 	Vector2 _lt;
 	Vector2 _rb;
@@ -79,6 +79,7 @@ private:
 protected:
 	virtual void on_add(const Vector2& value) {}
 	virtual void on_clear(const Vector2& initial) {}
+	void move(const Vector2& delta) {for (auto& p : _points) p+= delta;}
 public:
 	friend ostream& operator<<(ostream& s, const Polygon& v);
 };
@@ -89,24 +90,30 @@ enum class object_t;
  * A Polygon with a BoundedBox2.  
  * Instances can be added to a CollisionManager.
  */
-class CollidablePolygon : public BoundedBox2, public Polygon {
+class CollidablePolygon : private BoundedBox2, protected Polygon {
 public:
 	CollidablePolygon(const object_t type, const Vector2& start = Vector2::origin);
-	CollidablePolygon(const object_t type, const Vector2& start,  const vector<Vector2> &path);
+	CollidablePolygon(const object_t type, const Vector2& start,  std::initializer_list<Vector2> path);
 	bool collides_with(const CollidablePolygon& other) const;
 	object_t type() const {return _type;}
 	virtual ~CollidablePolygon() {}
+	const BoundedBox2& box() const {return *this;}
+	const Polygon& poly() const {return *this;}
+	void add(const Vector2& v) {Polygon::add(v);}
+	void set_start(const Vector2& v) {Polygon::set_start(v);}
+	void move_to(const Vector2& v);
 protected:
 	void on_add(const Vector2& value) override;
 	void on_clear(const Vector2& initial) override;
 private:
 	const object_t _type;
+	BoundedBox2 box_;
 public:
 	typedef std::unique_ptr<CollidablePolygon> u_ptr;
 };
 
 inline ostream& operator<<(ostream& s, const CollidablePolygon& v) {
-	return s << dynamic_cast<const Polygon&> (v);
+	return s << v.poly();
 }
 
 /** Listens to collisions */

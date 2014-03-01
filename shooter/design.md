@@ -12,7 +12,10 @@ enum LifeStatus {
 class Animate {
 + location
 }
-note left: <color:red> TODO
+note left
+ TODO: Move only moves bouning box; not polygon
+end note
+
 Animate -> LifeStatus
 game.CollidablePolygon <|-- Animate
 

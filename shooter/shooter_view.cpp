@@ -203,7 +203,7 @@ void ShooterView::draw(const game::DrawContext &dc) {
 		_draw_dst.x += TILE_SIZE_PX;
 	}
 
-	_draw_dst.x = _map_left + shooter().left();
+	_draw_dst.x = _map_left + shooter().box().left();
 	_draw_dst.y = shooter().view_top() - top_px;
 
 	tiles.blit_shooter(dc.render(),_draw_dst);
