@@ -24,8 +24,8 @@ public:
 	 */
 	BoundedBox2(const Scalar x, const Scalar y, const Scalar w, const Scalar h) : BoundedBox2(Vector2(x,y),Vector2(x+w,y+h)) {}
 	BoundedBox2() : BoundedBox2(Vector2::origin, Vector2::origin) {}
-	const Vector2 left_top() const {return _lt;}
-	const Vector2 right_bottom() const {return _rb;}
+	const Vector2& left_top() const {return _lt;}
+	const Vector2& right_bottom() const {return _rb;}
 	virtual ~BoundedBox2() {}
 	bool in_bounds_of(const BoundedBox2& other) const;
 	bool is_valid() const;
@@ -40,6 +40,7 @@ protected:
 	/** Makes the box a point particle.
 	 * @param v is the location of the point */
 	void clear_box(const Vector2& v) {_lt = _rb = v;}
+	void move_to(const Vector2& v) {const auto s = _rb-_lt; _lt=v;_rb = v + s;}
 private:
 	Vector2 _lt;
 	Vector2 _rb;
@@ -90,7 +91,7 @@ enum class object_t;
  */
 class CollidablePolygon : public BoundedBox2, public Polygon {
 public:
-	CollidablePolygon(const object_t type, const Vector2& start);
+	CollidablePolygon(const object_t type, const Vector2& start = Vector2::origin);
 	CollidablePolygon(const object_t type, const Vector2& start,  const vector<Vector2> &path);
 	bool collides_with(const CollidablePolygon& other) const;
 	object_t type() const {return _type;}

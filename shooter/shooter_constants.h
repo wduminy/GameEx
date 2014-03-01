@@ -15,7 +15,7 @@
 #define SHOOTER_GUTTER TILE_SIZE_PX
 // the number of seconds to scroll through a level
 #define SECONDS_PER_LEVEL 120
-#define SPEED_FACTOR 3.0
+#define SPEED_FACTOR 3.0f
 #define MIN_SPEED LEVEL_HEIGHT_PX/(SECONDS_PER_LEVEL*SPEED_FACTOR) 
 #define MAX_SPEED LEVEL_HEIGHT_PX/(SECONDS_PER_LEVEL/SPEED_FACTOR) 
 #define HOR_PIXELS_PER_SECOND MAX_SPEED * 0.8  
@@ -25,4 +25,5 @@
 // dome dimensions
 #define DROME_WIDTH_PX 60
 #define DROME_HEIGHT_PX 36
+
 

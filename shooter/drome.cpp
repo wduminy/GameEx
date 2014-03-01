@@ -6,8 +6,7 @@ using namespace systemex;
 using game::Vector2;
 
 
-Drome::Drome(const object_t type, const tinyxml2::XMLElement * xml) :
-game::CollidablePolygon(type,game::Vector2::origin) {
+Drome::Drome(const object_t type, const tinyxml2::XMLElement * xml) : Animate(type) {
 	check_not_null(xml);
 	const auto x = xml->FloatAttribute("x");
 	const auto y = xml->FloatAttribute("y");

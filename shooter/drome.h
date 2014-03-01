@@ -2,10 +2,10 @@
 #include <forward_list>
 #include <collisions2d.h>
 #include <tinyxml2.h>
-enum class game::object_t {Shooter, StaticDome};
+#include "shooter.h"
 using game::object_t;
 
-class Drome : public game::CollidablePolygon  {
+class Drome : public Animate  {
 public:
 	Drome(const object_t type, const tinyxml2::XMLElement * xml);
 };

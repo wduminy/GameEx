@@ -14,6 +14,7 @@ class Animate {
 }
 note left: <color:red> TODO
 Animate -> LifeStatus
+game.CollidablePolygon <|-- Animate
 
 class Drome {
 + is static?
@@ -31,7 +32,7 @@ class DromeObject {
 note bottom of DromeObject: <color:red> TODO2
 
 DromeObject --> Drome
-GameObject <|-- DromeObject
+game.GameObject <|-- DromeObject
 
 class Shooter {
 + moves
@@ -47,7 +48,7 @@ class ShooterStateObject {
 + updates game state
 + handles input
 }
-GameObject <|-- ShooterStateObject
+game.GameObject <|-- ShooterStateObject
 ShooterStateObject *-- DromeObject
 ShooterState <|-- ShooterStateObject
 
