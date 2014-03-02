@@ -3,8 +3,6 @@
 scale 1.2 
 hide methods
 
-game.GameObject <|-- game.GameObjectWithParts
-
 
 enum LifeStatus {
  Dormant
@@ -22,79 +20,65 @@ game.CollidablePolygon <|-- Animate
 
 class Drome {
 + is static? 
-}
-
-Animate <|-- Drome
-
-Animate <|-- Shooter
-
- 
-class DromeObject {
 + image-index
 + update and draw
-} 
-note left of DromeObject: <color:red> TODO2
+}
 
-DromeObject --> Drome
-game.GameObject <|-- DromeObject
+game.GameObject <|-- Drome
+Animate <|-- Drome
 
 class Shooter {
 + moves
 }
+Animate <|-- Shooter
+
 
 class ShooterState {
 - encapsulates game state
++ updates game state
++ handles input
++ readsXML
 }
+note right of ShooterState
+ <color:red>TODO
+  move shooter 
+  and warzone specific code 
+  outa here?
+end note
 ShooterState *--> Shooter
 ShooterState *--> WarZone
 
-class ShooterStateObject {
-+ updates game state
-+ handles input
-}
-game.GameObjectWithParts <|-- ShooterStateObject
+game.GameObjectWithParts <|-- ShooterState
+ShooterState *-- Drome: "parts"
 
-ShooterStateObject *-- DromeObject
-ShooterState <|-- ShooterStateObject
 
 class WarZone {
-- encapsulate map data
-- reads BMP and XML
+- encapsulate map data (BMP)
 }
-WarZone *-- Drome
 
-class ShooterView {
-+ renders the state
+class ShooterController {
++ handles macro state changes
 }
-ShooterStateObject <|-- ShooterView
 
-
-ShooterController *--> ShooterView
-
+ShooterController *--> ShooterState
+game.MainObject <|-- ShooterController
 @enduml
 
 # Load and draw sequence
 @startuml
 == init ==
 main -> ShooterController : construct
-main -> Game : construct
-ShooterController -> ShooterView : construct
-ShooterView -> ShooterStateObject : superclass
-ShooterStateObject -> ShooterState : superclass
+ShooterController ->  ShooterState : construct
 ShooterState -> Shooter : construct
-main -> Game: run
+main -> Game : construct and run
 Game -> ShooterController: init
-ShooterController -> ShooterView: init
-ShooterView -> ShooterStateObject: init
-ShooterStateObject ->ShooterState: load map
+ShooterController -> ShooterState: init
 ShooterState -> WarZone: construct
-WarZone -> Drone: construct
-ShooterStateObject -> DroneObject: build drones as parts
+ShooterState -> Drone: build drones as parts
 == update and draw ==
 Game -> ShooterController : update
-ShooterController -> ShooterStateObject: update 
-ShooterView -> DroneObject : update parts
-ShooterStateObject -> update : draw
-ShooterController -> ShooterView : draw
-ShooterView -> DroneObject : draw parts
+ShooterController -> ShooterState: update 
+ShooterState -> Drone : update parts
+ShooterController -> ShooterState : draw
+ShooterState -> Drone : draw parts
 @enduml

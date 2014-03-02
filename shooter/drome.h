@@ -6,22 +6,13 @@
 #include "shooter.h"
 using game::object_t;
 
-class Drome : public Animate  {
-public:
-	Drome(const object_t type, const tinyxml2::XMLElement * xml);
-};
-
-
-class DromeList : public std::forward_list<Drome> {
-public:
-	void load(const tinyxml2::XMLElement * xml);
-};
-
-
-class DromeObject : public game::GameObject {
+class Drome : public game::GameObject, public Animate {
 private:
-	Drome & drome_;
 	const Shooter& shooter_; // Drome needs to be aware of the shooters location
 public:
-	DromeObject(Drome& d, const Shooter& s) : drome_(d), shooter_(s) {}
+	Drome(const object_t type, const tinyxml2::XMLElement * xml, const Shooter& s);
+	void update(const game::UpdateContext & uc) override;
+	void draw(const game::DrawContext &dc) override;
 };
+
+

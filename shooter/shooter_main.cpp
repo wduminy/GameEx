@@ -1,13 +1,13 @@
 #include <game_base.h>
 #include <log.h>
-#include "shooter_view.h"
+#include "shooter_state.h"
 #include <tut/tut.hpp>
 #include <tut/tut_reporter.hpp>
 
 class ShooterController : public game::MainObject {
 	public:
 	ShooterController() : game::MainObject() {
-		add_part(new ShooterView());
+		add_part(new ShooterState());
 	}
 };
 

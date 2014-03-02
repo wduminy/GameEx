@@ -1,0 +1,11 @@
+<shooter>
+	<level number="1" map="level1.bmp">
+		<staticDromes>
+			<drome x="200" y="300">
+			</drome>
+			<drome x="400" y="500">
+			</drome>
+		</staticDromes>
+	</level>
+</shooter>
+

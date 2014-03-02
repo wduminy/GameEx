@@ -1,3 +1,4 @@
+#error view must be deleted
 #pragma once
 #include <game_base.h>
 #include <array>
@@ -12,8 +13,8 @@ public:
 private:
 	void update_tile_indexes();
 	void calculate_tile(const int x, const int y, int &t_x, int &t_y); 
-	SDL_Rect _draw_dst;
-	int _map_left;
-	int _row_at_top;
-	std::array<int,LEVEL_SIZE> _tile_x, _tile_y;
+	SDL_Rect draw_dst_;
+	int map_left_;
+	int row_at_top_;
+	std::array<int,LEVEL_SIZE> tile_x_, tile_y_;
 };

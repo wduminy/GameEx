@@ -131,14 +131,14 @@
 			<locationURI>PARENT-2-PROJECT_LOC/shooter/shooter_test.cpp</locationURI>
 		</link>
 		<link>
-			<name>shooter/shooter_view.cpp</name>
+			<name>shooter/tileset.cpp</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/shooter/shooter_view.cpp</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/shooter/tileset.cpp</locationURI>
 		</link>
 		<link>
-			<name>shooter/shooter_view.h</name>
+			<name>shooter/tileset.h</name>
 			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/shooter/shooter_view.h</locationURI>
+			<locationURI>PARENT-2-PROJECT_LOC/shooter/tileset.h</locationURI>
 		</link>
 		<link>
 			<name>shooter/warzone.cpp</name>

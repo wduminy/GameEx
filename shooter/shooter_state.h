@@ -7,26 +7,27 @@
 #include "drome.h"
 #include "shooter_constants.h"
 
-/* The container of the game model */
-class ShooterState {
-public:	
-	ShooterState();
-	const Shooter& shooter() const {ASSERT(_shooter); return *_shooter; }
-	const WarZone& map() const {ASSERT(_map); return *_map;}
-protected:
-	void load_map(const std::string &file_name);
-	void load_dromes(const std::string &file_name);
-	game::CollisionManagerWithBoxes _col_mgr;
-	std::unique_ptr<Shooter> _shooter;
-	std::unique_ptr<WarZone> _map;
-	DromeList dromes_;
-};
-
-class ShooterStateObject : public game::GameObjectWithParts, public ShooterState {
+/** The shooter game state */
+class ShooterState : public game::GameObjectWithParts {
+private:
+	game::CollisionManagerWithBoxes col_mgr_;
+	std::unique_ptr<Shooter> shooter_;
+	std::unique_ptr<WarZone> map_;
+	bool left_key_down_, right_key_down_, up_key_down_, down_key_down_;
+	SDL_Rect draw_dst_;
+	int map_left_;
+	int row_at_top_;
+	std::array<int,LEVEL_SIZE> tile_x_, tile_y_;
 public:
-	ShooterStateObject();
+	ShooterState();
 	void initialise(const game::ResourceContext &rctx, const game::DrawContext &dc) override;
 	void update(const game::UpdateContext & uc) override;
+	void draw(const game::DrawContext &dc) override;
 private:
-	bool _left_key_down, _right_key_down, _up_key_down, _down_key_down;	
+	void load_map(const std::string &file_name);
+	const Shooter& shooter() const {ASSERT(shooter_); return *shooter_; }
+	const WarZone& map() const {ASSERT(map_); return *map_;}
+	void load_dromes(const std::string &file_name);
+	void update_tile_indexes();
+	void calculate_tile(const int x, const int y, int &t_x, int &t_y);
 };

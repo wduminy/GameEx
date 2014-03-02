@@ -6,7 +6,7 @@ using namespace systemex;
 using game::Vector2;
 
 
-Drome::Drome(const object_t type, const tinyxml2::XMLElement * xml) : Animate(type) {
+Drome::Drome(const object_t type, const tinyxml2::XMLElement * xml, const Shooter& s) : Animate(type), shooter_(s) {
 	check_not_null(xml);
 	const auto x = xml->FloatAttribute("x");
 	const auto y = xml->FloatAttribute("y");
@@ -19,13 +19,10 @@ Drome::Drome(const object_t type, const tinyxml2::XMLElement * xml) : Animate(ty
 	add_relative(Vector2(0,-DROME_HEIGHT_PX));
 }
 
-void DromeList::load(const tinyxml2::XMLElement * xml) {
-				auto statics = xml->FirstChildElement("staticDromes");
-		if (statics != nullptr) {
-			auto elem = statics->FirstChildElement();
-			while (elem != nullptr) {
-				emplace_front(object_t::StaticDome,elem);
-				elem = elem->NextSiblingElement();
-			}
-		}
-	}	
+void Drome::update(const game::UpdateContext & uc) {
+	// TODO 080 draw Drome
+}
+
+void Drome::draw(const game::DrawContext &dc) {
+	// TODO 090 draw Drome
+}
