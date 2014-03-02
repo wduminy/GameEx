@@ -42,7 +42,7 @@ SDL_Window * initSDL(const bool fullscreen, const int w, const int h,
 }
 
 DrawContext::DrawContext(const bool fullscreen, const int w,	const int h, const bool opengl) :
-		_glex(opengl ? new Glex() : 0), _width(w), _height(h), _renderer() {
+		_window(0), _glex(opengl ? new Glex() : 0), _width(w), _height(h), _renderer() {
 	auto window = initSDL(fullscreen, w, h, opengl);	
 	_renderer.reset(new Renderer(window));
 	_renderer->set_logical_size(w,h);
@@ -125,7 +125,9 @@ UpdateContext::UpdateContext(unsigned int updatesPerSec,
 
 void UpdateContext::tick() {
 	_tick_time = SDL_GetTicks();
-	if (update = (_tick_time >= next_update)) {
+	update = (_tick_time >= next_update);
+	draw = (_tick_time >= next_draw);
+	if (update) {
 		//this could be a problem ... events on SDL is queued and will be
 		//processed one at a time of the update loop. so, if the input seems
 		//jittery, it could be that the SDL events must be processed in a different
@@ -135,7 +137,7 @@ void UpdateContext::tick() {
 		_updates++;
 	}
 
-	if (draw = (_tick_time >= next_draw)) {
+	if (draw) {
 		next_draw = _tick_time + _draw_interval;
 		_draws++;
 	} 

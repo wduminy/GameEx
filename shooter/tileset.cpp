@@ -29,9 +29,16 @@ void TileSet::blit_ground(const int pos_x, const int pos_y, const game::Renderer
 	src_.y = GROUND_TILE_0_Y + pos_y * GROUND_TILE_SIZE;
 	r.copy_from(*tex_,src_,dst_r);
 }
+
 void TileSet::blit_shooter(const game::Renderer& r, SDL_Rect & dst_r) {
 	static SDL_Rect src = {835*2,255*2,SHOOTER_WIDTH_PX,SHOOTER_HEIGHT_PX};
 	SDL_Rect des = {dst_r.x,dst_r.y,SHOOTER_WIDTH_PX,SHOOTER_HEIGHT_PX};
+	r.copy_from(*tex_,src,des);
+}
+
+void TileSet::blit_dome(const game::Renderer& r, const game::Vector2 & dst) {
+	static SDL_Rect src = {20,286,STATIC_DOME_PX,STATIC_DOME_PX};
+	SDL_Rect des = {dst.x_i(),dst.y_i(),STATIC_DOME_PX,STATIC_DOME_PX};
 	r.copy_from(*tex_,src,des);
 }
 

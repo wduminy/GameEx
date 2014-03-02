@@ -1,9 +1,9 @@
 <shooter>
 	<level number="1" map="level1.bmp">
 		<staticDromes>
-			<drome x="200" y="300">
+			<drome x="0" y="7780">
 			</drome>
-			<drome x="400" y="500">
+			<drome x="812" y="7680">
 			</drome>
 		</staticDromes>
 	</level>

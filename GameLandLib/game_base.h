@@ -120,7 +120,9 @@ public:
 };
 
 class Drawable {
+public:
 	virtual void draw(const DrawContext& gc) = 0;
+	virtual ~Drawable() {}
 };
 
 /**
@@ -145,7 +147,9 @@ class Drawable {
 class GameObject : Drawable {
 PREVENT_COPY(GameObject)
 public:
-	GameObject(int drawOrder = 0) :	_draw_order(drawOrder), _is_hidden(false), _is_active(true) {};
+    /** construct a new instance */
+	GameObject(const int drawOrder = 0, const bool hide=false, const bool activate=true) :
+		_draw_order(drawOrder), _is_hidden(hide), _is_active(activate) {};
 	/** initialise this and initialise children */
 	virtual void initialise(const ResourceContext & rctx, const DrawContext& dctx) {};
 	/** draw only this, not children */
@@ -154,17 +158,25 @@ public:
 	virtual void update(const UpdateContext &) {}
 	virtual void collect(std::deque<GameObject *> &c) {c.push_back(this);}
 	int draw_order() const {return _draw_order;}
-	void hide() {set_hidden(true);}
-	void show() {set_hidden(false);}
-	bool is_hidden() const {return _is_hidden;}
-	bool is_visible() const {return !_is_hidden;}
-	virtual void activate() {set_active(true);}
-	/** Deactivate excludes an object from the update loop.  Note that it may still be visible */
-	void deactivate() {set_active(false);}
-	bool is_active() const {return _is_active;}
-	virtual ~GameObject() {}
+	/** change the hidden state */
 	virtual void set_hidden(const bool value) {_is_hidden = value;}
+	/** see set_hidden() */
+	void hide() {set_hidden(true);}
+	/** see set_hidden() */
+	void show() {set_hidden(false);}
+	/** is this hidden? */
+	bool is_hidden() const {return _is_hidden;}
+	/** is this drawn? */
+	bool is_visible() const {return !_is_hidden;}
+	/** see set_active() */
+	void activate() {set_active(true);}
+	/** see set_active() */
+	void deactivate() {set_active(false);}
+	/** is this active? */
+	bool is_active() const {return _is_active;}
+	/** Change the active state */
 	virtual void set_active(const bool value) {_is_active = value;}
+	virtual ~GameObject() {}
 private:
 	const int _draw_order;
 	bool _is_hidden; // draw is not called when hidden

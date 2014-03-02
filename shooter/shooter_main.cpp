@@ -55,9 +55,11 @@ int main( int count, char* args[] ) {
 		return shooter.run();
 	} catch (std::exception &e) {
 		LOG << "exception: " << (e.what()) << std::endl;
+		std::cout << "exception: " << (e.what()) << std::endl;
         return EXIT_FAILURE;
   	} catch (...) {
 		LOG << "unexpected error occurred";
+		std::cout << "unexpected error!";
         return EXIT_FAILURE;
     }
 	return EXIT_SUCCESS;

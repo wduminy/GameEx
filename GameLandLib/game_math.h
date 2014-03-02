@@ -95,6 +95,8 @@ namespace game {
 			Vector2() : Vector2(zero,zero) {}
 			Scalar x() const {return get(0);}
 			Scalar y() const {return get(1);}
+			int x_i() const {return std::trunc(x());}
+			int y_i() const {return std::trunc(y());}
 			void set_x(Scalar v) {set(0,v);}
 			void set_y(Scalar v) {set(1,v);}
 			Vector2 perpendicular() const {return Vector2(-y(),x());}
