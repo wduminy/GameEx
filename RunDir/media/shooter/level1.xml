@@ -1,10 +1,72 @@
 <shooter>
 	<level number="1" map="level1.bmp">
 		<staticDromes>
-			<drome x="0" y="7780">
+			<drome x="0" y="7580">
 			</drome>
 			<drome x="812" y="7680">
 			</drome>
+			
+			<drome x="400" y="7480">
+			</drome>
+			<drome x="400" y="7180">
+			</drome>
+			<drome x="400" y="7080">
+			</drome>
+			<drome x="400" y="6880">
+			</drome>
+			<drome x="400" y="6780">
+			</drome>
+			<drome x="400" y="6680">
+			</drome>
+			<drome x="400" y="6580">
+			</drome>
+
+			<drome x="100" y="7480">
+			</drome>
+			<drome x="100" y="7180">
+			</drome>
+			<drome x="600" y="7080">
+			</drome>
+			<drome x="800" y="6880">
+			</drome>
+			<drome x="600" y="6780">
+			</drome>
+			<drome x="100" y="6680">
+			</drome>
+			<drome x="200" y="6580">
+			</drome>
+			
+			..
+						<drome x="400" y="7380">
+			</drome>
+			<drome x="400" y="7080">
+			</drome>
+			<drome x="400" y="7180">
+			</drome>
+			<drome x="400" y="6680">
+			</drome>
+			<drome x="400" y="6480">
+			</drome>
+			<drome x="400" y="6780">
+			</drome>
+			<drome x="400" y="6480">
+			</drome>
+
+			<drome x="100" y="7380">
+			</drome>
+			<drome x="100" y="7080">
+			</drome>
+			<drome x="600" y="7180">
+			</drome>
+			<drome x="800" y="6880">
+			</drome>
+			<drome x="600" y="6680">
+			</drome>
+			<drome x="100" y="6780">
+			</drome>
+			<drome x="200" y="6880">
+			</drome>
+
 		</staticDromes>
 	</level>
 </shooter>

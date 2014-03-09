@@ -7,7 +7,8 @@ using namespace systemex;
 using game::Vector2;
 
 
-Drome::Drome(const object_t type, const tinyxml2::XMLElement * xml, const Shooter& s) : Animate(type), shooter_(s) {
+Drome::Drome(const object_t type, const tinyxml2::XMLElement * xml, const Shooter& s) : Animate(type),
+		shooter_(s), degree_(0) {
 	check_not_null(xml);
 	const auto x = xml->IntAttribute("x");
 	const auto y = xml->IntAttribute("y");
@@ -25,9 +26,11 @@ Drome::Drome(const object_t type, const tinyxml2::XMLElement * xml, const Shoote
 	add_relative(Vector2(0,-STATIC_DOME_PX));
 }
 
-void Drome::update(const game::GameContext & uc) {
+void Drome::update(const game::GameContext & c) {
+	auto d = box().left_top() - shooter_.box().left_top();
+
+	degree_ = int(atan2(d.y(),d.x()) * 180.0 / 3.14 + 270) % 360;
 	// TODO 100 update Drome -- maybe it must turn?
-	//TRACE << "Update" << this;
 }
 
 /**
@@ -38,5 +41,5 @@ void Drome::draw(const game::DrawContext &dc) {
 	const auto y = shooter_.xlate_y(box().top(), STATIC_DOME_PX);
 	if (y < 0)
 		hide();
-	TileSet::instance.blit_dome(dc.render(),{box().left(),y});
+	TileSet::instance.blit_dome(dc.render(),{box().left(),y},(degree_/45));
 }

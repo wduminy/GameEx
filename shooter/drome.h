@@ -9,6 +9,7 @@ using game::object_t;
 class Drome : public Animate {
 private:
 	const Shooter& shooter_; // Drome needs to be aware of the shooters location
+	int degree_;  // direction of nose - 0 = north
 public:
 	Drome(const object_t type, const tinyxml2::XMLElement * xml, const Shooter& s);
 	void update(const game::GameContext & uc) override;
