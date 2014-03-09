@@ -20,7 +20,7 @@ namespace systemex {
 
 	std::ostream& Log::record() {
 		time(&_last);
-		_file << " <:" << std::endl << difftime(_last, _start) << ":> ";
+		_file << " <:" << std::endl << _last - _start << ":> ";
 		return _file;
 	}
 

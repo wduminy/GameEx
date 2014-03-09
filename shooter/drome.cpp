@@ -25,7 +25,7 @@ Drome::Drome(const object_t type, const tinyxml2::XMLElement * xml, const Shoote
 	add_relative(Vector2(0,-STATIC_DOME_PX));
 }
 
-void Drome::update(const game::UpdateContext & uc) {
+void Drome::update(const game::GameContext & uc) {
 	// TODO 080 update Drome
 	//TRACE << "Update" << this;
 }
@@ -39,6 +39,4 @@ void Drome::draw(const game::DrawContext &dc) {
 	if (y < 0)
 		hide();
 	TileSet::instance.blit_dome(dc.render(),{box().left(),y});
-	// TODO 090 draw Drome
-	//TRACE << "Draw";
 }

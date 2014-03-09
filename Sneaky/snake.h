@@ -158,7 +158,7 @@ public:
 	void initialise(const ResourceContext &ctx, const DrawContext &draw)
 			override;
 	void draw(const DrawContext& gc) override;
-	void update(const UpdateContext & uc) override;
+	void update(const GameContext & uc) override;
 	virtual ~SnakeObject() {
 	}
 protected:

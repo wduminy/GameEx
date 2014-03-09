@@ -156,8 +156,8 @@ void SnakeObject::initialise(const ResourceContext& ctx,
 	_tex_p.reset(ctx.load_texture_bmp(draw,"snakeskin.bmp",1));
 }
 
-void SnakeObject::update(const UpdateContext& uc) {
-	switch (uc.input().key_down()) {
+void SnakeObject::update(const GameContext &c) {
+	switch (c.u.input().key_down()) {
 	case SDLK_a:
 		_left_key_down = true;
 		break;
@@ -167,7 +167,7 @@ void SnakeObject::update(const UpdateContext& uc) {
 	default:
 		break;
 	}
-	switch (uc.input().key_up()) {
+	switch (c.u.input().key_up()) {
 	case SDLK_a:
 		_left_key_down = false;
 		break;

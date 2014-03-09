@@ -110,16 +110,18 @@ PlayScene::PlayScene() :
 	set_hidden(false);
 }
 
-void PlayScene::update(const UpdateContext &uc) {
-	if (uc.input().key_up() == SDLK_ESCAPE)
+void PlayScene::update(const GameContext &c) {
+	if (c.u.input().key_up() == SDLK_ESCAPE)
 		activate_next();
 	else
-		GameObjectChainLink::update(uc);
+		GameObjectChainLink::update(c);
 };
 
-void PlayScene::activate() {
-	 _snake->reset();GameObjectChainLink::activate();
-	for (int i=0; i < 4; i++)
-		_snake->mgr().add(_fence->poly(i));
-	GameObjectChainLink::activate();
+void PlayScene::set_active(bool v) {
+	if (v == true) {
+	 _snake->reset();
+		for (int i=0; i < 4; i++)
+			_snake->mgr().add(_fence->poly(i));
+	}
+	GameObjectChainLink::set_active(v);
 }

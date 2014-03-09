@@ -15,7 +15,7 @@ Controller::Controller() :
 	add_part(main_scene);
 }
 
-void Controller::update(const UpdateContext& ctx) {
+void Controller::update(const GameContext& ctx) {
 	if (_main_page->escaped())
 		deactivate();
 	else

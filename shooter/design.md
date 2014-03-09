@@ -48,13 +48,14 @@ end note
 ShooterState *--> Shooter
 ShooterState *--> WarZone
 
-game.GameObjectWithParts <|-- ShooterState
+game.GameObjectWithDynamicParts <|-- ShooterState
 ShooterState *-- Drome: "parts"
 
 
 class WarZone {
 - encapsulate map data (BMP)
 }
+game.GameObject <|-- WarZone
 
 class ShooterController {
 + handles macro state changes
@@ -66,6 +67,7 @@ game.MainObject <|-- ShooterController
 
 # Load and draw sequence
 @startuml
+scale 1.5 
 == init ==
 main -> ShooterController : construct
 ShooterController ->  ShooterState : construct

@@ -8,7 +8,7 @@
 #include "shooter_constants.h"
 
 /** The shooter game state */
-class ShooterState : public game::GameObjectWithParts {
+class ShooterState : public game::GameObjectWithDynamicParts {
 private:
 	game::CollisionManagerWithBoxes col_mgr_;
 	std::unique_ptr<Shooter> shooter_;
@@ -20,10 +20,9 @@ private:
 public:
 	ShooterState();
 	void initialise(const game::ResourceContext &rctx, const game::DrawContext &dc) override;
-	void update(const game::UpdateContext & uc) override;
+	void update(const game::GameContext & uc) override;
 	void draw(const game::DrawContext &dc) override;
 private:
-	void load_map(const std::string &file_name);
 	const Shooter& shooter() const {ASSERT(shooter_); return *shooter_; }
 	void load_dromes(const std::string &file_name);
 };

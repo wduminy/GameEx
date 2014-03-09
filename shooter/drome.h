@@ -11,7 +11,7 @@ private:
 	const Shooter& shooter_; // Drome needs to be aware of the shooters location
 public:
 	Drome(const object_t type, const tinyxml2::XMLElement * xml, const Shooter& s);
-	void update(const game::UpdateContext & uc) override;
+	void update(const game::GameContext & uc) override;
 	void draw(const game::DrawContext &dc) override;
 };
 

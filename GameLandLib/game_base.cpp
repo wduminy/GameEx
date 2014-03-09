@@ -67,13 +67,16 @@ DrawContext::~DrawContext() {
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
+GameContext::GameContext(const ResourceContext &pr,const UpdateContext &pu, const DrawContext &pd)
+	: r(pr), d(pd), u(pu) {}
+
 void GameObjectWithParts::collect(std::deque<GameObject *> &c) {
 	c.push_back(this);
 	for_each(it,_parts)
 		(*it)->collect(c);
 }
 
-void GameObjectWithParts::update(const UpdateContext &context) {
+void GameObjectWithParts::update(const GameContext &context) {
 	for_each(it,_parts)
 	{
 		if ((*it)->is_active())
@@ -153,7 +156,8 @@ void UpdateContext::log_statistics() const {
 Game::Game(MainObject::u_ptr primaryPart, UpdateContext::u_ptr update,
 		DrawContext::u_ptr draw, ResourceContext::u_ptr resource) :
 		_primary(std::move(primaryPart)), _update(std::move(update)), _draw(
-				std::move(draw)), _resource(std::move(resource)) {
+				std::move(draw)), _resource(std::move(resource)),
+		context_(*_resource, *_update, *_draw) {
 }
 
 Game::Game(MainObject * primaryPart,
@@ -182,7 +186,7 @@ int Game::run() {
 		_update->tick();
 		while (_primary->is_active()) {
 			if (_update->is_update_step()) {
-				_primary->update(*_update);
+				_primary->update(context_);
 			}
 			if (_update->is_draw_step()) {
 				for (auto it = objects.begin(); it != objects.end(); it++) {
@@ -227,12 +231,12 @@ void MainObject::initialise(const ResourceContext & rc, const DrawContext& dc) {
 	GameObjectWithParts::initialise(rc, dc);
 }
 
-void MainObject::update(const UpdateContext& ctx) {
+void MainObject::update(const GameContext& ctx) {
 	GameObjectWithParts::update(ctx);
-	auto i = ctx.input();
+	auto i = ctx.u.input();
 	if (i.is_quit() || (i.key_down() == SDLK_c && i.is_ctl_down()))
 		deactivate();
-	if (ctx.input().key_down() == SDL_SCANCODE_PRINTSCREEN)
+	if (ctx.u.input().key_down() == SDL_SCANCODE_PRINTSCREEN)
 		_print_screen = true;
 }
 

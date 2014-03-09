@@ -119,6 +119,15 @@ public:
 
 };
 
+class GameContext {
+public:
+	GameContext(const ResourceContext &pr, const UpdateContext &pu, const DrawContext &pd);
+	const ResourceContext &r;
+	const DrawContext &d;
+	const UpdateContext &u;
+};
+
+
 class Drawable {
 public:
 	virtual void draw(const DrawContext& gc) = 0;
@@ -155,7 +164,7 @@ public:
 	/** draw only this, not children */
 	virtual void draw(const DrawContext& gc) = 0;
 	/** update this and update children */
-	virtual void update(const UpdateContext &) {}
+	virtual void update(const GameContext &) {}
 	virtual void collect(std::deque<GameObject *> &c) {c.push_back(this);}
 	int draw_order() const {return _draw_order;}
 	/** change the hidden state */
@@ -206,13 +215,20 @@ class GameObjectWithParts: public GameObject {
 public:
 	GameObjectWithParts(const int drawOrder = 0) :
 			GameObject(drawOrder), _parts() {}
-	/** Call initialise() for every child.  In the order in which the children were added */
+	/** Call initialise() for every part - in the order in which the children were added.
+	 * Implementors should call inherited after adding parts. */
 	virtual void initialise(const ResourceContext &rctx, const DrawContext& dctx) override {
 		for (auto p = _parts.begin(); p != _parts.end(); p++) (*p)->initialise(rctx,dctx);
 	};
 	/** Call update() for each active child */
-	void update(const UpdateContext &context) override;
+	void update(const GameContext &context) override;
 
+	/**
+	 * Parts can be added during construction or initialise().
+	 * Use GameObjectWithDynamicParts if parts are added or removed
+	 * during runtime.
+	 * @param object
+	 */
 	void add_part(GameObject::u_ptr object) {
 		auto before_end = _parts.before_begin();
 		for (auto& _ : _parts)
@@ -222,7 +238,8 @@ public:
 
 	/** Add a part to this composite.
 	 * Note that this memory of this part is is managed by this
-	 * containing object.
+	 * object.
+	 * See add_part((GameObject::u_ptr)
 	 * @param object
 	 */
 	void add_part(GameObject * object) {
@@ -232,7 +249,7 @@ public:
 		_parts.emplace_after(before_end, GameObject::u_ptr(object));
 	}
 
-	void collect(std::deque<GameObject*> &c);
+	void collect(std::deque<GameObject*> &c) override;
 	/** Default draw method does nothing.  Note that it does not draw the children.*/
 	void draw(const DrawContext&) override {};
 protected:
@@ -241,6 +258,29 @@ protected:
 	std::forward_list<GameObject::u_ptr> _parts;
 };
 
+/**
+ * Use this when parts are added during runtime.
+ * No parts are allowed to be added during construction or initialise.
+ * The big difference here is that draw is not handled by the main
+ * loop - that means that the global draw order does not apply.
+ * At this time a local draw order is also not yet implemented
+ * i.e. object are drawn in the order in which they are added.
+ */
+class GameObjectWithDynamicParts : public GameObjectWithParts {
+public:
+	GameObjectWithDynamicParts() :
+		GameObjectWithParts(0) {}
+	void collect(std::deque<GameObject*> &c) override {
+		if (_parts.empty())
+			GameObjectWithParts::collect(c);
+		else
+			throw std::runtime_error("cannot add parts to GameObjectWithDynamicParts during initialise phase");
+	}
+	/** Default draw method draws the children.*/
+	void draw(const DrawContext& dc) override {
+		for (auto &p : _parts) p->draw(dc);
+	};
+};
 
 /**
  Use this as base when you have a chain of GameObjectWithParts such that only one object in the
@@ -264,7 +304,7 @@ public:
 	MainObject(int drawOrder=-1, GLdouble nearest=0.1, GLdouble farest=100)
 		: GameObjectWithParts(drawOrder), _nearest(nearest), _farest(farest), _print_screen(false) {};
     void initialise(const ResourceContext & rctx, const DrawContext& dctx) override;
-	void update(const UpdateContext& ctx) override;
+	void update(const GameContext& ctx) override;
 	void draw(const DrawContext&) override;
 private:
 	GLdouble _nearest, _farest;
@@ -272,6 +312,7 @@ private:
 public:
 	typedef std::unique_ptr<MainObject> u_ptr;
 };
+
 
 class Game {
 public:
@@ -292,6 +333,7 @@ private:
 	UpdateContext::u_ptr _update;
 	DrawContext::u_ptr _draw;
 	ResourceContext::u_ptr _resource;
+	GameContext context_;
 };
 
 }

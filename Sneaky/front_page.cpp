@@ -38,10 +38,10 @@ void FrontPage::initialise(const ResourceContext &rc, const DrawContext& dc) {
 }
 ;
 
-void FrontPage::update(const UpdateContext &uc) {
-	if (uc.input().key_down() == SDLK_ESCAPE)
+void FrontPage::update(const GameContext &c) {
+	if (c.u.input().key_down() == SDLK_ESCAPE)
 		_escaped = true;
-	else if (uc.input().key_down() == SDLK_RETURN)
+	else if (c.u.input().key_down() == SDLK_RETURN)
 		activate_next();
 }
 ;

@@ -34,8 +34,8 @@
 		PREVENT_COPY(PlayScene)
 	public:
 		PlayScene();
-		void update(const UpdateContext &uc) override;
-		void activate() override;
+		void update(const GameContext &uc) override;
+		void set_active(bool v) override;
 	private:
 		CollisionManagerWithBoxes _col_mgr;
 	public:

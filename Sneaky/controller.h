@@ -12,7 +12,7 @@ class Controller: public MainObject {
 	PREVENT_COPY(Controller)
 public:
 	Controller();
-	void update(const UpdateContext& ctx) override;
+	void update(const GameContext& ctx) override;
 private:
 	/** The object in the link chain that causes this
 	 *  controller to stop when it is not active.
