@@ -1,7 +1,9 @@
 #pragma once
 #include "shooter_constants.h"
 #include <collisions2d.h>
+#include <game.h>
 #include "tileset.h"
+
 
 enum class HorizontalDir{Left,Right,None};
 enum class VerticalDir{Up,Down,None};
@@ -14,7 +16,8 @@ using game::Vector2;
 
 enum class LifeStatus{Dormant, Active, Destroyed};
 
-class Animate : public game::CollidablePolygon {
+class Animate : public game::CollidablePolygon,
+                public game::GameObject {
 private:
 	LifeStatus status_;
 protected:
@@ -29,17 +32,20 @@ protected:
 class Shooter : public Animate {
 private:
 	Scalar bottom_,    // latitudinal coordinate of the bottom of the visible map
-		   os_,        // offset speed
-		   map_left_;  // offset of left hand size of visible map
-public:
-	Shooter();
-	Scalar bottom_of_view() const {return bottom_;};
-	Scalar view_top() const {return bottom_ - box().top() - SHOOTER_HEIGHT_PX;}
+		   os_;        // offset speed
+	const Scalar map_left_;  // offset of left hand size of visible map
+	bool left_key_down_, right_key_down_, up_key_down_, down_key_down_;
+	SDL_Rect draw_dst_;
+	int row_at_top_;
 	void move(double lapse);
 	void set_dir(const HorizontalDir dir);
 	void set_dir(const VerticalDir dir);
-	Scalar map_left() const {return map_left_;}
-	void set_map_left(const Scalar& v) {map_left_ = v; }
+	Scalar view_top() const {return bottom_ - box().top() - SHOOTER_HEIGHT_PX;}
+public:
+	Shooter(const Scalar& left);
 	Scalar xlate_y(const Scalar map_y, const Scalar h) const {return LEVEL_HEIGHT_PX - bottom_ + LEVEL_HEIGHT_PX - map_y -h;}
-	//{return bottom_ - (LEVEL_HEIGHT_PX - map_y);}
+	Scalar map_left() const {return map_left_;}
+	Scalar bottom_of_view() const {return bottom_;};
+	void update(const game::GameContext & c) override;
+	void draw(const game::DrawContext &dc) override;
 };

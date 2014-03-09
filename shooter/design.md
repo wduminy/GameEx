@@ -13,6 +13,7 @@ enum LifeStatus {
 class Animate { 
  + location
 }
+game.GameObject <|-- Animate
 
 
 Animate -> LifeStatus
@@ -24,7 +25,6 @@ class Drome {
 + update and draw
 }
 
-game.GameObject <|-- Drome
 Animate <|-- Drome
 
 class Shooter {
@@ -34,22 +34,14 @@ Animate <|-- Shooter
 
 
 class ShooterState {
-- encapsulates game state
-+ updates game state
-+ handles input
-+ readsXML
+- dynamic zone objects 
 }
-note right of ShooterState
- <color:red>TODO
-  move shooter 
-  and warzone specific code 
-  outa here?
-end note
+
 ShooterState *--> Shooter
-ShooterState *--> WarZone
+ShooterState *-> WarZone
 
 game.GameObjectWithDynamicParts <|-- ShooterState
-ShooterState *-- Drome: "parts"
+ShooterState *-- Drome
 
 
 class WarZone {

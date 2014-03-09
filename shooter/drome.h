@@ -6,7 +6,7 @@
 #include "shooter.h"
 using game::object_t;
 
-class Drome : public game::GameObject, public Animate {
+class Drome : public Animate {
 private:
 	const Shooter& shooter_; // Drome needs to be aware of the shooters location
 public:

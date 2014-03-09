@@ -22,7 +22,7 @@ namespace tut {
 		auto statics = root->FirstChildElement()->FirstChildElement("staticDromes");
 		ensure_not_null(statics);
 		auto first_static = statics->FirstChildElement();
-		Shooter s;
+		Shooter s(0);
 		Drome d(object_t::StaticDome,first_static,s);
 		ensure_equals(d.box().left_top(),Vector2(200.0f,300.0f));
 		ensure_equals(d.box().right_bottom(),Vector2(260,336));

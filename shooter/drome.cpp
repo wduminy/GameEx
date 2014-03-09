@@ -26,7 +26,7 @@ Drome::Drome(const object_t type, const tinyxml2::XMLElement * xml, const Shoote
 }
 
 void Drome::update(const game::GameContext & uc) {
-	// TODO 080 update Drome
+	// TODO 100 update Drome -- maybe it must turn?
 	//TRACE << "Update" << this;
 }
 
