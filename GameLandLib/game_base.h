@@ -10,7 +10,7 @@
 #include "gl_objects.h"
 
 namespace game {
-typedef uint32_t time;
+typedef uint32_t game_time_t;
 using std::string;
 
 
@@ -80,16 +80,17 @@ public:
 	void log_statistics() const;
 	/** Provides access to the latest user input */
 	const InputEvent& input() const {return _event;}
+	game_time_t time() const {return _tick_time;}
 private:
 	InputEvent _event;
 	const unsigned int _update_interval;
 	const unsigned int _draw_interval;
 	const Uint32 _first_tick;
-	time next_update;
-	time next_draw;
+	game_time_t next_update;
+	game_time_t next_draw;
 	bool update;
 	bool draw;
-	Uint32 _tick_time;
+	game_time_t _tick_time;
 	unsigned int _draws, _updates;
 public:
 	typedef std::unique_ptr<UpdateContext> u_ptr;
