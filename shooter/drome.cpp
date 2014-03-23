@@ -28,18 +28,15 @@ Drome::Drome(const object_t type, const tinyxml2::XMLElement * xml, const Shoote
 
 void Drome::update(const game::GameContext & c) {
 	auto d = box().left_top() - shooter_.box().left_top();
-
 	degree_ = int(atan2(d.y(),d.x()) * 180.0 / 3.14 + 270) % 360;
-	// TODO 100 update Drome -- maybe it must turn?
 }
 
-/**
- * The drome is drawn
- * @param dc
- */
 void Drome::draw(const game::DrawContext &dc) {
 	const auto y = shooter_.xlate_y(box().top(), STATIC_DOME_PX);
-	if (y < 0)
+	if (y < -STATIC_DOME_PX)
+		return;
+	else if (y < WINDOW_HEIGHT)
+		TileSet::instance.blit_dome(dc.render(),{box().left(),y},(degree_/45));
+	else
 		hide();
-	TileSet::instance.blit_dome(dc.render(),{box().left(),y},(degree_/45));
 }

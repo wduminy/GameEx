@@ -12,21 +12,23 @@ namespace {
 
 ShooterState::ShooterState() :
 		game::GameObjectWithDynamicParts(), col_mgr_(new ShooterCollisions(),
-				play_box, 4), shooter_(), zone_() {
+				play_box, 4), shooter_(), zone_(), position_schedule_() {
 }
 
 
 void ShooterState::load_dromes(const std::string &file_name) {
-	tinyxml2::XMLDocument doc;
-	doc.LoadFile(file_name.c_str());
-	auto root = doc.RootElement();
+	xml_.LoadFile(file_name.c_str());
+	auto root = xml_.RootElement();
 	auto xml = root->FirstChildElement();
 	auto statics = xml->FirstChildElement("staticDromes");
-	ASSERT(shooter_);
+	ASSERT(position_schedule_);
 	if (statics != nullptr) {
 		auto elem = statics->FirstChildElement();
 		while (elem != nullptr) {
-			add_part(new Drome(object_t::StaticDome,elem,*shooter_));
+			auto triggerpoint = -elem->IntAttribute("y") - WINDOW_HEIGHT ;
+			position_schedule_->push(triggerpoint,[&,elem](const game::GameContext& c) {
+				add_part(new Drome(object_t::StaticDome,elem,*shooter_));
+			});
 			elem = elem->NextSiblingElement();
 		}
 	}
@@ -37,11 +39,12 @@ void ShooterState::update(const game::GameContext & c) {
 		shooter_ = new Shooter((c.d.width()/2) - MAP_WIDTH_PX/2);
 			ENSURE(shooter_->map_left() + MAP_WIDTH_PX <= c.d.width(), "map is too wide for screen");
 		add_part(zone_ = new WarZone(c.r.path_to("level1.bmp"),*shooter_));
-		load_dromes(c.r.path_to("level1.xml"));
 		if (!TileSet::instance.has_image())
 			TileSet::instance.load_image(c.r.path_to("Master484.png"),c.d.render());
 		zone_->update_tile_indexes();
 		add_part(shooter_);
+		add_part(position_schedule_ = new PositionSchedule(shooter_));
+		load_dromes(c.r.path_to("level1.xml"));
 	}
 	GameObjectWithDynamicParts::update(c);
 }	

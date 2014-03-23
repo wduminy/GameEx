@@ -279,7 +279,7 @@ public:
 	}
 	/** Default draw method draws the children.*/
 	void draw(const DrawContext& dc) override {
-		for (auto &p : _parts) p->draw(dc);
+		for (auto &p : _parts) if (p->is_visible()) p->draw(dc);
 	};
 };
 

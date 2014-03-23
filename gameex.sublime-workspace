@@ -519,6 +519,22 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "GameLandLib/game_base.h",
+			"settings":
+			{
+				"buffer_size": 11781,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "GameLandLib/log.h",
+			"settings":
+			{
+				"buffer_size": 602,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "Packages/Makefile/Make.sublime-build",
 	"command_palette":
@@ -701,6 +717,7 @@
 	},
 	"file_history":
 	[
+		"/c/mingw/include/sys/types.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/controller.h",
 		"/C/development/openshift/code/wsgi/openshift/urls.py",
 		"/C/development/openshift/code/setup.py",
@@ -827,8 +844,7 @@
 		"/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/array",
 		"/c/users/willemd/documents/github/gameex/terraindemo/terrain_main.cpp",
 		"/c/users/willemd/documents/github/gameex/gamelandlib/gl_objects.cpp",
-		"/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/bits/unique_ptr.h",
-		"/C/Users/willemd/AppData/Roaming/Sublime Text 3/Packages/SublimeGDB/SublimeGDB.sublime-settings"
+		"/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/bits/unique_ptr.h"
 	],
 	"find":
 	{
@@ -994,8 +1010,67 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "GameLandLib/game_base.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11781,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								279,
+								279
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 22.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "GameLandLib/log.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 602,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								581,
+								581
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 442.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
 			]
 		}
 	],
