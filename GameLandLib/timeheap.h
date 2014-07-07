@@ -31,7 +31,7 @@ public:
 	}
 	/** nothing to draw */
 	void draw(const DrawContext& gc) final {};
-	/** fires an event if it there is one at or less than than this point */
+	/** fires an event if there is one at or before this point */
 	void update(const GameContext &c) final {
 		const auto n = now(c);
 		while (!q_.empty() && (q_.top().fire_point() <= n)) {
@@ -52,7 +52,7 @@ public:
  */
 class TimeHeap final : public EventHeap<game_time_t> {
 public:
-	game_time_t now(const GameContext &c) const {return c.u.time();}
+	game_time_t now(const GameContext &c) const final {return c.u.time();}
 };
 
 

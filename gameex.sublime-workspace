@@ -523,7 +523,23 @@
 			"file": "GameLandLib/game_base.h",
 			"settings":
 			{
-				"buffer_size": 11781,
+				"buffer_size": 11802,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "makefile",
+			"settings":
+			{
+				"buffer_size": 2388,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/development/github/artiboard/input/readme.md",
+			"settings":
+			{
+				"buffer_size": 396,
 				"line_ending": "Windows"
 			}
 		},
@@ -717,6 +733,8 @@
 	},
 	"file_history":
 	[
+		"/C/development/cpp/libraries/gtest-1.7.0/make/Makefile",
+		"/C/Users/willemd/.vimfiles/ftplugin/tex_latexSuite.vim",
 		"/c/mingw/include/sys/types.h",
 		"/C/Users/willemd/Documents/GitHub/GameEx/Sneaky/controller.h",
 		"/C/development/openshift/code/wsgi/openshift/urls.py",
@@ -842,9 +860,7 @@
 		"/c/users/willemd/documents/github/gameex/gamelandlib/game_math.h",
 		"/C/Program Files/Sublime Text 3/Packages/Theme - Default.sublime-package",
 		"/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/array",
-		"/c/users/willemd/documents/github/gameex/terraindemo/terrain_main.cpp",
-		"/c/users/willemd/documents/github/gameex/gamelandlib/gl_objects.cpp",
-		"/c/mingw/lib/gcc/mingw32/4.7.2/include/c++/bits/unique_ptr.h"
+		"/c/users/willemd/documents/github/gameex/terraindemo/terrain_main.cpp"
 	],
 	"find":
 	{
@@ -1010,7 +1026,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -1019,15 +1035,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11781,
+						"buffer_size": 11802,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								279,
-								279
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1039,11 +1055,67 @@
 						"translation.y": 22.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
+					"file": "makefile",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 2388,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Makefile/Makefile.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/development/github/artiboard/input/readme.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 396,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								396,
+								327
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
 					"file": "GameLandLib/log.h",
 					"semi_transient": false,
 					"settings":
@@ -1068,7 +1140,7 @@
 						"translation.y": 442.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				}
 			]

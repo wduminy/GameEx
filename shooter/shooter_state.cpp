@@ -25,9 +25,14 @@ void ShooterState::load_dromes(const std::string &file_name) {
 	if (statics != nullptr) {
 		auto elem = statics->FirstChildElement();
 		while (elem != nullptr) {
-			auto triggerpoint = -elem->IntAttribute("y") - WINDOW_HEIGHT ;
-			position_schedule_->push(triggerpoint,[&,elem](const game::GameContext& c) {
-				add_part(new Drome(object_t::StaticDome,elem,*shooter_));
+			auto add_time = -elem->IntAttribute("y") - WINDOW_HEIGHT ;
+			auto remove_time = add_time + WINDOW_HEIGHT*2;
+			auto part = new Drome(object_t::StaticDome,elem,*shooter_);
+			position_schedule_->push(add_time,[&,part](const game::GameContext& c) {
+				add_part(part);
+			});
+			position_schedule_->push(remove_time,[&,part](const game::GameContext& c) {
+				remove_part(part);
 			});
 			elem = elem->NextSiblingElement();
 		}

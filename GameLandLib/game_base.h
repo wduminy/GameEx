@@ -277,6 +277,9 @@ public:
 		else
 			throw std::runtime_error("cannot add parts to GameObjectWithDynamicParts during initialise phase");
 	}
+	void remove_part(GameObject * p) {
+		_parts.remove_if([&p](GameObject::u_ptr &e) {return e.get() == p;});
+	}
 	/** Default draw method draws the children.*/
 	void draw(const DrawContext& dc) override {
 		for (auto &p : _parts) if (p->is_visible()) p->draw(dc);

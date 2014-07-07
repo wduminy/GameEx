@@ -8,6 +8,7 @@
 #include "shooter_constants.h"
 #include <timeheap.h>
 
+/* A EventHeap that is based on the position of the shooter */
 class PositionSchedule final : public game::EventHeap<game::Scalar> {
 private:
 	Shooter * shooter_;
