@@ -25,7 +25,9 @@ namespace tut {
 		Shooter s(0);
 		Drome d(object_t::StaticDome,first_static,s);
 		ensure_equals(d.box().left_top(),Vector2(200.0f,300.0f));
-		ensure_equals(d.box().right_bottom(),Vector2(260,336));
+		ensure_equals(d.box().right_bottom(),Vector2(258,358));
 	END
 
+	// TODO 100 implement unit test to schedule bullets here
+	//
 }

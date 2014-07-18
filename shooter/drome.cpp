@@ -18,7 +18,7 @@ Drome::Drome(const object_t type, const tinyxml2::XMLElement * xml, const Shoote
 	const auto yok = (y >= 0 && y <= my);
 	if (!xok) throw runtime_error_ex("%d is invalid for x. it must be between 0 an %d  ",x, mx);
 	if (!yok) throw runtime_error_ex("%d is invalid for y. it must be between 0 an %d", y, my);
-	ASSERT(s.map_left()>0);
+	ASSERT(s.map_left()>=0);
 	set_start(Vector2(x+s.map_left(),y));
 	add_relative(Vector2(STATIC_DOME_PX,0));
 	add_relative(Vector2(0,STATIC_DOME_PX));
