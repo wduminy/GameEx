@@ -27,8 +27,10 @@ SceneNode::u_ptr SceneNode::detach(SceneNode * child) {
 	return result;
 }
 
-void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	// TODO 100 implement draw
+void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates state) const {
+	state.transform *= getTransform();
+	draw_node(target,state);
+	for(auto &e : m_children) e->draw(target,state);
 }
 
 }

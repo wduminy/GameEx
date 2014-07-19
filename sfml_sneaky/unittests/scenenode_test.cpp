@@ -1,10 +1,12 @@
-#define BOOST_TEST_NO_DYN_LINK
 #include <boost/test/unit_test.hpp>
 #include "../scenenode.h"
 using namespace codespear;
 
 struct TestNode : public SceneNode {
-	bool drawn = false;
+	mutable bool drawn = false;
+	void draw_node(sf::RenderTarget& target, sf::RenderStates states) const override {
+		drawn = true;
+	}
 };
 
 struct Fixture {
@@ -17,7 +19,7 @@ struct Fixture {
 		return r;
 	}
 	Fixture() {
-		target.create(100,100);
+		target.create(10,10);
 	}
 };
 
@@ -32,7 +34,7 @@ BOOST_FIXTURE_TEST_CASE( attach_and_detach, Fixture ) {
 
 BOOST_FIXTURE_TEST_CASE( draw, Fixture ) {
 	auto child_p = add_node();
-//	root.draw(target,states);
+	root.draw(target,states);
 	BOOST_REQUIRE(child_p->drawn);
 }
 

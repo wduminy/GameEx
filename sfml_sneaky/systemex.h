@@ -103,15 +103,6 @@ namespace codespear {
 			char *  _what;
 			bool _value;
 	};
-
-	template <class T, class F> inline
-	void for_all(T coll, F fun) {std::for_each(coll.begin(), coll.end(), fun);}
-
-	template <class E> inline void deleteF(E e) {delete e;}
-
-	template <class T> inline void delete_all(std::list<T> coll) {for_all(coll,deleteF<T>);}
 }
 
 
-// note : do not call the second argument of this macro as a function
-#define for_each(I,C) for(auto I = C.begin(); I != C.end(); ++I)
