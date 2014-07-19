@@ -5,16 +5,15 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 namespace codespear {
-constexpr float ftStep{1.f}, ftSlice{1.f};
 using FrameTime = float;
 
 class Game {
 private:
-	sf::RenderWindow window_;
-	FrameTime last_{0.f}, current_{0.f};
+	sf::RenderWindow m_window;
+	FrameTime m_previous{0.f}, m_current{0.f};
 public:
 	Game(const unsigned int  window_width, const unsigned int  window_height, const char* window_title);
-	void run();
+	virtual void run();
 	virtual ~Game() {}
 protected:
 	virtual void update(FrameTime step) = 0;

@@ -3,40 +3,42 @@
 // License page: http://opensource.org/licenses/GPL-3.0
 #include "game.h"
 #include <chrono>
-
+namespace {
+}
 namespace codespear {
 	Game::Game(const unsigned int window_width, const unsigned int  window_height, const char * window_title)
-	 : window_({window_width, window_height},window_title) {
-		window_.setVerticalSyncEnabled(true);
+	 : m_window({window_width, window_height},window_title) {
+		m_window.setVerticalSyncEnabled(true);
 	}
 
 	void Game::run()
 	{
-		while(window_.isOpen())
+		while(m_window.isOpen())
 		{
 			auto timePoint1 = std::chrono::high_resolution_clock::now();
 			// handle input
 			sf::Event event;
-			while(window_.pollEvent(event)) {
+			while(m_window.pollEvent(event)) {
 				if(event.type == sf::Event::Closed) 			{
-					window_.close();
+					m_window.close();
 					break;
 				}
 			}
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
-				window_.close();
-			// update is steps (if drawing is really slow, we catch up)
-			current_ += last_;
-			for(; current_ >= ftSlice; current_ -= ftSlice)
-				update(ftStep);
+				m_window.close();
+			// update in frame steps
+			static const FrameTime frame_step = 1.f;
+			m_current += m_previous;
+			for(; m_current >= frame_step; m_current -= frame_step)
+				update(frame_step);
 			// draw
-			window_.clear(sf::Color::Black);
-			draw(window_);
-			window_.display();
+			m_window.clear(sf::Color::Black);
+			draw(m_window);
+			m_window.display();
 
 			auto timePoint2 = std::chrono::high_resolution_clock::now();
 			auto elapsedTime = timePoint2 - timePoint1;
-			last_ = std::chrono::duration_cast<
+			m_previous = std::chrono::duration_cast<
 				std::chrono::duration<float, std::milli>>(elapsedTime).count();
 		}
 	};
