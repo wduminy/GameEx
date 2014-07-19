@@ -5,18 +5,46 @@
 #include "sneakyworld.h"
 
 namespace sneaky {
+using std::vector;
+using Location = sf::Vector2f;
+using sf::Vertex;
+
+const auto ARENA_SQUARE = 100.f;
+const size_t ARENA_WIDTH_TILES = 30;
+const size_t ARENA_HEIGHT_TILES = 30;
+const size_t ARENA_TILE_COUNT = ARENA_WIDTH_TILES * ARENA_HEIGHT_TILES;
+
+Location tile_location(const int x, const int y) {
+	return Location{x*ARENA_SQUARE,y*ARENA_SQUARE};
+}
+
+size_t tile_number(const int x, const int y) {
+	return x + y * ARENA_WIDTH_TILES;
+}
 
 class Arena : public SceneNode {
 private:
-	sf::RectangleShape m_shape{{120,50}};
+	sf::VertexArray m_vertices{sf::Quads,ARENA_TILE_COUNT*4};
 public:
 	Arena() {
-		m_shape.setSize({10,10});
-		m_shape.setFillColor(sf::Color(150,150,150));
+		for (size_t x = 0; x < ARENA_WIDTH_TILES; x++)
+			for (size_t y = 0; y < ARENA_HEIGHT_TILES; y++) {
+				const auto index = tile_number(x,y)*4;
+				Vertex * quad = &m_vertices[index];
+				quad[0].position = tile_location(x,y);
+				quad[1].position = tile_location(x+1,y);
+				quad[2].position = tile_location(x+1,y+1);
+				quad[3].position = tile_location(x,y+1);
+				quad[0].color = {100,1,100};
+				quad[1].color = {255,255,255};
+				quad[2].color = {100,1,100};
+				quad[3].color = {255,255,255};
+			}
 	}
 protected:
 	void draw_node(sf::RenderTarget& target, sf::RenderStates state) const override {
-		target.draw(m_shape);
+		// TODO 100 define arena concept further
+		target.draw(m_vertices,state);
 	}
 };
 
