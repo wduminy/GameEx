@@ -16,6 +16,7 @@ public:
 	virtual void run();
 	virtual ~Game() {}
 protected:
+	const sf::RenderWindow& window() const {return m_window;}
 	virtual void update(FrameTime step) = 0;
 	virtual void draw(sf::RenderTarget &window) = 0;
 };

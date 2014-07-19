@@ -52,15 +52,16 @@ SneakyWorld::SneakyWorld() : m_scene_graph(), m_arena(new Arena()) {
 	m_scene_graph.attach(SceneNode::u_ptr(m_arena));
 }
 
-SneakyGame::SneakyGame() : Game(800,600,"Sneaky") {}
+SneakyGame::SneakyGame() : Game(800,600,"Sneaky"), m_view(window().getDefaultView()) {}
 
 void SneakyGame::run() {
 	Game::run();
 }
 void SneakyGame::update(codespear::FrameTime step) {
-
+	m_view.move(1,1);
 }
 void SneakyGame::draw(sf::RenderTarget &window) {
+	window.setView(m_view);
 	m_world.scene().draw(window,m_rstate);
 }
 }

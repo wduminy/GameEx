@@ -27,7 +27,7 @@ namespace codespear {
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
 				m_window.close();
 			// update in frame steps
-			static const FrameTime frame_step = 1.f;
+			static const FrameTime frame_step = 50.f; // 50 millis is 20 updates per second
 			m_current += m_previous;
 			for(; m_current >= frame_step; m_current -= frame_step)
 				update(frame_step);

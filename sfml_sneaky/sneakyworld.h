@@ -26,6 +26,7 @@ class SneakyGame : public Game {
 private:
 	sf::RenderStates m_rstate;
 	SneakyWorld m_world;
+	sf::View m_view;
 public:
 	SneakyGame();
 	void run() override;
