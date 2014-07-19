@@ -10,15 +10,21 @@ namespace sneaky {
 using codespear::Game;
 using codespear::FrameTime;
 using codespear::SceneNode;
-
+using codespear::SceneGraph;
+class Arena;
 
 class SneakyWorld {
 private:
-	SceneNode m_scene_graph;
+	SceneGraph m_scene_graph;
+	Arena * m_arena;
+public:
+	const SceneNode& scene() const {return m_scene_graph;}
+	SneakyWorld();
 };
 
 class SneakyGame : public Game {
 private:
+	sf::RenderStates m_rstate;
 	SneakyWorld m_world;
 public:
 	SneakyGame();

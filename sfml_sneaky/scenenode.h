@@ -37,7 +37,14 @@ public:
 	 */
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const final;
 protected:
-	virtual void draw_node(sf::RenderTarget& target, sf::RenderStates state) const {}
+	virtual void draw_node(sf::RenderTarget& target, sf::RenderStates state) const = 0;
 };
 
+/**
+ * An invisible SceneNode
+ */
+class SceneGraph : public SceneNode {
+protected:
+	void draw_node(sf::RenderTarget& target, sf::RenderStates state) const final {};
+};
 }

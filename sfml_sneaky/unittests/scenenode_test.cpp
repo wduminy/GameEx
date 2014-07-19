@@ -10,7 +10,7 @@ struct TestNode : public SceneNode {
 };
 
 struct Fixture {
-	SceneNode root;
+	SceneGraph root;
 	sf::RenderTexture target;
 	sf::RenderStates states;
 	TestNode * add_node() {
