@@ -3,14 +3,16 @@
 // License page: http://opensource.org/licenses/GPL-3.0
 
 #pragma once
-#include <SFML/Graphics.hpp>
+#include "gamestate.h"
 namespace codespear {
-using FrameTime = float;
+
 
 class Game {
 private:
 	sf::RenderWindow m_window;
+	StateStack m_stack;
 	FrameTime m_previous{0.f}, m_current{0.f};
+	Context m_context;
 public:
 	Game(const unsigned int  window_width, const unsigned int  window_height, const char* window_title);
 	void run();

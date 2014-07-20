@@ -8,6 +8,7 @@ namespace codespear {
 	Game::Game(const unsigned int window_width, const unsigned int  window_height, const char * window_title)
 	 : m_window({window_width, window_height},window_title) {
 		m_window.setVerticalSyncEnabled(true);
+		m_context.window = &m_window;
 	}
 
 	void Game::run()
@@ -23,18 +24,23 @@ namespace codespear {
 					if(event.type == sf::Event::Closed) 			{
 						m_window.close();
 						break;
-					}
+					} else
+						m_stack.handle_event(event);
 				}
 				if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
 					m_window.close();
+
 				// update in frame steps
 				static const FrameTime frame_step = 50.f; // 50 millis is 20 updates per second
 				m_current += m_previous;
-				for(; m_current >= frame_step; m_current -= frame_step)
+				for(; m_current >= frame_step; m_current -= frame_step) {
+					m_stack.update(frame_step);
 					update(frame_step);
+				}
 				// draw
 				m_window.clear(sf::Color::Black);
 				draw(m_window);
+				m_stack.draw();
 				m_window.display();
 
 				auto timePoint2 = std::chrono::high_resolution_clock::now();
