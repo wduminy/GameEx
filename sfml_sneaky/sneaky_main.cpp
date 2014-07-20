@@ -4,9 +4,13 @@
 
 #include "game.h"
 #include "sneakyworld.h"
-
+#include <iostream>
 int main()
 {
-	sneaky::SneakyGame().run();
+	try {
+		sneaky::SneakyGame().run();
+	} catch (std::runtime_error &e) {
+		std::cout << "Error:" << e.what();
+	}
 	return 0;
 }

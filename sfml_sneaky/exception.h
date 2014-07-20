@@ -16,7 +16,7 @@
 #define ASSERT(P) if (!(P)) throw codespear::runtime_error_ex("assert fails: %s %s %d", #P, __FILE__,__LINE__)
 #endif
 // Example: THROW_STREAM("hello " << 12 * 23)
-#define THROW_STREAM(S) {std::ostringstream ss; ss << S; throw runtime_error(ss.str());}
+#define THROW_STREAM(S) {std::ostringstream ss; ss << S; throw std::runtime_error(ss.str());}
 
 namespace codespear {
 	using std::runtime_error;

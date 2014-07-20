@@ -13,10 +13,11 @@ private:
 	FrameTime m_previous{0.f}, m_current{0.f};
 public:
 	Game(const unsigned int  window_width, const unsigned int  window_height, const char* window_title);
-	virtual void run();
+	void run();
 	virtual ~Game() {}
 protected:
 	const sf::RenderWindow& window() const {return m_window;}
+	virtual void init() {};
 	virtual void update(FrameTime step) = 0;
 	virtual void draw(sf::RenderTarget &window) = 0;
 };

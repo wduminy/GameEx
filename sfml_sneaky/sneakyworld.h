@@ -20,6 +20,7 @@ private:
 public:
 	const SceneNode& scene() const {return m_scene_graph;}
 	SneakyWorld();
+	void init();
 };
 
 class SneakyGame : public Game {
@@ -29,7 +30,7 @@ private:
 	sf::View m_view;
 public:
 	SneakyGame();
-	void run() override;
+	void init() override;
 protected:
 	void update(FrameTime step) override;
 	void draw(sf::RenderTarget &window) override;
