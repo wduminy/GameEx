@@ -82,18 +82,33 @@ void SneakyWorld::init(sf::Texture& texture) {
 	m_arena->attach(m_head = new Head(texture));
 }
 
-SneakyGame::SneakyGame() : Game(800,600,"Sneaky"), m_view(window().getDefaultView()) {}
+class PlayState : public codespear::State {
+private:
+	sf::RenderStates m_rstate;
+	SneakyWorld m_world;
+	sf::View m_view;
+	sf::Texture m_texture;
+public:
+	PlayState(codespear::StateStack &stack, codespear::Context context) :
+		codespear::State(stack,context),
+		m_view(m_context.window->getDefaultView()) {
+		check_that(m_texture.loadFromFile(TEXTURE_FILE_NAME));
+		m_world.init(m_texture);
+	}
+	void update(FrameTime step) override {
+		m_world.update(step);
+	}
+	void draw() override {
+		m_context.window->setView(m_view);
+		m_rstate.texture = &m_texture;
+		m_world.scene().draw(*m_context.window,m_rstate);
+	}
+};
+
+SneakyGame::SneakyGame() : Game(800,600,"Sneaky",GameState::Play) {}
 
 void SneakyGame::init() {
-	check_that(m_texture.loadFromFile(TEXTURE_FILE_NAME));
-	m_world.init(m_texture);
+	m_stack.register_state<PlayState>(GameState::Play);
 }
-void SneakyGame::update(codespear::FrameTime step) {
-	m_world.update(step);
-}
-void SneakyGame::draw(sf::RenderTarget &window) {
-	window.setView(m_view);
-	m_rstate.texture = &m_texture;
-	m_world.scene().draw(window,m_rstate);
-}
+
 }

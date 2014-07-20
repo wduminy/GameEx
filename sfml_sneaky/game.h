@@ -10,18 +10,18 @@ namespace codespear {
 class Game {
 private:
 	sf::RenderWindow m_window;
-	StateStack m_stack;
 	FrameTime m_previous{0.f}, m_current{0.f};
 	Context m_context;
+	GameState m_start_state;
 public:
-	Game(const unsigned int  window_width, const unsigned int  window_height, const char* window_title);
+	Game(const unsigned int  window_width,
+			const unsigned int  window_height,
+			const char* window_title, const GameState start);
 	void run();
 	virtual ~Game() {}
 protected:
-	const sf::RenderWindow& window() const {return m_window;}
+	StateStack m_stack;
 	virtual void init() {};
-	virtual void update(FrameTime step) = 0;
-	virtual void draw(sf::RenderTarget &window) = 0;
 };
 
 }

@@ -5,12 +5,14 @@
 
 #include "game.h"
 #include "scenenode.h"
-
 namespace sneaky {
 using codespear::Game;
 using codespear::FrameTime;
 using codespear::SceneNode;
 using codespear::SceneGraph;
+using codespear::GameState;
+
+enum class GameState{Play};
 class Arena;
 class Head;
 class SneakyWorld {
@@ -28,16 +30,9 @@ public:
 
 class SneakyGame : public Game {
 private:
-	sf::RenderStates m_rstate;
-	SneakyWorld m_world;
-	sf::View m_view;
-	sf::Texture m_texture;
 public:
 	SneakyGame();
 	void init() override;
-protected:
-	void update(FrameTime step) override;
-	void draw(sf::RenderTarget &window) override;
 };
 
 }

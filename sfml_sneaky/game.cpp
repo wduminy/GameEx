@@ -5,8 +5,16 @@
 #include <chrono>
 #include <iostream>
 namespace codespear {
-	Game::Game(const unsigned int window_width, const unsigned int  window_height, const char * window_title)
-	 : m_window({window_width, window_height},window_title) {
+
+
+	Game::Game(const unsigned int window_width,
+			const unsigned int  window_height,
+			const char * window_title,
+			const GameState start)
+	 : m_window({window_width, window_height},window_title),
+	   m_context(),
+	   m_start_state(start),
+	   m_stack(m_context){
 		m_window.setVerticalSyncEnabled(true);
 		m_context.window = &m_window;
 	}
@@ -15,6 +23,7 @@ namespace codespear {
 	{
 		try {
 			init();
+			m_stack.push(m_start_state);
 			while(m_window.isOpen())
 			{
 				auto timePoint1 = std::chrono::high_resolution_clock::now();
@@ -29,24 +38,26 @@ namespace codespear {
 				}
 				if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
 					m_window.close();
+				else {
+					// update in frame steps
+					static const FrameTime frame_step = 50.f; // 50 millis is 20 updates per second
+					m_current += m_previous;
+					for(; m_current >= frame_step; m_current -= frame_step)
+						m_stack.update(frame_step);
+					if (m_stack.is_empty())
+						m_window.close();
+					else {
+						// draw
+						m_window.clear(sf::Color::Black);
+						m_stack.draw();
+						m_window.display();
 
-				// update in frame steps
-				static const FrameTime frame_step = 50.f; // 50 millis is 20 updates per second
-				m_current += m_previous;
-				for(; m_current >= frame_step; m_current -= frame_step) {
-					m_stack.update(frame_step);
-					update(frame_step);
+						auto timePoint2 = std::chrono::high_resolution_clock::now();
+						auto elapsedTime = timePoint2 - timePoint1;
+						m_previous = std::chrono::duration_cast<
+							std::chrono::duration<float, std::milli>>(elapsedTime).count();
+					}
 				}
-				// draw
-				m_window.clear(sf::Color::Black);
-				draw(m_window);
-				m_stack.draw();
-				m_window.display();
-
-				auto timePoint2 = std::chrono::high_resolution_clock::now();
-				auto elapsedTime = timePoint2 - timePoint1;
-				m_previous = std::chrono::duration_cast<
-					std::chrono::duration<float, std::milli>>(elapsedTime).count();
 			}
 		}
 		catch (std::exception &e) {
