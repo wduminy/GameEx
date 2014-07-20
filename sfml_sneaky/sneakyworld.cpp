@@ -11,8 +11,9 @@ using std::vector;
 using Point = sf::Vector2f;
 using sf::Vertex;
 using codespear::FlareMap;
+using codespear::SpriteNode;
 
-const auto ARENA_SQUARE = 100.f;
+const auto ARENA_SQUARE = 50.f;
 const size_t ARENA_WIDTH_TILES = 10;
 const size_t ARENA_HEIGHT_TILES = 10;
 const size_t ARENA_TILE_COUNT = ARENA_WIDTH_TILES * ARENA_HEIGHT_TILES;
@@ -33,15 +34,19 @@ size_t tile_number(const int x, const int y) {
 	return x + y * ARENA_WIDTH_TILES;
 }
 
+class Head : public SpriteNode {
+public:
+	Head(const sf::Texture & tex) : SpriteNode(tex,{120,0,10,10}, ARENA_SQUARE/30.f) {}
+
+};
+
 class Arena : public SceneNode {
 private:
 	sf::VertexArray m_vertices{sf::Quads,ARENA_TILE_COUNT*4};
-	sf::Texture m_tileTexture;
 public:
 	Arena() {
 		FlareMap fm(FLAREMAP_FILE_NAME);
 		auto ixs = fm.layer().at("Level1");
-		check_that(m_tileTexture.loadFromFile(TEXTURE_FILE_NAME));
 		for (size_t x = 0; x < ARENA_WIDTH_TILES; x++)
 			for (size_t y = 0; y < ARENA_HEIGHT_TILES; y++) {
 				const auto index = tile_number(x,y)*4;
@@ -59,29 +64,36 @@ public:
 	}
 protected:
 	void draw_node(sf::RenderTarget& target, sf::RenderStates state) const override {
-		// TODO 100 define arena concept further
-		state.texture = &m_tileTexture;
 		target.draw(m_vertices,state);
 	}
 };
 
-SneakyWorld::SneakyWorld() : m_scene_graph(), m_arena(nullptr) {
+SneakyWorld::SneakyWorld() : m_scene_graph(), m_arena(nullptr) , m_head(nullptr) {
 }
 
-void SneakyWorld::init() {
-	m_scene_graph.attach(SceneNode::u_ptr(m_arena = new Arena()));
+void SneakyWorld::update(FrameTime step) {
+	m_head->move(1,1);
+	m_head->rotate(1.f);
+}
+
+
+void SneakyWorld::init(sf::Texture& texture) {
+	m_scene_graph.attach(m_arena = new Arena());
+	m_arena->attach(m_head = new Head(texture));
 }
 
 SneakyGame::SneakyGame() : Game(800,600,"Sneaky"), m_view(window().getDefaultView()) {}
 
 void SneakyGame::init() {
-	m_world.init();
+	check_that(m_texture.loadFromFile(TEXTURE_FILE_NAME));
+	m_world.init(m_texture);
 }
 void SneakyGame::update(codespear::FrameTime step) {
-	m_view.move(1,1);
+	m_world.update(step);
 }
 void SneakyGame::draw(sf::RenderTarget &window) {
 	window.setView(m_view);
+	m_rstate.texture = &m_texture;
 	m_world.scene().draw(window,m_rstate);
 }
 }

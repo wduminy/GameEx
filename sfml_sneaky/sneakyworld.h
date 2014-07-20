@@ -12,15 +12,18 @@ using codespear::FrameTime;
 using codespear::SceneNode;
 using codespear::SceneGraph;
 class Arena;
-
+class Head;
 class SneakyWorld {
+
 private:
 	SceneGraph m_scene_graph;
 	Arena * m_arena;
+	Head * m_head;
 public:
 	const SceneNode& scene() const {return m_scene_graph;}
 	SneakyWorld();
-	void init();
+	void update(FrameTime step);
+	void init(sf::Texture &texture);
 };
 
 class SneakyGame : public Game {
@@ -28,6 +31,7 @@ private:
 	sf::RenderStates m_rstate;
 	SneakyWorld m_world;
 	sf::View m_view;
+	sf::Texture m_texture;
 public:
 	SneakyGame();
 	void init() override;

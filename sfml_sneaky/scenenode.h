@@ -25,6 +25,11 @@ public:
 	 */
 	void attach(u_ptr child);
 	/**
+	 * The caller passes memory management of child to this
+	 * @param child
+	 */
+	void attach(SceneNode *child) {attach(SceneNode::u_ptr(child));}
+	/**
 	 * The child must be part of the node
 	 * @param child
 	 * @return
@@ -36,8 +41,19 @@ public:
 	 * @param states
 	 */
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const final;
+	sf::Transform world_transform() const;
+	sf::Vector2f world_position() const {return world_transform() * sf::Vector2f();}
 protected:
 	virtual void draw_node(sf::RenderTarget& target, sf::RenderStates state) const = 0;
+};
+
+class SpriteNode : public SceneNode {
+public:
+	SpriteNode(const sf::Texture& tex, const sf::IntRect& rect, const float scale);
+protected:
+	void draw_node(sf::RenderTarget& target, sf::RenderStates state) const;
+private:
+	sf::Sprite m_sprite;
 };
 
 /**
