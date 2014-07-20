@@ -3,7 +3,7 @@
 // License page: http://opensource.org/licenses/GPL-3.0
 
 #include "scenenode.h"
-#include "systemex.h"
+#include "exception.h"
 #include <algorithm>
 namespace codespear {
 using std::find_if;
