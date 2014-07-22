@@ -11,8 +11,10 @@
 
 namespace codespear {
 using FrameTime = float;
-struct Context {
+struct Context : sf::NonCopyable {
 	sf::RenderWindow * window;
+	sf::Font * font;
+	sf::Texture * texture;
 };
 
 enum class GameState; // to be provided by the specific game
@@ -21,7 +23,7 @@ class StateStack;
 class State {
 public:
 	using u_ptr = std::unique_ptr<State>;
-	State(StateStack &stack, Context context) : m_stack(&stack), m_context(context) {}
+	State(StateStack &stack, Context& context) : m_stack(&stack), m_context(context) {}
 	/*
 	 * Return true if the event was handled; thus it will not be propagated to
 	 * states lower on the stack
@@ -33,29 +35,29 @@ public:
 private:
 	StateStack * m_stack;
 protected:
-	Context m_context;
+	Context& m_context;
 	void push(GameState s);
 	void pop();
 	void clear();
 };
 
-using StateFactory = std::function<State*(StateStack&,Context)>;
+using StateFactory = std::function<State*(StateStack&,Context&)>;
 
 class StateStack {
 public:
 	enum Operation {Push,Pop,Clear};
 private:
 	std::map<GameState,StateFactory> m_factories;
-	const Context& m_context;
+	Context& m_context;
 	std::vector<State::u_ptr> m_states;
 	struct Pending {Operation op; GameState state;};
 	std::vector<Pending> m_pendings;
 public:
-	explicit StateStack(const Context& context) : m_context(context) {}
+	explicit StateStack(Context& context) : m_context(context) {}
 	void register_state(GameState state, StateFactory f) {m_factories[state] = f;}
 	template <typename T> void register_state(GameState state) {
 		register_state(state,
-				[&](StateStack&s,Context c)
+				[&](StateStack&s,Context& c)
 					{return new T(*this,m_context);}
 		);
 	}

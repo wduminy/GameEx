@@ -5,19 +5,19 @@
 #include "sneakyworld.h"
 #include "exception.h"
 #include "flaremap.h"
+#include "gui.h"
+
+using namespace codespear;
 
 namespace sneaky {
 using std::vector;
 using Point = sf::Vector2f;
 using sf::Vertex;
-using codespear::FlareMap;
-using codespear::SpriteNode;
 
 const auto ARENA_SQUARE = 50.f;
 const size_t ARENA_WIDTH_TILES = 10;
 const size_t ARENA_HEIGHT_TILES = 10;
 const size_t ARENA_TILE_COUNT = ARENA_WIDTH_TILES * ARENA_HEIGHT_TILES;
-const char* TEXTURE_FILE_NAME = "media/sneaky/tiles.png";
 const char* FLAREMAP_FILE_NAME = "media/sneaky/flaremap.txt";
 
 Point tile_location(const int x, const int y) {
@@ -82,33 +82,59 @@ void SneakyWorld::init(sf::Texture& texture) {
 	m_arena->attach(m_head = new Head(texture));
 }
 
-class PlayState : public codespear::State {
+class PlayState : public State {
 private:
 	sf::RenderStates m_rstate;
 	SneakyWorld m_world;
 	sf::View m_view;
-	sf::Texture m_texture;
 public:
-	PlayState(codespear::StateStack &stack, codespear::Context context) :
-		codespear::State(stack,context),
+	PlayState(StateStack &stack, Context& context) : State{stack,context},
 		m_view(m_context.window->getDefaultView()) {
-		check_that(m_texture.loadFromFile(TEXTURE_FILE_NAME));
-		m_world.init(m_texture);
+		m_world.init(*context.texture);
 	}
 	void update(FrameTime step) override {
 		m_world.update(step);
 	}
 	void draw() override {
 		m_context.window->setView(m_view);
-		m_rstate.texture = &m_texture;
+		m_rstate.texture = m_context.texture;
 		m_world.scene().draw(*m_context.window,m_rstate);
 	}
 };
 
-SneakyGame::SneakyGame() : Game(800,600,"Sneaky",GameState::Play) {}
+
+class TitleState : public State {
+private:
+	Panel m_panel;
+	sf::RenderStates states;
+public:
+	TitleState(StateStack &stack, Context &context) : State{stack,context} {
+		m_panel += new Button{"Play",{100, 10}};
+		m_panel += new Button{"Quit",  {100,110}};
+	}
+	void update(FrameTime step) final {
+	}
+	void draw() final {
+		m_context.window->draw(m_panel,states);
+	}
+};
+
+SneakyGame::SneakyGame() : Game(800,600,"Sneaky",GameState::Title) {}
 
 void SneakyGame::init() {
+	check_that(m_texture.loadFromFile("media/sneaky/tiles.png"));
+	check_that(m_font.loadFromFile("media/sneaky/font.ttf"))
+	WidgetSkin::instance.texture = &m_texture;
+	WidgetSkin::instance.font = &m_font;
+	const sf::Vector2i START{120,30}, SIZE{44,21}, GAP{0,22};
+	WidgetSkin::instance.button_normal = {START,SIZE};
+	WidgetSkin::instance.button_selected = {START+GAP,SIZE};
+	WidgetSkin::instance.button_pressed = {START+GAP*2,SIZE};
+	WidgetSkin::instance.button_scale = 5.f;
+	m_context.texture = &m_texture;
+	m_stack.register_state<TitleState>(GameState::Title);
 	m_stack.register_state<PlayState>(GameState::Play);
+
 }
 
 }

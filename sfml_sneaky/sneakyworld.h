@@ -12,7 +12,7 @@ using codespear::SceneNode;
 using codespear::SceneGraph;
 using codespear::GameState;
 
-enum class GameState{Play};
+enum class GameState{Title,Play};
 class Arena;
 class Head;
 class SneakyWorld {
@@ -30,6 +30,8 @@ public:
 
 class SneakyGame : public Game {
 private:
+	sf::Texture m_texture;
+	sf::Font m_font;
 public:
 	SneakyGame();
 	void init() override;

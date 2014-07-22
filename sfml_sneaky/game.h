@@ -11,7 +11,6 @@ class Game {
 private:
 	sf::RenderWindow m_window;
 	FrameTime m_previous{0.f}, m_current{0.f};
-	Context m_context;
 	GameState m_start_state;
 public:
 	Game(const unsigned int  window_width,
@@ -20,6 +19,7 @@ public:
 	void run();
 	virtual ~Game() {}
 protected:
+	Context m_context;
 	StateStack m_stack;
 	virtual void init() {};
 };

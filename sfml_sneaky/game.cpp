@@ -12,8 +12,8 @@ namespace codespear {
 			const char * window_title,
 			const GameState start)
 	 : m_window({window_width, window_height},window_title),
-	   m_context(),
 	   m_start_state(start),
+	   m_context(),
 	   m_stack(m_context){
 		m_window.setVerticalSyncEnabled(true);
 		m_context.window = &m_window;
