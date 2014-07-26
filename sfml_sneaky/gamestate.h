@@ -8,9 +8,10 @@
 #include <map>
 #include <memory>
 #include <vector>
+#include "types.h"
 
 namespace codespear {
-using FrameTime = float;
+
 struct Context : sf::NonCopyable {
 	sf::RenderWindow * window;
 	sf::Font * font;
@@ -37,6 +38,7 @@ private:
 protected:
 	Context& m_context;
 	void push(GameState s);
+	void switch_to(GameState s);
 	void pop();
 	void clear();
 };

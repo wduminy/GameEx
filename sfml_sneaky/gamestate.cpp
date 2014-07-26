@@ -9,6 +9,12 @@ namespace codespear {
 void State::push(GameState s) {
 	m_stack-> push_later(s);
 }
+
+void State::switch_to(GameState s) {
+	m_stack-> pop_later();
+	m_stack->push_later(s);
+}
+
 void State::pop() {
 	m_stack-> pop_later();
 }

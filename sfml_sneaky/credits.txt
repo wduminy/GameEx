@@ -1,0 +1,12 @@
+Tools
+Eclipse CDT 
+MingW
+PlantUML
+Tiled
+
+Libraries
+SMFL
+Boost
+
+Media
+Stagecast Tileset: http://www.cr31.co.uk/stagecast/info/blob.html
