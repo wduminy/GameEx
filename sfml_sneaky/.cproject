@@ -4,7 +4,8 @@
 		<cconfiguration id="cdt.managedbuild.config.gnu.mingw.exe.debug.676747092">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.mingw.exe.debug.676747092" moduleId="org.eclipse.cdt.core.settings" name="Debug">
 				<macros>
-					<stringMacro name="SFML_ROOT" type="VALUE_TEXT" value="F:\dev\smfl\SFML-2.1\"/>
+					<stringMacro name="SFML_ROOT" type="VALUE_TEXT" value="F:\dev\smfl\SFML-2.1"/>
+					<stringMacro name="BOX2D_ROOT" type="VALUE_TEXT" value="F:\dev\box2d"/>
 				</macros>
 				<externalSettings/>
 				<extensions>
@@ -28,7 +29,8 @@
 								<option id="gnu.cpp.compiler.mingw.exe.debug.option.optimization.level.217456556" name="Optimization Level" superClass="gnu.cpp.compiler.mingw.exe.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level.1088221630" name="Debug Level" superClass="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1821443055" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${SFML_ROOT}include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${SFML_ROOT}\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${BOX2D_ROOT}\include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${BOOST_ROOT}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.912032761" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
@@ -46,10 +48,12 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.exe.debug.1060638697" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.exe.debug"/>
 							<tool command="g++ " id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.debug.1169849418" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.debug">
 								<option id="gnu.cpp.link.option.paths.1940074556" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
-									<listOptionValue builtIn="false" value="&quot;${SFML_ROOT}lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${SFML_ROOT}\lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${BOX2D_ROOT}\lib&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.libs.1636805062" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="sfml-audio"/>
+									<listOptionValue builtIn="false" value="Box2D"/>
 									<listOptionValue builtIn="false" value="sfml-window"/>
 									<listOptionValue builtIn="false" value="sfml-system"/>
 									<listOptionValue builtIn="false" value="sfml-graphics"/>
@@ -70,6 +74,10 @@
 		</cconfiguration>
 		<cconfiguration id="cdt.managedbuild.config.gnu.mingw.exe.release.1293383046">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.mingw.exe.release.1293383046" moduleId="org.eclipse.cdt.core.settings" name="Release">
+				<macros>
+					<stringMacro name="SFML_ROOT" type="VALUE_TEXT" value="F:\dev\smfl\SFML-2.1"/>
+					<stringMacro name="BOX2D_ROOT" type="VALUE_TEXT" value="F:\dev\box2d"/>
+				</macros>
 				<externalSettings/>
 				<extensions>
 					<extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
@@ -92,7 +100,8 @@
 								<option id="gnu.cpp.compiler.mingw.exe.release.option.optimization.level.652160388" name="Optimization Level" superClass="gnu.cpp.compiler.mingw.exe.release.option.optimization.level" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.mingw.exe.release.option.debugging.level.1541599041" name="Debug Level" superClass="gnu.cpp.compiler.mingw.exe.release.option.debugging.level" value="gnu.cpp.compiler.debugging.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1865724094" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${SFML_ROOT}include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${SFML_ROOT}\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${BOX2D_ROOT}\include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${BOOST_ROOT}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1725065770" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
@@ -109,6 +118,17 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.exe.release.2000804946" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.exe.release"/>
 							<tool command="g++" id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.release.690827562" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.release">
+								<option id="gnu.cpp.link.option.paths.1351009571" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;${SFML_ROOT}\lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${BOX2D_ROOT}\lib&quot;"/>
+								</option>
+								<option id="gnu.cpp.link.option.libs.1360753721" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
+									<listOptionValue builtIn="false" value="sfml-audio"/>
+									<listOptionValue builtIn="false" value="Box2D"/>
+									<listOptionValue builtIn="false" value="sfml-window"/>
+									<listOptionValue builtIn="false" value="sfml-system"/>
+									<listOptionValue builtIn="false" value="sfml-graphics"/>
+								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1932610326" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -126,7 +146,8 @@
 		<cconfiguration id="cdt.managedbuild.config.gnu.mingw.exe.debug.676747092.1765353289">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.mingw.exe.debug.676747092.1765353289" moduleId="org.eclipse.cdt.core.settings" name="Test">
 				<macros>
-					<stringMacro name="SFML_ROOT" type="VALUE_TEXT" value="F:\dev\smfl\SFML-2.1\"/>
+					<stringMacro name="SFML_ROOT" type="VALUE_TEXT" value="F:\dev\smfl\SFML-2.1"/>
+					<stringMacro name="BOX2D_ROOT" type="VALUE_TEXT" value="F:\dev\box2d"/>
 				</macros>
 				<externalSettings/>
 				<extensions>
@@ -150,7 +171,8 @@
 								<option id="gnu.cpp.compiler.mingw.exe.debug.option.optimization.level.100411755" name="Optimization Level" superClass="gnu.cpp.compiler.mingw.exe.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level.1304422183" name="Debug Level" superClass="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1078168774" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${SFML_ROOT}include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${SFML_ROOT}\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${BOX2D_ROOT}\include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${BOOST_ROOT}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1876356281" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def"/>
@@ -165,15 +187,17 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.exe.debug.632768238" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.exe.debug"/>
 							<tool command="g++" id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.debug.1768779371" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.debug">
 								<option id="gnu.cpp.link.option.paths.2057588167" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
-									<listOptionValue builtIn="false" value="&quot;${SFML_ROOT}lib&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${BOOST_ROOT}/lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${SFML_ROOT}\lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${BOOST_ROOT}\lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${BOX2D_ROOT}\lib&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.libs.1039953212" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="boost_unit_test_framework-mgw48-mt-s-1_55"/>
-									<listOptionValue builtIn="false" value="sfml-audio-d"/>
-									<listOptionValue builtIn="false" value="sfml-graphics-d"/>
-									<listOptionValue builtIn="false" value="sfml-window-d"/>
-									<listOptionValue builtIn="false" value="sfml-system-d"/>
+									<listOptionValue builtIn="false" value="Box2D"/>
+									<listOptionValue builtIn="false" value="sfml-audio"/>
+									<listOptionValue builtIn="false" value="sfml-window"/>
+									<listOptionValue builtIn="false" value="sfml-system"/>
+									<listOptionValue builtIn="false" value="sfml-graphics"/>
 								</option>
 								<option id="gnu.cpp.link.option.other.1663870843" name="Other options (-Xlinker [option])" superClass="gnu.cpp.link.option.other"/>
 								<option id="gnu.cpp.link.option.flags.1758748556" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="" valueType="string"/>
