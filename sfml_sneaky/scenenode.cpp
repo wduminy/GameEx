@@ -46,9 +46,10 @@ sf::Transform SceneNode::world_transform() const {
 
 
 SpriteNode::SpriteNode(const sf::Texture& tex, const sf::IntRect& rect, const float scale) {
-	m_sprite.setTexture(tex,false);
+	m_sprite.setTexture(tex,true);
 	m_sprite.setTextureRect(rect);
 	m_sprite.setScale({scale,scale});
+	setOrigin({rect.width/2.f*scale,rect.height/2.f*scale});
 }
 
 }

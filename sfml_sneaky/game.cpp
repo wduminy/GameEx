@@ -9,10 +9,8 @@ namespace codespear {
 
 	Game::Game(const unsigned int window_width,
 			const unsigned int  window_height,
-			const char * window_title,
-			const GameState start)
+			const char * window_title)
 	 : m_window({window_width, window_height},window_title),
-	   m_start_state(start),
 	   m_context(),
 	   m_stack(m_context){
 		m_window.setVerticalSyncEnabled(true);
@@ -23,7 +21,7 @@ namespace codespear {
 	{
 		try {
 			init();
-			m_stack.push(m_start_state);
+			m_stack.push(GameState()); // start with the first game state
 			while(m_window.isOpen())
 			{
 				auto timePoint1 = std::chrono::high_resolution_clock::now();
@@ -31,8 +29,7 @@ namespace codespear {
 				sf::Event event;
 				while(m_window.pollEvent(event)) {
 					if(event.type == sf::Event::Closed) 			{
-						m_window.close();
-						break;
+						m_stack.clear();
 					} else
 						m_stack.handle_event(event);
 				}

@@ -33,5 +33,6 @@ void StateStack::apply_pendings() {
 			m_states.clear();
 			break;
 	}
+	m_pendings.clear();
 }
 }

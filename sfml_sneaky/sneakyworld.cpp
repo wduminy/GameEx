@@ -14,7 +14,7 @@ using std::vector;
 using Point = sf::Vector2f;
 using sf::Vertex;
 
-const auto ARENA_SQUARE = 50.f;
+const auto ARENA_SQUARE = 150.f;
 const size_t ARENA_WIDTH_TILES = 10;
 const size_t ARENA_HEIGHT_TILES = 10;
 const size_t ARENA_TILE_COUNT = ARENA_WIDTH_TILES * ARENA_HEIGHT_TILES;
@@ -34,9 +34,14 @@ size_t tile_number(const int x, const int y) {
 	return x + y * ARENA_WIDTH_TILES;
 }
 
+
 class Head : public SpriteNode {
 public:
-	Head(const sf::Texture & tex) : SpriteNode(tex,{120,0,10,10}, ARENA_SQUARE/30.f) {}
+	Head(const sf::Texture & tex) : SpriteNode(tex,{120,0,10,10}, ARENA_SQUARE/30.f) {
+		//setRotation(90);
+		setPosition(ARENA_SQUARE,ARENA_SQUARE);
+		setRotation(90);
+	}
 
 };
 
@@ -72,8 +77,8 @@ SneakyWorld::SneakyWorld() : m_scene_graph(), m_arena(nullptr) , m_head(nullptr)
 }
 
 void SneakyWorld::update(FrameTime step) {
-	m_head->move(1,1);
-	m_head->rotate(1.f);
+	//m_head->move(1,1);
+	m_head->rotate(10);
 }
 
 
@@ -124,7 +129,7 @@ public:
 	}
 };
 
-SneakyGame::SneakyGame() : Game(800,600,"Sneaky",GameState::Title) {}
+SneakyGame::SneakyGame() : Game(800,600,"Sneaky") {}
 
 void SneakyGame::init() {
 	check_that(m_texture.loadFromFile("media/sneaky/tiles.png"));
