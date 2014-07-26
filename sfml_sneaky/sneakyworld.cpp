@@ -14,11 +14,13 @@ using std::vector;
 using Vector = sf::Vector2f;
 using sf::Vertex;
 
-const auto ARENA_SQUARE = 150.f;
+const auto ARENA_SQUARE = 100.f;  // pixel size of one square
+const auto HEAD_SIZE = ARENA_SQUARE / 2.f; // pixel size of head
 const size_t ARENA_WIDTH_TILES = 10;
 const size_t ARENA_HEIGHT_TILES = 10;
 const size_t ARENA_TILE_COUNT = ARENA_WIDTH_TILES * ARENA_HEIGHT_TILES;
 const char* FLAREMAP_FILE_NAME = "media/sneaky/flaremap.txt";
+const float SCROLL_SPEED = 5.f;
 
 Vector tile_location(const int x, const int y) {
 	return Vector{x*ARENA_SQUARE,y*ARENA_SQUARE};
@@ -41,11 +43,10 @@ private:
 	float m_speed;
 	float m_rotation_speed;
 public:
-	Head(const sf::Texture & tex) : SpriteNode(tex,{120*3,0,30,30}, ARENA_SQUARE/(90.f)) {
+	Head(const sf::Texture & tex) : SpriteNode(tex,{120*3,0,90,90}, HEAD_SIZE/(90.f)) {
 		//setRotation(90);
-		setPosition(ARENA_SQUARE,ARENA_SQUARE);
-		setRotation(-90);
-		set_speed(6.f);
+		setPosition(ARENA_SQUARE*3,ARENA_SQUARE*3);
+		set_speed(4.f);
 	}
 
 	void update(FrameTime step) {
@@ -56,8 +57,8 @@ public:
 		}
 	}
 
-	void turn_left() {m_rotation_speed = -4; }
-	void turn_right() {m_rotation_speed = 4; }
+	void turn_left() {m_rotation_speed = -6; }
+	void turn_right() {m_rotation_speed = 6; }
 	void go_straight() {m_rotation_speed = 0.0f; }
 private:
 
@@ -68,7 +69,7 @@ private:
 
 	void adjust_velocity() {
 		sf::Transform t;
-		t.rotate(getRotation()-90);
+		t.rotate(getRotation());
 		m_velocity = t.transformPoint(0,m_speed);
 	}
 
@@ -102,7 +103,6 @@ protected:
 	}
 };
 
-
 class PlayState : public State {
 private:
 	sf::RenderStates m_rstate;
@@ -120,6 +120,8 @@ public:
 	void update(FrameTime step) override {
 		bool left = false;
 		bool right = false;
+		bool up = false;
+		bool down = false;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
 			left = true;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
@@ -132,7 +134,27 @@ public:
 		} else
 			m_head->go_straight();
 		m_head->update(step);
-	}
+		left = right = false;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+			left = true;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+			right = true;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+			up = true;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+			down = true;
+		if (left != right) {
+			if (left)
+				m_view.move(-SCROLL_SPEED,0.f);
+			if (right)
+				m_view.move(SCROLL_SPEED,0.f);
+		}
+		if (up != down)
+			if (up)
+				m_view.move(0.f,-SCROLL_SPEED);
+			if (down)
+				m_view.move(0.f,SCROLL_SPEED);
+		}
 	void draw() override {
 		m_context.window->setView(m_view);
 		m_rstate.texture = m_context.texture;
