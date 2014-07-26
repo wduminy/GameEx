@@ -11,7 +11,7 @@ using namespace codespear;
 
 namespace sneaky {
 using std::vector;
-using Point = sf::Vector2f;
+using Vector = sf::Vector2f;
 using sf::Vertex;
 
 const auto ARENA_SQUARE = 150.f;
@@ -20,14 +20,14 @@ const size_t ARENA_HEIGHT_TILES = 10;
 const size_t ARENA_TILE_COUNT = ARENA_WIDTH_TILES * ARENA_HEIGHT_TILES;
 const char* FLAREMAP_FILE_NAME = "media/sneaky/flaremap.txt";
 
-Point tile_location(const int x, const int y) {
-	return Point{x*ARENA_SQUARE,y*ARENA_SQUARE};
+Vector tile_location(const int x, const int y) {
+	return Vector{x*ARENA_SQUARE,y*ARENA_SQUARE};
 }
 
-Point tex_location(const int index, const int tiles_in_row, const float tile_size) {
+Vector tex_location(const int index, const int tiles_in_row, const float tile_size) {
 	const int y = index / tiles_in_row;
 	const int x = index - tiles_in_row * y;
-	return Point(x * tile_size,y * tile_size);
+	return Vector(x * tile_size,y * tile_size);
 }
 
 size_t tile_number(const int x, const int y) {
@@ -36,11 +36,40 @@ size_t tile_number(const int x, const int y) {
 
 
 class Head : public SpriteNode {
+private:
+	Vector m_velocity;
+	float m_speed;
+	float m_rotation_speed;
 public:
-	Head(const sf::Texture & tex) : SpriteNode(tex,{120,0,10,10}, ARENA_SQUARE/30.f) {
+	Head(const sf::Texture & tex) : SpriteNode(tex,{120*3,0,30,30}, ARENA_SQUARE/(90.f)) {
 		//setRotation(90);
 		setPosition(ARENA_SQUARE,ARENA_SQUARE);
-		setRotation(90);
+		setRotation(-90);
+		set_speed(6.f);
+	}
+
+	void update(FrameTime step) {
+		move(m_velocity);
+		if (m_rotation_speed != 0.f) {
+			rotate(m_rotation_speed);
+			adjust_velocity();
+		}
+	}
+
+	void turn_left() {m_rotation_speed = -4; }
+	void turn_right() {m_rotation_speed = 4; }
+	void go_straight() {m_rotation_speed = 0.0f; }
+private:
+
+	void set_speed(float speed) {
+		m_speed = speed;
+		adjust_velocity();
+	}
+
+	void adjust_velocity() {
+		sf::Transform t;
+		t.rotate(getRotation()-90);
+		m_velocity = t.transformPoint(0,m_speed);
 	}
 
 };
@@ -61,10 +90,10 @@ public:
 				quad[2].position = tile_location(x+1,y+1);
 				quad[3].position = tile_location(x,y+1);
 				auto tile_index = ixs.at(tile_number(x,y)) - 1; // the flare map stores at 1 offset
-				quad[0].texCoords = tex_location(tile_index,4,30.f);
-				quad[1].texCoords = quad[0].texCoords + Point{29,0};
-				quad[2].texCoords = quad[0].texCoords + Point{29,29};
-				quad[3].texCoords = quad[0].texCoords + Point{0,29};
+				quad[0].texCoords = tex_location(tile_index,4,30.f*3);
+				quad[1].texCoords = quad[0].texCoords + Vector{90,0};
+				quad[2].texCoords = quad[0].texCoords + Vector{90,90};
+				quad[3].texCoords = quad[0].texCoords + Vector{0,90};
 			}
 	}
 protected:
@@ -73,37 +102,41 @@ protected:
 	}
 };
 
-SneakyWorld::SneakyWorld() : m_scene_graph(), m_arena(nullptr) , m_head(nullptr) {
-}
-
-void SneakyWorld::update(FrameTime step) {
-	//m_head->move(1,1);
-	m_head->rotate(10);
-}
-
-
-void SneakyWorld::init(sf::Texture& texture) {
-	m_scene_graph.attach(m_arena = new Arena());
-	m_arena->attach(m_head = new Head(texture));
-}
 
 class PlayState : public State {
 private:
 	sf::RenderStates m_rstate;
-	SneakyWorld m_world;
+	SceneGraph m_scene_graph;
+	Arena * m_arena;
+	Head * m_head;
 	sf::View m_view;
 public:
 	PlayState(StateStack &stack, Context& context) : State{stack,context},
 		m_view(m_context.window->getDefaultView()) {
-		m_world.init(*context.texture);
+		m_scene_graph.attach(m_arena = new Arena());
+		m_arena->attach(m_head = new Head(*context.texture));
 	}
+
 	void update(FrameTime step) override {
-		m_world.update(step);
+		bool left = false;
+		bool right = false;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+			left = true;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+			right = true;
+		if (left != right) {
+			if (left)
+				m_head->turn_left();
+			if (right)
+				m_head->turn_right();
+		} else
+			m_head->go_straight();
+		m_head->update(step);
 	}
 	void draw() override {
 		m_context.window->setView(m_view);
 		m_rstate.texture = m_context.texture;
-		m_world.scene().draw(*m_context.window,m_rstate);
+		m_scene_graph.draw(*m_context.window,m_rstate);
 	}
 };
 
@@ -136,11 +169,11 @@ void SneakyGame::init() {
 	check_that(m_font.loadFromFile("media/sneaky/font.ttf"))
 	WidgetSkin::instance.texture = &m_texture;
 	WidgetSkin::instance.font = &m_font;
-	const sf::Vector2i START{120,30}, SIZE{44,21}, GAP{0,22};
+	const sf::Vector2i START{120*3,30*3}, SIZE{44*3,21*3}, GAP{0,22*3};
 	WidgetSkin::instance.button_normal = {START,SIZE};
 	WidgetSkin::instance.button_selected = {START+GAP,SIZE};
 	WidgetSkin::instance.button_pressed = {START+GAP*2,SIZE};
-	WidgetSkin::instance.button_scale = 5.f;
+	WidgetSkin::instance.button_scale = 5.f/3.f;
 	m_context.texture = &m_texture;
 	m_stack.register_state<TitleState>(GameState::Title);
 	m_stack.register_state<PlayState>(GameState::Play);

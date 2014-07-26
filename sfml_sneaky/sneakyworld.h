@@ -13,20 +13,7 @@ using codespear::SceneGraph;
 using codespear::GameState;
 
 enum class GameState{Title,Play};
-class Arena;
-class Head;
-class SneakyWorld {
 
-private:
-	SceneGraph m_scene_graph;
-	Arena * m_arena;
-	Head * m_head;
-public:
-	const SceneNode& scene() const {return m_scene_graph;}
-	SneakyWorld();
-	void update(FrameTime step);
-	void init(sf::Texture &texture);
-};
 
 class SneakyGame : public Game {
 private:
