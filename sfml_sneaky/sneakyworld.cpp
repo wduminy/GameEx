@@ -109,8 +109,13 @@ private:
 	sf::RenderStates states;
 public:
 	TitleState(StateStack &stack, Context &context) : State{stack,context} {
-		m_panel += new Button{"Play",{100, 10}};
-		m_panel += new Button{"Quit",  {100,110}};
+		m_panel += new Button{"Play",{100, 10},[]{}};
+		m_panel += new Button{"Credits",{100, 110},[]{}};
+		m_panel += new Button{"Quit",  {100,210},[&](){pop();}};
+	}
+	bool handle_event(const sf::Event &e) final {
+		m_panel.handle_event(e);
+		return true;
 	}
 	void update(FrameTime step) final {
 	}

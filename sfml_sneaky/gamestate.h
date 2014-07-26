@@ -74,6 +74,7 @@ public:
 	void update(FrameTime delta) {
 		for (auto i = m_states.rbegin(); i != m_states.rend(); ++i)
 			(*i)->update(delta);
+		apply_pendings();
 	}
 	void draw() {
 		for (auto i = m_states.begin(); i != m_states.end(); ++i)
