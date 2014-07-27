@@ -6,6 +6,7 @@
 #include "exception.h"
 #include "flaremap.h"
 #include "gui.h"
+#include "physics.h"
 
 using namespace codespear;
 
@@ -14,10 +15,17 @@ using std::vector;
 using Vector = sf::Vector2f;
 using sf::Vertex;
 
+const auto PIXELS_PER_METER = 300.f;
+const auto METERS_PER_PIXEL = 1.f/PIXELS_PER_METER;
+
 const auto ARENA_SQUARE = 100.f;  // pixel size of one square
+const auto ARENA_SQUARE_M = ARENA_SQUARE * METERS_PER_PIXEL;
 const auto HEAD_SIZE = ARENA_SQUARE / 2.f; // pixel size of head
+const auto HEAD_RADIUS_M = HEAD_SIZE * METERS_PER_PIXEL * 0.5f;
 const size_t ARENA_WIDTH_TILES = 10;
 const size_t ARENA_HEIGHT_TILES = 10;
+const auto ARENA_WIDTH_M = ARENA_WIDTH_TILES * ARENA_SQUARE * METERS_PER_PIXEL;
+const auto ARENA_HEIGHT_M = ARENA_HEIGHT_TILES * ARENA_SQUARE * METERS_PER_PIXEL;
 const size_t ARENA_TILE_COUNT = ARENA_WIDTH_TILES * ARENA_HEIGHT_TILES;
 const char* FLAREMAP_FILE_NAME = "media/sneaky/flaremap.txt";
 const float SCROLL_SPEED = 5.f;
@@ -36,21 +44,19 @@ size_t tile_number(const int x, const int y) {
 	return x + y * ARENA_WIDTH_TILES;
 }
 
-
 class Head : public SpriteNode {
 private:
-	Vector m_velocity;
 	float m_speed;
 	float m_rotation_speed;
+	b2Body * m_body;
 public:
-	Head(const sf::Texture & tex) : SpriteNode(tex,{120*3,0,90,90}, HEAD_SIZE/(90.f)) {
-		//setRotation(90);
-		setPosition(ARENA_SQUARE*3,ARENA_SQUARE*3);
-		set_speed(4.f);
+	Head(const sf::Texture & tex, PhysicsWorld &world) : SpriteNode(tex,{120*3,0,90,90}, HEAD_SIZE/(90.f)) {
+		m_body = world.add_dyna_circle(ARENA_SQUARE_M*3.f,ARENA_SQUARE_M*3.f,HEAD_RADIUS_M);
+		set_speed(1.f);
 	}
 
 	void update(FrameTime step) {
-		move(m_velocity);
+		setPosition(m_body->GetPosition().x * PIXELS_PER_METER, m_body->GetPosition().y * PIXELS_PER_METER);
 		if (m_rotation_speed != 0.f) {
 			rotate(m_rotation_speed);
 			adjust_velocity();
@@ -70,7 +76,8 @@ private:
 	void adjust_velocity() {
 		sf::Transform t;
 		t.rotate(getRotation());
-		m_velocity = t.transformPoint(0,m_speed);
+		auto velocity = t.transformPoint(0,m_speed);
+		m_body->SetLinearVelocity({velocity.x, velocity.y});
 	}
 
 };
@@ -79,7 +86,8 @@ class Arena : public SceneNode {
 private:
 	sf::VertexArray m_vertices{sf::Quads,ARENA_TILE_COUNT*4};
 public:
-	Arena() {
+	Arena(PhysicsWorld &world) {
+		world.add_chain_rect(0,0,ARENA_WIDTH_M, ARENA_HEIGHT_M);
 		FlareMap fm(FLAREMAP_FILE_NAME);
 		auto ixs = fm.layer().at("Level1");
 		for (size_t x = 0; x < ARENA_WIDTH_TILES; x++)
@@ -110,11 +118,12 @@ private:
 	Arena * m_arena;
 	Head * m_head;
 	sf::View m_view;
+	PhysicsWorld m_world;
 public:
 	PlayState(StateStack &stack, Context& context) : State{stack,context},
 		m_view(m_context.window->getDefaultView()) {
-		m_scene_graph.attach(m_arena = new Arena());
-		m_arena->attach(m_head = new Head(*context.texture));
+		m_scene_graph.attach(m_arena = new Arena(m_world));
+		m_arena->attach(m_head = new Head(*context.texture,m_world));
 	}
 
 	void update(FrameTime step) override {
@@ -154,7 +163,8 @@ public:
 				m_view.move(0.f,-SCROLL_SPEED);
 			if (down)
 				m_view.move(0.f,SCROLL_SPEED);
-		}
+		m_world.update();
+	}
 	void draw() override {
 		m_context.window->setView(m_view);
 		m_rstate.texture = m_context.texture;

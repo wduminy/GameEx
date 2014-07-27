@@ -16,7 +16,6 @@ private:
 	HitHandler m_handler;
 	b2Body * m_static;
 public:
-
 	PhysicsWorld();
 	b2Fixture * add_static_rect(const float x, const float y, const float w, const float h);
 	b2Fixture * add_chain_rect(const float x, const float y, const float w, const float h);

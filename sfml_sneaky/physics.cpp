@@ -56,7 +56,7 @@ b2Body * PhysicsWorld::add_dyna_circle(float x, float y, float r) {
 }
 
 const float time_step = 1.f/60.f;
-const int vel_iters = 6;
+const int vel_iters = 2;
 const int pos_iters = 2;
 
 void PhysicsWorld::update() {
