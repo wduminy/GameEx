@@ -30,7 +30,11 @@ const auto ARENA_HEIGHT_M = ARENA_HEIGHT_TILES * ARENA_SQUARE * METERS_PER_PIXEL
 const size_t ARENA_TILE_COUNT = ARENA_WIDTH_TILES * ARENA_HEIGHT_TILES;
 const char* FLAREMAP_FILE_NAME = "media/sneaky/flaremap.txt";
 const float SCROLL_SPEED = 5.f;
-
+const float RADS_IN_CIRCLE = 3.14f * 2.f;
+const float DEGS_IN_CIRCLE = 360.f;
+const float DEGS_IN_RAD = DEGS_IN_CIRCLE/RADS_IN_CIRCLE;
+const float RADS_IN_DEG = RADS_IN_CIRCLE/DEGS_IN_CIRCLE;
+const float HEAD_SPEED = .8f;
 
 class Head : public SpriteNode {
 private:
@@ -40,20 +44,18 @@ private:
 public:
 	Head(const sf::Texture & tex, PhysicsWorld &world) : SpriteNode(tex,{120*3,0,90,90}, HEAD_SIZE/(90.f)) {
 		m_body = world.add_dyna_circle(ARENA_SQUARE_M*3.f,ARENA_SQUARE_M*3.f,HEAD_RADIUS_M);
-		set_speed(1.f);
+		set_speed(HEAD_SPEED);
 	}
 
 	void update(FrameTime step) {
-		setPosition(m_body->GetPosition().x * PIXELS_PER_METER, m_body->GetPosition().y * PIXELS_PER_METER);
-		//setRotation(m_body->GetAngle()*3.14f*2.f);
-		if (m_rotation_speed != 0.f) {
-			rotate(m_rotation_speed);
-			adjust_velocity();
-		}
+		setPosition(m_body->GetPosition().x * PIXELS_PER_METER,
+				    m_body->GetPosition().y * PIXELS_PER_METER);
+		setRotation(m_body->GetAngle()*DEGS_IN_RAD);
+		adjust_velocity();
 	}
 
-	void turn_left() {m_rotation_speed = -6; }
-	void turn_right() {m_rotation_speed = 6; }
+	void turn_left() {m_rotation_speed = -230; }
+	void turn_right() {m_rotation_speed = 230; }
 	void go_straight() {m_rotation_speed = 0.0f; }
 private:
 
@@ -67,6 +69,7 @@ private:
 		t.rotate(getRotation());
 		auto velocity = t.transformPoint(0,m_speed);
 		m_body->SetLinearVelocity({velocity.x, velocity.y});
+		m_body->SetAngularVelocity(m_rotation_speed*RADS_IN_DEG);
 	}
 
 };
@@ -119,8 +122,9 @@ public:
 				m_head->turn_right();
 		} else
 			m_head->go_straight();
+
 		m_head->update(step);
-		left = right = false;
+		up=down=left = right = false;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 			left = true;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))

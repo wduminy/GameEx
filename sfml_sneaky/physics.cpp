@@ -51,7 +51,7 @@ b2Body * PhysicsWorld::add_dyna_circle(float x, float y, float r) {
 	b2FixtureDef fix_def;
 	fix_def.shape = &shape;
 	fix_def.density = 1.0f;
-	fix_def.friction = 0.3f;
+	fix_def.friction = 0.0f;
 	bod->CreateFixture(&fix_def);
 	return bod;
 }
