@@ -35,7 +35,6 @@
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.912032761" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="BOOST_TEST_MAIN"/>
-									<listOptionValue builtIn="false" value=""/>
 								</option>
 								<option id="gnu.cpp.compiler.option.dialect.std.2073901119" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1721808765" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -105,10 +104,11 @@
 									<listOptionValue builtIn="false" value="&quot;${BOOST_ROOT}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1725065770" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="BOOST_TEST_MAIN"/>
-									<listOptionValue builtIn="false" value="NON_BOOST_TEST_DYN_LINK"/>
-									<listOptionValue builtIn="false" value="_WIN32_WINNT=0x0601"/>
+									<listOptionValue builtIn="false" value="NSFML_STATIC"/>
+									<listOptionValue builtIn="false" value="NDEBUG"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.dialect.std.1667445920" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
+								<option id="gnu.cpp.compiler.option.warnings.allwarn.363590407" superClass="gnu.cpp.compiler.option.warnings.allwarn" value="false" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.734076100" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.release.26190414" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.release">
@@ -123,8 +123,8 @@
 									<listOptionValue builtIn="false" value="&quot;${BOX2D_ROOT}\lib&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.libs.1360753721" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" value="sfml-audio"/>
 									<listOptionValue builtIn="false" value="Box2D"/>
+									<listOptionValue builtIn="false" value="sfml-audio"/>
 									<listOptionValue builtIn="false" value="sfml-window"/>
 									<listOptionValue builtIn="false" value="sfml-system"/>
 									<listOptionValue builtIn="false" value="sfml-graphics"/>

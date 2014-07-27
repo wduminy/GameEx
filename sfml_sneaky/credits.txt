@@ -5,8 +5,9 @@ PlantUML
 Tiled
 
 Libraries
-SMFL
+SMFL: http://www.sfml-dev.org/resources.php
 Boost
+Box2D
 
 Media
 Stagecast Tileset: http://www.cr31.co.uk/stagecast/info/blob.html
