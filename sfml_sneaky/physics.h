@@ -5,6 +5,7 @@
 #pragma once
 #include <Box2D/Box2D.h>
 #include <functional>
+#include <SFML/Graphics.hpp>
 
 namespace codespear {
 
@@ -17,12 +18,15 @@ private:
 	b2Body * m_static;
 public:
 	PhysicsWorld();
-	b2Fixture * add_static_rect(const float x, const float y, const float w, const float h);
+	b2Fixture * add_static_rect(const float cx, const float cy, const float w, const float h);
 	b2Fixture * add_chain_rect(const float x, const float y, const float w, const float h);
 	b2Body * add_dyna_circle(float x, float y, float r);
 	void set_handler(HitHandler h)  {m_handler = h;}
 	void update();
 	void BeginContact(b2Contact* contact) override;
+	void debug_draw(sf::RenderTarget &t, float pixels_per_meter, sf::RenderStates states);
+private:
+	PhysicsWorld(const PhysicsWorld &other); // hide copy constructor
 };
 
 }

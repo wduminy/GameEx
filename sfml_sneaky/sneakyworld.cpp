@@ -7,6 +7,7 @@
 #include "flaremap.h"
 #include "gui.h"
 #include "physics.h"
+#include "wang2edge.h"
 
 using namespace codespear;
 
@@ -30,19 +31,6 @@ const size_t ARENA_TILE_COUNT = ARENA_WIDTH_TILES * ARENA_HEIGHT_TILES;
 const char* FLAREMAP_FILE_NAME = "media/sneaky/flaremap.txt";
 const float SCROLL_SPEED = 5.f;
 
-Vector tile_location(const int x, const int y) {
-	return Vector{x*ARENA_SQUARE,y*ARENA_SQUARE};
-}
-
-Vector tex_location(const int index, const int tiles_in_row, const float tile_size) {
-	const int y = index / tiles_in_row;
-	const int x = index - tiles_in_row * y;
-	return Vector(x * tile_size,y * tile_size);
-}
-
-size_t tile_number(const int x, const int y) {
-	return x + y * ARENA_WIDTH_TILES;
-}
 
 class Head : public SpriteNode {
 private:
@@ -57,6 +45,7 @@ public:
 
 	void update(FrameTime step) {
 		setPosition(m_body->GetPosition().x * PIXELS_PER_METER, m_body->GetPosition().y * PIXELS_PER_METER);
+		//setRotation(m_body->GetAngle()*3.14f*2.f);
 		if (m_rotation_speed != 0.f) {
 			rotate(m_rotation_speed);
 			adjust_velocity();
@@ -89,21 +78,9 @@ public:
 	Arena(PhysicsWorld &world) {
 		world.add_chain_rect(0,0,ARENA_WIDTH_M, ARENA_HEIGHT_M);
 		FlareMap fm(FLAREMAP_FILE_NAME);
-		auto ixs = fm.layer().at("Level1");
-		for (size_t x = 0; x < ARENA_WIDTH_TILES; x++)
-			for (size_t y = 0; y < ARENA_HEIGHT_TILES; y++) {
-				const auto index = tile_number(x,y)*4;
-				Vertex * quad = &m_vertices[index];
-				quad[0].position = tile_location(x,y);
-				quad[1].position = tile_location(x+1,y);
-				quad[2].position = tile_location(x+1,y+1);
-				quad[3].position = tile_location(x,y+1);
-				auto tile_index = ixs.at(tile_number(x,y)) - 1; // the flare map stores at 1 offset
-				quad[0].texCoords = tex_location(tile_index,4,30.f*3);
-				quad[1].texCoords = quad[0].texCoords + Vector{90,0};
-				quad[2].texCoords = quad[0].texCoords + Vector{90,90};
-				quad[3].texCoords = quad[0].texCoords + Vector{0,90};
-			}
+		Wang2EdgeField field(ARENA_WIDTH_TILES, ARENA_HEIGHT_TILES, fm.layer().at("Level1"));
+		field.fill_vertices(90.f,ARENA_SQUARE,&m_vertices[0]);
+		field.fill_world(ARENA_SQUARE_M, world);
 	}
 protected:
 	void draw_node(sf::RenderTarget& target, sf::RenderStates state) const override {
@@ -169,6 +146,7 @@ public:
 		m_context.window->setView(m_view);
 		m_rstate.texture = m_context.texture;
 		m_scene_graph.draw(*m_context.window,m_rstate);
+//		m_world.debug_draw(*m_context.window,PIXELS_PER_METER, m_rstate);
 	}
 };
 

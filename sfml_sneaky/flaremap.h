@@ -8,7 +8,7 @@
 #include <vector>
 
 namespace codespear {
-using FlareMapLayer = std::vector<int>;
+using FlareMapLayer = std::vector<size_t>;
 using LayerMap = std::map<std::string,FlareMapLayer>;
 
 /**

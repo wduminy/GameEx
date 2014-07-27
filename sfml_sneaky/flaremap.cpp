@@ -34,7 +34,7 @@ FlareMap::FlareMap(const std::string& file_name) {
 			do {
 				ss >> v;
 				if (v != -1)
-					layer.push_back(v);
+					layer.push_back(v-1); // I switch to zero based index
 			} while (v != -1);
 			file >> word;
 		}
