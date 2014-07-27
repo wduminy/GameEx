@@ -9,25 +9,37 @@ namespace codespear {
 
 PhysicsWorld::PhysicsWorld() {
 	m_world.SetContactListener(this);
+	b2BodyDef def;
+	def.position.Set(0.f,0.f);
+	def.type = b2_staticBody;
+	m_static = m_world.CreateBody(&def);
 }
 void PhysicsWorld::BeginContact(b2Contact* contact) {
 	if (m_handler)
 		m_handler(contact);
 }
 
-b2Body * PhysicsWorld::add_static_rect(const float x, const float y,
+b2Fixture * PhysicsWorld::add_static_rect(const float x, const float y,
 		const float w, const float h) {
-	b2BodyDef def;
-	def.position.Set(x + w/2.f,y + h/2.f);
-	def.type = b2_staticBody;
-	b2Body * bod = m_world.CreateBody(&def);
 	b2PolygonShape shape;
-	shape.SetAsBox(w/2.f,h/2.f);
-	bod->CreateFixture(&shape,0.f);
-	return bod;
+	shape.SetAsBox(w/2.f,h/2.f,{x,y},0.f);
+	return m_static->CreateFixture(&shape,0.f);
 }
 
-b2Body * PhysicsWorld::add_kine_circle(float x, float y, float r) {
+b2Fixture * PhysicsWorld::add_chain_rect(const float x, const float y,
+		const float w, const float h) {
+	b2Vec2 v[4];
+	v[0].Set(x,y);
+	v[1].Set(x+w,y);
+	v[2].Set(x+w,y+h);
+	v[3].Set(x,y+h);
+	b2ChainShape shape;
+	shape.CreateLoop(v,4);
+	return m_static->CreateFixture(&shape,0.f);
+}
+
+
+b2Body * PhysicsWorld::add_dyna_circle(float x, float y, float r) {
 	b2BodyDef def;
 	def.position.Set(x,y);
 	def.type = b2_dynamicBody;
