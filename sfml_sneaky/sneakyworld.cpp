@@ -8,7 +8,7 @@
 #include "gui.h"
 #include "physics.h"
 #include "wang2edge.h"
-
+#include <SFML/Audio.hpp>
 using namespace codespear;
 
 namespace sneaky {
@@ -35,7 +35,7 @@ const float DEGS_IN_CIRCLE = 360.f;
 const float DEGS_IN_RAD = DEGS_IN_CIRCLE/RADS_IN_CIRCLE;
 const float RADS_IN_DEG = RADS_IN_CIRCLE/DEGS_IN_CIRCLE;
 const float HEAD_SPEED = .8f;
-
+const float HEAD_TURN_SPEED = 320.f;
 class Head : public SpriteNode {
 private:
 	float m_speed;
@@ -54,8 +54,8 @@ public:
 		adjust_velocity();
 	}
 
-	void turn_left() {m_rotation_speed = -230; }
-	void turn_right() {m_rotation_speed = 230; }
+	void turn_left() {m_rotation_speed = -HEAD_TURN_SPEED; }
+	void turn_right() {m_rotation_speed = HEAD_TURN_SPEED; }
 	void go_straight() {m_rotation_speed = 0.0f; }
 private:
 
@@ -99,11 +99,15 @@ private:
 	Head * m_head;
 	sf::View m_view;
 	PhysicsWorld m_world;
+	sf::SoundBuffer m_wall_hit_sound;
+	sf::Sound m_sound;
 public:
 	PlayState(StateStack &stack, Context& context) : State{stack,context},
 		m_view(m_context.window->getDefaultView()) {
 		m_scene_graph.attach(m_arena = new Arena(m_world));
 		m_arena->attach(m_head = new Head(*context.texture,m_world));
+		check_that(m_wall_hit_sound.loadFromFile("media/sneaky/wall.wav"));
+		m_world.set_handler([&](b2Contact * contact){m_sound.setBuffer(m_wall_hit_sound);m_sound.play();});
 	}
 
 	void update(FrameTime step) override {
@@ -176,6 +180,8 @@ public:
 	}
 };
 
+sf::Music music;
+
 SneakyGame::SneakyGame() : Game(800,600,"Sneaky") {}
 
 void SneakyGame::init() {
@@ -191,6 +197,10 @@ void SneakyGame::init() {
 	m_context.texture = &m_texture;
 	m_stack.register_state<TitleState>(GameState::Title);
 	m_stack.register_state<PlayState>(GameState::Play);
+	check_that(music.openFromFile("media/sneaky/music.ogg"));
+	music.setLoop(true);
+	music.setVolume(50);
+	music.play();
 
 }
 
