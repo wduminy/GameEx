@@ -8,9 +8,11 @@
 #include "gui.h"
 #include "physics.h"
 #include "wang2edge.h"
+#include "music.h"
 #include <SFML/Audio.hpp>
 using namespace codespear;
-
+// TODO 900 View adjusts automatically
+// TODO 900 Show keys to use on the title page
 namespace sneaky {
 using std::vector;
 using Vector = sf::Vector2f;
@@ -36,6 +38,10 @@ const float DEGS_IN_RAD = DEGS_IN_CIRCLE/RADS_IN_CIRCLE;
 const float RADS_IN_DEG = RADS_IN_CIRCLE/DEGS_IN_CIRCLE;
 const float HEAD_SPEED = .8f;
 const float HEAD_TURN_SPEED = 320.f;
+
+// TODO 900 Create ghosts; something to chase head
+// TODO 900 Head must eat pills
+// TODO 900 Head steers with explicit forward (turns without movement?)
 class Head : public SpriteNode {
 private:
 	float m_speed;
@@ -171,7 +177,7 @@ public:
 	}
 	bool handle_event(const sf::Event &e) final {
 		m_panel.handle_event(e);
-		return true;
+		return false;
 	}
 	void update(FrameTime step) final {
 	}
@@ -180,7 +186,18 @@ public:
 	}
 };
 
-sf::Music music;
+class AmbientState : public State {
+public:
+	AmbientState(StateStack &stack, Context& context) : State{stack,context} {}
+	bool handle_event(const sf::Event &e) final {
+		if (e.type == sf::Event::KeyPressed
+				&& e.key.code == sf::Keyboard::M)
+			MusicPlayer::instance.toggle();
+		return false;
+	}
+	void update(FrameTime step) final {}
+	void draw() final {}
+};
 
 SneakyGame::SneakyGame() : Game(800,600,"Sneaky") {}
 
@@ -197,11 +214,9 @@ void SneakyGame::init() {
 	m_context.texture = &m_texture;
 	m_stack.register_state<TitleState>(GameState::Title);
 	m_stack.register_state<PlayState>(GameState::Play);
-	check_that(music.openFromFile("media/sneaky/music.ogg"));
-	music.setLoop(true);
-	music.setVolume(50);
-	music.play();
-
+	m_stack.register_state<AmbientState>(GameState::Ambient);
+	m_stack.push(GameState::Ambient);
+	MusicPlayer::instance.play("media/sneaky/music.ogg");
 }
 
 }

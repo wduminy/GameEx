@@ -2,7 +2,6 @@
 // License: GNU General Public License, version 3 (GPL-3.0)
 // License page: http://opensource.org/licenses/GPL-3.0
 #pragma once
-
 #include "game.h"
 #include "scenenode.h"
 namespace sneaky {
@@ -12,7 +11,7 @@ using codespear::SceneNode;
 using codespear::SceneGraph;
 using codespear::GameState;
 
-enum class GameState{Title,Play};
+enum class GameState{Title,Play,Ambient};
 
 
 class SneakyGame : public Game {
