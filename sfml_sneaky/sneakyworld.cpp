@@ -44,20 +44,19 @@ const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
 // TODO 900 Create ghosts; something to chase head
-// TODO 900 Head must eat pills
 // TODO 900 Head steers with explicit forward (turns without movement?)
 class Head : public SpriteNode {
 private:
-	float m_speed;
-	float m_rotation_speed;
+	float m_speed{0.f};
+	float m_rotation_speed {0.f};
 	b2Body * m_body;
 public:
-	Head(const sf::Texture & tex, PhysicsWorld &world) : SpriteNode(tex,{120*3,0,90,90}, HEAD_SIZE/(90.f)) {
-		m_body = world.add_dyna_circle(ARENA_SQUARE_M*3.f,ARENA_SQUARE_M*3.f,HEAD_RADIUS_M);
-		set_speed(HEAD_SPEED);
+	Head(const sf::Texture & tex) :
+		SpriteNode(tex,{120*3,0,90,90}, HEAD_SIZE/(90.f)) {
+		m_body = nullptr;
 	}
 
-	void update(FrameTime step) {
+	void update() {
 		setPosition(m_body->GetPosition().x * PIXELS_PER_METER,
 				    m_body->GetPosition().y * PIXELS_PER_METER);
 		setRotation(m_body->GetAngle()*DEGS_IN_RAD);
@@ -67,6 +66,17 @@ public:
 	void turn_left() {m_rotation_speed = -HEAD_TURN_SPEED; }
 	void turn_right() {m_rotation_speed = HEAD_TURN_SPEED; }
 	void go_straight() {m_rotation_speed = 0.0f; }
+	/* x and y are "square coordinates" */
+	void create_body(PhysicsWorld &world, float x, float y) {
+		// TODO 800 check that m_body is deleted somewhere (maybe it is destroyed with the world)
+		check_that(m_body == nullptr); // cannot have two bodies for one head
+		m_body = world.add_dyna_circle(
+				x*ARENA_SQUARE_M+ARENA_SQUARE_M/2.f,
+				y*ARENA_SQUARE_M+ARENA_SQUARE_M/2.f,HEAD_RADIUS_M);
+		set_speed(HEAD_SPEED);
+		update();
+	}
+	bool has_body() const {return m_body != nullptr;}
 private:
 
 	void set_speed(float speed) {
@@ -83,15 +93,18 @@ private:
 	}
 
 };
+// TODO 100 Head must eat pills
+class Pill : public SpriteNode {
+
+};
 
 class Arena : public SceneNode {
 private:
 	sf::VertexArray m_vertices{sf::Quads,ARENA_TILE_COUNT*4};
 public:
-	Arena(PhysicsWorld &world) {
+	Arena(PhysicsWorld &world, const FlareMapLayer &field_map) {
 		world.add_chain_rect(0,0,ARENA_WIDTH_M, ARENA_HEIGHT_M);
-		FlareMap fm(FLAREMAP_FILE_NAME);
-		Wang2EdgeField field(ARENA_WIDTH_TILES, ARENA_HEIGHT_TILES, fm.layer().at("Level1"));
+		Wang2EdgeField field(ARENA_WIDTH_TILES, ARENA_HEIGHT_TILES, field_map);
 		field.fill_vertices(90.f,ARENA_SQUARE,&m_vertices[0]);
 		field.fill_world(ARENA_SQUARE_M, world);
 	}
@@ -114,9 +127,18 @@ private:
 public:
 	PlayState(StateStack &stack, Context& context) : State{stack,context},
 		m_view(m_context.window->getDefaultView()) {
-		m_scene_graph.attach(m_arena = new Arena(m_world));
-		m_arena->attach(m_head = new Head(*context.texture,m_world));
+		FlareMap fm(FLAREMAP_FILE_NAME);
+		m_scene_graph.attach(m_arena = new Arena(m_world,fm.layer().at("Level1")));
+		m_arena->attach(m_head = new Head(*context.texture));
+		// TODO 050 get head position from flaremap data
+		Wang2EdgeField field(ARENA_WIDTH_TILES, ARENA_HEIGHT_TILES, fm.layer().at("Level1_o"));
+		field.visit([&](const Tile &t){
+			if (t.tile == 16) // head
+				m_head->create_body(m_world,t.x,t.y);
+		});
+		check_that(m_head->has_body()); // the map must specify a place for the body
 		check_that(m_wall_hit_sound.loadFromFile("media/sneaky/wall.wav"));
+		m_view.setCenter(m_head->getPosition());
 		m_world.set_handler([&](b2Contact * contact){m_sound.setBuffer(m_wall_hit_sound);m_sound.play();});
 	}
 
@@ -151,7 +173,7 @@ public:
 			m_view.move(0.f,-SCROLL_SPEED);
 		if (down)
 			m_view.move(0.f,SCROLL_SPEED);
-		m_head->update(step);
+		m_head->update();
 		m_world.update();
 	}
 	void draw() override {

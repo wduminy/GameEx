@@ -17,7 +17,7 @@ struct Tile {
  * A Wang2EdgeField is a tile map using
  * 16 tiles.  The tile set is layout as site
  * http://www.cr31.co.uk/stagecast/info/tiles_e.html,
- * but numbered in western reading order, starting top-lef as zero
+ * but numbered in western reading order, starting top-left as zero
  */
 class Wang2EdgeField {
 private:
@@ -27,9 +27,7 @@ public:
 	Wang2EdgeField(size_t width, size_t height, std::vector<size_t> data);
 	void fill_vertices(float tex_size_px, float world_size, sf::Vertex * target);
 	void fill_world(float size, PhysicsWorld& w);
-private:
 	void visit(std::function<void(const Tile& t)> v);
-
 };
 
 }
