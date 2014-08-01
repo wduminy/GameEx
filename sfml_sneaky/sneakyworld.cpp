@@ -10,8 +10,8 @@
 #include "wang2edge.h"
 #include "music.h"
 #include <SFML/Audio.hpp>
+
 using namespace codespear;
-// TODO 900 View adjusts automatically
 // TODO 900 Show keys to use on the title page
 namespace sneaky {
 using std::vector;
@@ -31,13 +31,17 @@ const auto ARENA_WIDTH_M = ARENA_WIDTH_TILES * ARENA_SQUARE * METERS_PER_PIXEL;
 const auto ARENA_HEIGHT_M = ARENA_HEIGHT_TILES * ARENA_SQUARE * METERS_PER_PIXEL;
 const size_t ARENA_TILE_COUNT = ARENA_WIDTH_TILES * ARENA_HEIGHT_TILES;
 const char* FLAREMAP_FILE_NAME = "media/sneaky/flaremap.txt";
-const float SCROLL_SPEED = 5.f;
+
 const float RADS_IN_CIRCLE = 3.14f * 2.f;
 const float DEGS_IN_CIRCLE = 360.f;
 const float DEGS_IN_RAD = DEGS_IN_CIRCLE/RADS_IN_CIRCLE;
 const float RADS_IN_DEG = RADS_IN_CIRCLE/DEGS_IN_CIRCLE;
 const float HEAD_SPEED = .8f;
+const float SCROLL_SPEED = HEAD_SPEED * 5.f;
+const float SCROLL_THRESHOLD = HEAD_SIZE * 3.5f;
 const float HEAD_TURN_SPEED = 320.f;
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
 
 // TODO 900 Create ghosts; something to chase head
 // TODO 900 Head must eat pills
@@ -133,27 +137,21 @@ public:
 		} else
 			m_head->go_straight();
 
+		// Adjust the view to keep up with the head
+		auto delta = m_view.getCenter() - m_head->getPosition();
+		left =  delta.x > SCROLL_THRESHOLD;
+		right = delta.x < -SCROLL_THRESHOLD;
+		up = delta.y > SCROLL_THRESHOLD;
+		down = delta.y < -SCROLL_THRESHOLD;
+		if (left)
+			m_view.move(-SCROLL_SPEED,0.f);
+		if (right)
+			m_view.move(SCROLL_SPEED,0.f);
+		if (up)
+			m_view.move(0.f,-SCROLL_SPEED);
+		if (down)
+			m_view.move(0.f,SCROLL_SPEED);
 		m_head->update(step);
-		up=down=left = right = false;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-			left = true;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-			right = true;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
-			up = true;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-			down = true;
-		if (left != right) {
-			if (left)
-				m_view.move(-SCROLL_SPEED,0.f);
-			if (right)
-				m_view.move(SCROLL_SPEED,0.f);
-		}
-		if (up != down)
-			if (up)
-				m_view.move(0.f,-SCROLL_SPEED);
-			if (down)
-				m_view.move(0.f,SCROLL_SPEED);
 		m_world.update();
 	}
 	void draw() override {
@@ -199,7 +197,7 @@ public:
 	void draw() final {}
 };
 
-SneakyGame::SneakyGame() : Game(800,600,"Sneaky") {}
+SneakyGame::SneakyGame() : Game(SCREEN_WIDTH,SCREEN_HEIGHT,"Sneaky") {}
 
 void SneakyGame::init() {
 	check_that(m_texture.loadFromFile("media/sneaky/tiles.png"));
