@@ -37,7 +37,7 @@ namespace codespear {
 					m_window.close();
 				else {
 					// update in frame steps
-					static const FrameTime frame_step = 20.f; // 50 millis is 50 updates per second
+					static const Milliseconds frame_step = 20.f; // 50 millis is 50 updates per second
 					m_current += m_previous;
 					for(; m_current >= frame_step; m_current -= frame_step)
 						m_stack.update(frame_step);

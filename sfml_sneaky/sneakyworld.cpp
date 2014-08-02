@@ -17,38 +17,61 @@ namespace sneaky {
 using std::vector;
 using Vector = sf::Vector2f;
 using sf::Vertex;
+/** ScreenVector is size in screen pixels */
+using ScreenVector = sf::Vector2f;
+/** TileVector is the position of the tile */
+using TileVector = sf::Vector2f;
 
-const auto PIXELS_PER_METER = 300.f;
-const auto METERS_PER_PIXEL = 1.f/PIXELS_PER_METER;
+using Pixels = float;
+using Meters = float;
+using Tiles = float;
 
-const auto ARENA_SQUARE = 100.f;  // pixel size of one square
-const auto ARENA_SQUARE_M = ARENA_SQUARE * METERS_PER_PIXEL;
-const auto HEAD_SIZE = ARENA_SQUARE / 2.f; // pixel size of head
-const auto HEAD_RADIUS_M = HEAD_SIZE * METERS_PER_PIXEL * 0.5f;
 const size_t ARENA_WIDTH_TILES = 10;
 const size_t ARENA_HEIGHT_TILES = 10;
-const auto ARENA_WIDTH_M = ARENA_WIDTH_TILES * ARENA_SQUARE * METERS_PER_PIXEL;
-const auto ARENA_HEIGHT_M = ARENA_HEIGHT_TILES * ARENA_SQUARE * METERS_PER_PIXEL;
+const size_t SCREEN_WIDTH = 800;
+const size_t SCREEN_HEIGHT = 600;
+
+const Pixels PIXELS_PER_METER = 100.f;
+const Pixels PIXELS_PER_TILE = SCREEN_WIDTH / (ARENA_WIDTH_TILES*1.f);
+const Meters METERS_PER_PIXEL = 1.f/PIXELS_PER_METER;
+const Tiles TILES_PER_METER = PIXELS_PER_METER / PIXELS_PER_TILE;
+const Meters METERS_PER_TILE = 1.f/TILES_PER_METER;
+
+RealVector to_real(const TileVector &v) {return RealVector{v.x*METERS_PER_TILE,v.y*METERS_PER_TILE};}
+RealVector to_real_center(const TileVector &v) {return RealVector{v.x*METERS_PER_TILE*1.5f,v.y*METERS_PER_TILE*1.5f};}
+ScreenVector to_screen(const RealDimension &v) {return ScreenVector{v.x * PIXELS_PER_METER,v.y * PIXELS_PER_METER};}
+
+const Pixels HEAD_SIZE = PIXELS_PER_TILE / 2.f; // pixel size of head
+const Meters HEAD_RADIUS_M = HEAD_SIZE * METERS_PER_PIXEL * 0.5f;
+
+const TileVector TILE_RB{ARENA_WIDTH_TILES,ARENA_HEIGHT_TILES};
+const RealVector REAL_RB = to_real(TILE_RB);
+const ScreenVector PIXEL_RB(SCREEN_WIDTH,SCREEN_HEIGHT);
+
 const size_t ARENA_TILE_COUNT = ARENA_WIDTH_TILES * ARENA_HEIGHT_TILES;
 const char* FLAREMAP_FILE_NAME = "media/sneaky/flaremap.txt";
+using Radains = float;
+using Degrees = float;
 
-const float RADS_IN_CIRCLE = 3.14f * 2.f;
-const float DEGS_IN_CIRCLE = 360.f;
-const float DEGS_IN_RAD = DEGS_IN_CIRCLE/RADS_IN_CIRCLE;
-const float RADS_IN_DEG = RADS_IN_CIRCLE/DEGS_IN_CIRCLE;
-const float HEAD_SPEED = .8f;
-const float SCROLL_SPEED = HEAD_SPEED * 5.f;
-const float SCROLL_THRESHOLD = HEAD_SIZE * 3.5f;
-const float HEAD_TURN_SPEED = 320.f;
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
+const Radains RADS_IN_CIRCLE = 3.14f * 2.f;
+const Degrees DEGS_IN_CIRCLE = 360.f;
+const Degrees DEGS_IN_RAD = DEGS_IN_CIRCLE/RADS_IN_CIRCLE;
+const Radains RADS_IN_DEG = RADS_IN_CIRCLE/DEGS_IN_CIRCLE;
+const Pixels SCROLL_THRESHOLD = HEAD_SIZE * 3.5f;
+
+using MetersPerSecond = float;
+using DegreesPerSecond = float;
+using PixelsPerMilliSecond = float;
+const DegreesPerSecond HEAD_TURN_SPEED = 320.f;
+const MetersPerSecond HEAD_SPEED = 1.8f;
+const PixelsPerMilliSecond SCROLL_SPEED = HEAD_SPEED * PIXELS_PER_METER / 1000.f;
 
 // TODO 900 Create ghosts; something to chase head
 // TODO 900 Head steers with explicit forward (turns without movement?)
 class Head : public SpriteNode {
 private:
-	float m_speed{0.f};
-	float m_rotation_speed {0.f};
+	MetersPerSecond m_speed{0.f};
+	DegreesPerSecond m_rotation_speed {0.f};
 	b2Body * m_body;
 public:
 	Head(const sf::Texture & tex) :
@@ -57,8 +80,7 @@ public:
 	}
 
 	void update() {
-		setPosition(m_body->GetPosition().x * PIXELS_PER_METER,
-				    m_body->GetPosition().y * PIXELS_PER_METER);
+		setPosition(to_screen(m_body->GetPosition()));
 		setRotation(m_body->GetAngle()*DEGS_IN_RAD);
 		adjust_velocity();
 	}
@@ -67,19 +89,16 @@ public:
 	void turn_right() {m_rotation_speed = HEAD_TURN_SPEED; }
 	void go_straight() {m_rotation_speed = 0.0f; }
 	/* x and y are "square coordinates" */
-	void create_body(PhysicsWorld &world, float x, float y) {
-		// TODO 800 check that m_body is deleted somewhere (maybe it is destroyed with the world)
+	void create_body(PhysicsWorld &world, const TileVector &v) {
 		check_that(m_body == nullptr); // cannot have two bodies for one head
-		m_body = world.add_dyna_circle(
-				x*ARENA_SQUARE_M+ARENA_SQUARE_M/2.f,
-				y*ARENA_SQUARE_M+ARENA_SQUARE_M/2.f,HEAD_RADIUS_M);
+		m_body = world.add_dyna_circle(to_real_center(v),HEAD_RADIUS_M);
 		set_speed(HEAD_SPEED);
 		update();
 	}
 	bool has_body() const {return m_body != nullptr;}
 private:
 
-	void set_speed(float speed) {
+	void set_speed(MetersPerSecond speed) {
 		m_speed = speed;
 		adjust_velocity();
 	}
@@ -95,7 +114,7 @@ private:
 };
 // TODO 100 Head must eat pills
 class Pill : public SpriteNode {
-
+// TODO 040 construct the pill as a body in the physics world
 };
 
 class Arena : public SceneNode {
@@ -103,10 +122,10 @@ private:
 	sf::VertexArray m_vertices{sf::Quads,ARENA_TILE_COUNT*4};
 public:
 	Arena(PhysicsWorld &world, const FlareMapLayer &field_map) {
-		world.add_chain_rect(0,0,ARENA_WIDTH_M, ARENA_HEIGHT_M);
+		world.add_chain_rect({0,0},REAL_RB);
 		Wang2EdgeField field(ARENA_WIDTH_TILES, ARENA_HEIGHT_TILES, field_map);
-		field.fill_vertices(90.f,ARENA_SQUARE,&m_vertices[0]);
-		field.fill_world(ARENA_SQUARE_M, world);
+		field.fill_vertices(90.f,PIXELS_PER_TILE,&m_vertices[0]);
+		field.fill_world(METERS_PER_TILE, world);
 	}
 protected:
 	void draw_node(sf::RenderTarget& target, sf::RenderStates state) const override {
@@ -130,11 +149,11 @@ public:
 		FlareMap fm(FLAREMAP_FILE_NAME);
 		m_scene_graph.attach(m_arena = new Arena(m_world,fm.layer().at("Level1")));
 		m_arena->attach(m_head = new Head(*context.texture));
-		// TODO 050 get head position from flaremap data
+		// TODO 050 add the pills based on flaremap data
 		Wang2EdgeField field(ARENA_WIDTH_TILES, ARENA_HEIGHT_TILES, fm.layer().at("Level1_o"));
 		field.visit([&](const Tile &t){
 			if (t.tile == 16) // head
-				m_head->create_body(m_world,t.x,t.y);
+				m_head->create_body(m_world,{static_cast<float>(t.x),static_cast<float>(t.y)});
 		});
 		check_that(m_head->has_body()); // the map must specify a place for the body
 		check_that(m_wall_hit_sound.loadFromFile("media/sneaky/wall.wav"));
@@ -142,7 +161,7 @@ public:
 		m_world.set_handler([&](b2Contact * contact){m_sound.setBuffer(m_wall_hit_sound);m_sound.play();});
 	}
 
-	void update(FrameTime step) override {
+	void update(Milliseconds step) override {
 		bool left = false;
 		bool right = false;
 		bool up = false;
@@ -166,13 +185,13 @@ public:
 		up = delta.y > SCROLL_THRESHOLD;
 		down = delta.y < -SCROLL_THRESHOLD;
 		if (left)
-			m_view.move(-SCROLL_SPEED,0.f);
+			m_view.move(-SCROLL_SPEED * step,0.f);
 		if (right)
-			m_view.move(SCROLL_SPEED,0.f);
+			m_view.move(SCROLL_SPEED * step,0.f);
 		if (up)
-			m_view.move(0.f,-SCROLL_SPEED);
+			m_view.move(0.f,-SCROLL_SPEED * step);
 		if (down)
-			m_view.move(0.f,SCROLL_SPEED);
+			m_view.move(0.f,SCROLL_SPEED * step);
 		m_head->update();
 		m_world.update();
 	}
@@ -199,7 +218,7 @@ public:
 		m_panel.handle_event(e);
 		return false;
 	}
-	void update(FrameTime step) final {
+	void update(Milliseconds step) final {
 	}
 	void draw() final {
 		m_context.window->draw(m_panel,states);
@@ -215,7 +234,7 @@ public:
 			MusicPlayer::instance.toggle();
 		return false;
 	}
-	void update(FrameTime step) final {}
+	void update(Milliseconds step) final {}
 	void draw() final {}
 };
 

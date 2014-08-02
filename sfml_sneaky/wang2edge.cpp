@@ -42,14 +42,14 @@ void Wang2EdgeField::fill_vertices(float tex_size_px, float world_size, sf::Vert
 	});
 }
 
-#define DRAW_CENTER w.add_static_rect(t.x*size+box_size*1.5f,t.y*size+box_size*1.5f,	box_size,box_size)
+#define DRAW_CENTER w.add_static_rect({t.x*size+box_size*1.5f,t.y*size+box_size*1.5f},	box_size,box_size)
 
-#define DRAW_4 w.add_static_rect(t.x*size+box_size*1.5f,t.y*size+size/2.f,	box_size,size)
-#define DRAW_14 w.add_static_rect(t.x*size+size/2.0f, t.y*size+box_size*1.5f,size,box_size)
-#define DRAW_13 w.add_static_rect(t.x*size+box_size*2.f, t.y*size+box_size*1.5f,box_size*2.f,box_size)
-#define DRAW_8 w.add_static_rect(t.x*size+box_size*1.5f,t.y*size+box_size*1.f,	box_size,box_size*2.f)
-#define DRAW_15 w.add_static_rect(t.x*size+box_size*1.f, t.y*size+box_size*1.5f,box_size*2.f,box_size)
-#define DRAW_0 w.add_static_rect(t.x*size+box_size*1.5f,t.y*size+box_size*2.f,	box_size,box_size*2.f)
+#define DRAW_4 w.add_static_rect({t.x*size+box_size*1.5f,t.y*size+size/2.f},	box_size,size)
+#define DRAW_14 w.add_static_rect({t.x*size+size/2.0f, t.y*size+box_size*1.5f},size,box_size)
+#define DRAW_13 w.add_static_rect({t.x*size+box_size*2.f, t.y*size+box_size*1.5f},box_size*2.f,box_size)
+#define DRAW_8 w.add_static_rect({t.x*size+box_size*1.5f,t.y*size+box_size*1.f},	box_size,box_size*2.f)
+#define DRAW_15 w.add_static_rect({t.x*size+box_size*1.f, t.y*size+box_size*1.5f},box_size*2.f,box_size)
+#define DRAW_0 w.add_static_rect({t.x*size+box_size*1.5f,t.y*size+box_size*2.f},	box_size,box_size*2.f)
 
 void Wang2EdgeField::fill_world(float size, PhysicsWorld& w) {
 	const float box_size = size / 3.f;

@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
 namespace codespear {
-using FrameTime = float;
+using Milliseconds = float;
 using std::string;
 }

@@ -6,7 +6,7 @@
 #include "scenenode.h"
 namespace sneaky {
 using codespear::Game;
-using codespear::FrameTime;
+using codespear::Milliseconds;
 using codespear::SceneNode;
 using codespear::SceneGraph;
 using codespear::GameState;

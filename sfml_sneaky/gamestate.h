@@ -30,7 +30,7 @@ public:
 	 * states lower on the stack
 	 */
 	virtual bool handle_event(const sf::Event&) {return false;}
-	virtual void update(FrameTime dt) = 0;
+	virtual void update(Milliseconds dt) = 0;
 	virtual void draw() = 0;
 	virtual ~State() {}
 private:
@@ -73,7 +73,7 @@ public:
 				return;
 		apply_pendings();
 	}
-	void update(FrameTime delta) {
+	void update(Milliseconds delta) {
 		for (auto i = m_states.rbegin(); i != m_states.rend(); ++i)
 			(*i)->update(delta);
 		apply_pendings();

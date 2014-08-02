@@ -11,11 +11,11 @@ void CommandQueue::register_handler(GameCommand command, CommandHandler handler)
 	m_handlers.emplace(command,handler);
 }
 
-void CommandQueue::schedule(GameCommand command, FrameTime when) {
+void CommandQueue::schedule(GameCommand command, Milliseconds when) {
 	m_queue.emplace(CommandEvent{command,when});
 }
 
-void CommandQueue::update(FrameTime dt) {
+void CommandQueue::update(Milliseconds dt) {
 	m_now += dt;
 	while (!m_queue.empty() && m_queue.top().when <= m_now) {
 		auto &h = m_handlers[m_queue.top().command];

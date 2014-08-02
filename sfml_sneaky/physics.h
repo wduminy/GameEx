@@ -11,6 +11,17 @@ namespace codespear {
 
 using HitHandler = std::function<void (b2Contact *)>;
 
+/*
+ * RealVector is  position in the physical world: 1.0f equals 1 meter
+ */
+using RealVector = b2Vec2;
+using RealDimension = b2Vec2;
+
+/*
+ * The add_* methods create new objects and allows you to
+ * reference the objects, but you should not delete them.
+ * Their lifetime is tied to the PhysicsWorld instance
+ */
 class PhysicsWorld : public b2ContactListener {
 private:
 	b2World m_world{{0.f,0.f}};
@@ -18,9 +29,10 @@ private:
 	b2Body * m_static;
 public:
 	PhysicsWorld();
-	b2Fixture * add_static_rect(const float cx, const float cy, const float w, const float h);
-	b2Fixture * add_chain_rect(const float x, const float y, const float w, const float h);
-	b2Body * add_dyna_circle(float x, float y, float r);
+	b2Fixture * add_static_rect(const RealVector& center, const float w, const float h);
+	b2Fixture * add_chain_rect(const RealVector& left_top, const RealVector& dim);
+	b2Fixture * add_static_circle(const RealVector& center, float r);
+	b2Body * add_dyna_circle(const RealVector& center, float r);
 	void set_handler(HitHandler h)  {m_handler = h;}
 	void update();
 	void BeginContact(b2Contact* contact) override;

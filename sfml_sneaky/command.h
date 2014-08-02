@@ -11,11 +11,11 @@ namespace codespear {
 
 enum class GameCommand; // to be provided by the specific game
 
-using CommandHandler = std::function<void (FrameTime now)>;
+using CommandHandler = std::function<void (Milliseconds now)>;
 
 struct CommandEvent {
 	GameCommand command;
-	FrameTime when;
+	Milliseconds when;
 };
 
 inline bool operator < (const CommandEvent &e1, const CommandEvent &e2) {
@@ -24,13 +24,13 @@ inline bool operator < (const CommandEvent &e1, const CommandEvent &e2) {
 
 class CommandQueue {
 private:
-	FrameTime m_now;
+	Milliseconds m_now;
 	std::priority_queue<CommandEvent> m_queue;
 	std::map<GameCommand,CommandHandler> m_handlers;
 public:
 	void register_handler(GameCommand command, CommandHandler handler);
-	void schedule(GameCommand command, FrameTime when = 0.f);
-	void update(FrameTime dt);
+	void schedule(GameCommand command, Milliseconds when = 0.f);
+	void update(Milliseconds dt);
 };
 
 }

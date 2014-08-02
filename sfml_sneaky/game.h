@@ -10,7 +10,7 @@ namespace codespear {
 class Game {
 private:
 	sf::RenderWindow m_window;
-	FrameTime m_previous{0.f}, m_current{0.f};
+	Milliseconds m_previous{0.f}, m_current{0.f};
 public:
 	Game(const unsigned int  window_width,
 			const unsigned int  window_height,
