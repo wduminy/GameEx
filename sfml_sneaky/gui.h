@@ -61,6 +61,7 @@ private:
 public:
 	Label(const sf::Font& font,const std::string& txt) : m_text(txt,font) {}
 	Label(const std::string& txt);
+	void set_text(const std::string& txt);
 	bool is_selectable() const final {return false;}
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const final;
 };

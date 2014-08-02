@@ -14,6 +14,7 @@
 
 using namespace codespear;
 // TODO 900 Show keys to use on the title page
+// TODO 900 Implement pause
 namespace sneaky {
 using std::vector;
 using Vector = sf::Vector2f;
@@ -129,9 +130,9 @@ private:
 	b2Fixture * m_body{nullptr};
 public:
 	Pill(const sf::Texture & tex, PhysicsWorld &world, const MeterVector &position) :
-		SpriteNode(tex,{120*3,285,30,30}, HEAD_SIZE/(90.f))  {
+		SpriteNode(tex,{120*3,285,30,30}, HEAD_SIZE/(30.f))  {
 		setPosition(to_screen(position));
-		m_body = world.add_static_circle(position, HEAD_RADIUS_M/3.f);
+		m_body = world.add_static_circle(position, HEAD_RADIUS_M);
 		m_body->SetUserData(this);
 	}
 
@@ -157,6 +158,37 @@ protected:
 	}
 };
 
+// TODO 100 Show HUD -- number of pills
+class Hud : public SceneNode {
+	mutable Panel m_panel;
+	Label * m_label;
+	const sf::View &m_view;
+	const size_t m_total_pills;
+	size_t m_pills_eaten{0};
+public:
+	Hud(const sf::View &view, size_t pill_count) :
+		m_view(view),
+		m_total_pills(pill_count) {
+		m_panel += (m_label = new Label(""));
+		update_text();
+	}
+	void eat_pill() {
+		m_pills_eaten++;
+		update_text();
+	}
+
+protected:
+	void update_text() {
+		std::ostringstream ss;
+		ss << "You got " << m_pills_eaten << " out of " << m_total_pills;
+		m_label->set_text(ss.str());
+	}
+	void draw_node(sf::RenderTarget& target, sf::RenderStates state) const final {
+		m_panel.setPosition(m_view.getCenter() - m_view.getSize()/2.2f);
+		m_panel.draw(target,state);
+	}
+};
+
 class PlayState : public State {
 private:
 	sf::RenderStates m_rstate;
@@ -168,6 +200,7 @@ private:
 	sf::SoundBuffer m_wall_hit_sound;
 	sf::Sound m_sound;
 	CommandQueue m_commands;
+	Hud * m_hud;
 public:
 	PlayState(StateStack &stack, Context& context) : State{stack,context},
 		m_view(m_context.window->getDefaultView()) {
@@ -175,14 +208,18 @@ public:
 		m_scene_graph.attach(m_arena = new Arena(m_world,fm.layer().at("Level1")));
 		m_arena->attach(m_head = new Head(*context.texture));
 		// Add the pills and move the head based on the flare map data
+		size_t pill_count = 0;
 		Wang2EdgeField field(ARENA_WIDTH_TILES, ARENA_HEIGHT_TILES, fm.layer().at("Level1_o"));
 		field.visit([&](const Tile &t){
 			if (t.tile == 16) // head
 				m_head->create_body(m_world,{static_cast<float>(t.x),static_cast<float>(t.y)});
-			else if (t.tile == 17) // pill
+			else if (t.tile == 17) { // pill
 				m_scene_graph.attach(new Pill(*context.texture,m_world,to_real_center(t.x,t.y)));
+				pill_count++;
+			}
 		});
 		check_that(m_head->has_body()); // the map must specify a place for the body
+		m_scene_graph.attach(m_hud = new Hud(m_view,pill_count));
 		check_that(m_wall_hit_sound.loadFromFile("media/sneaky/wall.wav"));
 		m_view.setCenter(m_head->getPosition());
 		m_world.set_handler([&](b2Contact * contact){
@@ -191,6 +228,7 @@ public:
 			if (a || b) {
 				// we hit something that is not a wall;
 				// it must be a pill
+				m_hud->eat_pill();
 				auto p = reinterpret_cast<Pill *> (a?a:b);
 				m_commands.schedule([=](Milliseconds t){
 					p->destroy();

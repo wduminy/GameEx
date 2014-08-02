@@ -63,6 +63,10 @@ void Label::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	target.draw(m_text,states);
 }
 
+void Label::set_text(const std::string& txt) {
+	m_text.setString(txt);
+}
+
 Button::Button(const std::string& t, const sf::Vector2f& p, WidgetCallBack on_activate) : Button(
 		*skin().font,t,
 		*skin().texture,
