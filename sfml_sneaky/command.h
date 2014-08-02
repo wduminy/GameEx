@@ -14,7 +14,7 @@ enum class GameCommand; // to be provided by the specific game
 using CommandHandler = std::function<void (Milliseconds now)>;
 
 struct CommandEvent {
-	GameCommand command;
+	CommandHandler handler;
 	Milliseconds when;
 };
 
@@ -30,6 +30,7 @@ private:
 public:
 	void register_handler(GameCommand command, CommandHandler handler);
 	void schedule(GameCommand command, Milliseconds when = 0.f);
+	void schedule(CommandHandler command, Milliseconds when = 0.f);
 	void update(Milliseconds dt);
 };
 

@@ -12,13 +12,17 @@ void CommandQueue::register_handler(GameCommand command, CommandHandler handler)
 }
 
 void CommandQueue::schedule(GameCommand command, Milliseconds when) {
-	m_queue.emplace(CommandEvent{command,when});
+	m_queue.emplace(CommandEvent{m_handlers.at(command),when});
+}
+
+void CommandQueue::schedule(CommandHandler handler, Milliseconds when) {
+	m_queue.emplace(CommandEvent{handler,when});
 }
 
 void CommandQueue::update(Milliseconds dt) {
 	m_now += dt;
 	while (!m_queue.empty() && m_queue.top().when <= m_now) {
-		auto &h = m_handlers[m_queue.top().command];
+		auto &h = m_queue.top().handler;
 		ASSERT(h); // make sure a handler was registered
 		h(m_now);
 		m_queue.pop();

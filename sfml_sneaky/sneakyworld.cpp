@@ -9,6 +9,7 @@
 #include "physics.h"
 #include "wang2edge.h"
 #include "music.h"
+#include "command.h"
 #include <SFML/Audio.hpp>
 
 using namespace codespear;
@@ -32,7 +33,7 @@ const size_t SCREEN_WIDTH = 800;
 const size_t SCREEN_HEIGHT = 600;
 
 const Pixels PIXELS_PER_METER = 100.f;
-const Pixels PIXELS_PER_TILE = 150.f;
+const Pixels PIXELS_PER_TILE = 120.f;
 const Meters METERS_PER_PIXEL = 1.f/PIXELS_PER_METER;
 const Tiles TILES_PER_METER = PIXELS_PER_METER / PIXELS_PER_TILE;
 const Meters METERS_PER_TILE = 1.f/TILES_PER_METER;
@@ -68,8 +69,8 @@ using MetersPerSecond = float;
 using DegreesPerSecond = float;
 using PixelsPerMilliSecond = float;
 const DegreesPerSecond HEAD_TURN_SPEED = 320.f;
-const MetersPerSecond HEAD_SPEED = 1.8f;
-const PixelsPerMilliSecond SCROLL_SPEED = 1.5f * HEAD_SPEED * PIXELS_PER_METER / 1000.f;
+const MetersPerSecond HEAD_SPEED = METERS_PER_TILE * 2.5;
+const PixelsPerMilliSecond SCROLL_SPEED = HEAD_SPEED * PIXELS_PER_METER / 1000.f;
 
 // TODO 900 Create ghosts; something to chase head
 // TODO 900 Head steers with explicit forward (turns without movement?)
@@ -85,14 +86,20 @@ public:
 	}
 
 	void update() {
+		const auto left = (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left));
+		const auto right = (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right));
+		if (left != right) {
+			if (left)
+				m_rotation_speed = -HEAD_TURN_SPEED;
+			if (right)
+				m_rotation_speed = HEAD_TURN_SPEED;
+		} else
+			m_rotation_speed = 0.0f;
 		setPosition(to_screen(m_body->GetPosition()));
 		setRotation(m_body->GetAngle()*DEGS_IN_RAD);
 		adjust_velocity();
 	}
 
-	void turn_left() {m_rotation_speed = -HEAD_TURN_SPEED; }
-	void turn_right() {m_rotation_speed = HEAD_TURN_SPEED; }
-	void go_straight() {m_rotation_speed = 0.0f; }
 	/* x and y are "square coordinates" */
 	void create_body(PhysicsWorld &world, const TileVector &v) {
 		check_that(m_body == nullptr); // cannot have two bodies for one head
@@ -119,12 +126,18 @@ private:
 };
 class Pill : public SpriteNode {
 private:
-	b2Fixture * m_body;
+	b2Fixture * m_body{nullptr};
 public:
 	Pill(const sf::Texture & tex, PhysicsWorld &world, const MeterVector &position) :
-		SpriteNode(tex,{120*3,285,30,30}, HEAD_SIZE/(90.f)) {
+		SpriteNode(tex,{120*3,285,30,30}, HEAD_SIZE/(90.f))  {
 		setPosition(to_screen(position));
 		m_body = world.add_static_circle(position, HEAD_RADIUS_M/3.f);
+		m_body->SetUserData(this);
+	}
+
+	void destroy() {
+		m_body->GetBody()->DestroyFixture(m_body);
+		m_body = nullptr;
 	}
 };
 
@@ -154,6 +167,7 @@ private:
 	PhysicsWorld m_world;
 	sf::SoundBuffer m_wall_hit_sound;
 	sf::Sound m_sound;
+	CommandQueue m_commands;
 public:
 	PlayState(StateStack &stack, Context& context) : State{stack,context},
 		m_view(m_context.window->getDefaultView()) {
@@ -172,34 +186,29 @@ public:
 		check_that(m_wall_hit_sound.loadFromFile("media/sneaky/wall.wav"));
 		m_view.setCenter(m_head->getPosition());
 		m_world.set_handler([&](b2Contact * contact){
-			// TODO 100 Head must eat pills
+			auto a = contact->GetFixtureA()->GetUserData();
+			auto b = contact->GetFixtureB()->GetUserData();
+			if (a || b) {
+				// we hit something that is not a wall;
+				// it must be a pill
+				auto p = reinterpret_cast<Pill *> (a?a:b);
+				m_commands.schedule([=](Milliseconds t){
+					p->destroy();
+					m_scene_graph.detach(p);
+				});
+			}
 			m_sound.setBuffer(m_wall_hit_sound);m_sound.play();
 		});
 	}
 
 	void update(Milliseconds step) override {
-		bool left = false;
-		bool right = false;
-		bool up = false;
-		bool down = false;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-			left = true;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-			right = true;
-		if (left != right) {
-			if (left)
-				m_head->turn_left();
-			if (right)
-				m_head->turn_right();
-		} else
-			m_head->go_straight();
-
+		m_head->update();
 		// Adjust the view to keep up with the head
 		auto delta = m_view.getCenter() - m_head->getPosition();
-		left =  delta.x > SCROLL_THRESHOLD;
-		right = delta.x < -SCROLL_THRESHOLD;
-		up = delta.y > SCROLL_THRESHOLD;
-		down = delta.y < -SCROLL_THRESHOLD;
+		const bool left =  delta.x > SCROLL_THRESHOLD;
+		const bool right = delta.x < -SCROLL_THRESHOLD;
+		const bool up = delta.y > SCROLL_THRESHOLD;
+		const bool down = delta.y < -SCROLL_THRESHOLD;
 		if (left)
 			m_view.move(-SCROLL_SPEED * step,0.f);
 		if (right)
@@ -208,8 +217,8 @@ public:
 			m_view.move(0.f,-SCROLL_SPEED * step);
 		if (down)
 			m_view.move(0.f,SCROLL_SPEED * step);
-		m_head->update();
 		m_world.update();
+		m_commands.update(step);
 	}
 	void draw() override {
 		m_context.window->setView(m_view);
