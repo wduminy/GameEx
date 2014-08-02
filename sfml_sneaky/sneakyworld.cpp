@@ -18,7 +18,7 @@ using std::vector;
 using Vector = sf::Vector2f;
 using sf::Vertex;
 /** ScreenVector is size in screen pixels */
-using ScreenVector = sf::Vector2f;
+using PixelVector = sf::Vector2f;
 /** TileVector is the position of the tile */
 using TileVector = sf::Vector2f;
 
@@ -32,21 +32,26 @@ const size_t SCREEN_WIDTH = 800;
 const size_t SCREEN_HEIGHT = 600;
 
 const Pixels PIXELS_PER_METER = 100.f;
-const Pixels PIXELS_PER_TILE = SCREEN_WIDTH / (ARENA_WIDTH_TILES*1.f);
+const Pixels PIXELS_PER_TILE = 150.f;
 const Meters METERS_PER_PIXEL = 1.f/PIXELS_PER_METER;
 const Tiles TILES_PER_METER = PIXELS_PER_METER / PIXELS_PER_TILE;
 const Meters METERS_PER_TILE = 1.f/TILES_PER_METER;
+const Meters METERS_PER_HALF_TILE = METERS_PER_TILE / 2.0f;
 
-RealVector to_real(const TileVector &v) {return RealVector{v.x*METERS_PER_TILE,v.y*METERS_PER_TILE};}
-RealVector to_real_center(const TileVector &v) {return RealVector{v.x*METERS_PER_TILE*1.5f,v.y*METERS_PER_TILE*1.5f};}
-ScreenVector to_screen(const RealDimension &v) {return ScreenVector{v.x * PIXELS_PER_METER,v.y * PIXELS_PER_METER};}
+MeterVector to_real(const TileVector &v) {return MeterVector{v.x*METERS_PER_TILE,v.y*METERS_PER_TILE};}
+MeterVector to_real_center(const TileVector &v) {
+	return MeterVector{v.x*METERS_PER_TILE + METERS_PER_HALF_TILE,
+		               v.y*METERS_PER_TILE + METERS_PER_HALF_TILE};
+}
+MeterVector to_real_center(const int x, const int y) {return to_real_center({x*1.f,y*1.f});}
+PixelVector to_screen(const MeterVector &v) {return PixelVector{v.x * PIXELS_PER_METER,v.y * PIXELS_PER_METER};}
 
 const Pixels HEAD_SIZE = PIXELS_PER_TILE / 2.f; // pixel size of head
 const Meters HEAD_RADIUS_M = HEAD_SIZE * METERS_PER_PIXEL * 0.5f;
 
 const TileVector TILE_RB{ARENA_WIDTH_TILES,ARENA_HEIGHT_TILES};
-const RealVector REAL_RB = to_real(TILE_RB);
-const ScreenVector PIXEL_RB(SCREEN_WIDTH,SCREEN_HEIGHT);
+const MeterVector REAL_RB = to_real(TILE_RB);
+const PixelVector PIXEL_RB(SCREEN_WIDTH,SCREEN_HEIGHT);
 
 const size_t ARENA_TILE_COUNT = ARENA_WIDTH_TILES * ARENA_HEIGHT_TILES;
 const char* FLAREMAP_FILE_NAME = "media/sneaky/flaremap.txt";
@@ -57,14 +62,14 @@ const Radains RADS_IN_CIRCLE = 3.14f * 2.f;
 const Degrees DEGS_IN_CIRCLE = 360.f;
 const Degrees DEGS_IN_RAD = DEGS_IN_CIRCLE/RADS_IN_CIRCLE;
 const Radains RADS_IN_DEG = RADS_IN_CIRCLE/DEGS_IN_CIRCLE;
-const Pixels SCROLL_THRESHOLD = HEAD_SIZE * 3.5f;
+const Pixels SCROLL_THRESHOLD = SCREEN_HEIGHT * 0.35; // deviation from centre of screen
 
 using MetersPerSecond = float;
 using DegreesPerSecond = float;
 using PixelsPerMilliSecond = float;
 const DegreesPerSecond HEAD_TURN_SPEED = 320.f;
 const MetersPerSecond HEAD_SPEED = 1.8f;
-const PixelsPerMilliSecond SCROLL_SPEED = HEAD_SPEED * PIXELS_PER_METER / 1000.f;
+const PixelsPerMilliSecond SCROLL_SPEED = 1.5f * HEAD_SPEED * PIXELS_PER_METER / 1000.f;
 
 // TODO 900 Create ghosts; something to chase head
 // TODO 900 Head steers with explicit forward (turns without movement?)
@@ -112,9 +117,15 @@ private:
 	}
 
 };
-// TODO 100 Head must eat pills
 class Pill : public SpriteNode {
-// TODO 040 construct the pill as a body in the physics world
+private:
+	b2Fixture * m_body;
+public:
+	Pill(const sf::Texture & tex, PhysicsWorld &world, const MeterVector &position) :
+		SpriteNode(tex,{120*3,285,30,30}, HEAD_SIZE/(90.f)) {
+		setPosition(to_screen(position));
+		m_body = world.add_static_circle(position, HEAD_RADIUS_M/3.f);
+	}
 };
 
 class Arena : public SceneNode {
@@ -149,16 +160,21 @@ public:
 		FlareMap fm(FLAREMAP_FILE_NAME);
 		m_scene_graph.attach(m_arena = new Arena(m_world,fm.layer().at("Level1")));
 		m_arena->attach(m_head = new Head(*context.texture));
-		// TODO 050 add the pills based on flaremap data
+		// Add the pills and move the head based on the flare map data
 		Wang2EdgeField field(ARENA_WIDTH_TILES, ARENA_HEIGHT_TILES, fm.layer().at("Level1_o"));
 		field.visit([&](const Tile &t){
 			if (t.tile == 16) // head
 				m_head->create_body(m_world,{static_cast<float>(t.x),static_cast<float>(t.y)});
+			else if (t.tile == 17) // pill
+				m_scene_graph.attach(new Pill(*context.texture,m_world,to_real_center(t.x,t.y)));
 		});
 		check_that(m_head->has_body()); // the map must specify a place for the body
 		check_that(m_wall_hit_sound.loadFromFile("media/sneaky/wall.wav"));
 		m_view.setCenter(m_head->getPosition());
-		m_world.set_handler([&](b2Contact * contact){m_sound.setBuffer(m_wall_hit_sound);m_sound.play();});
+		m_world.set_handler([&](b2Contact * contact){
+			// TODO 100 Head must eat pills
+			m_sound.setBuffer(m_wall_hit_sound);m_sound.play();
+		});
 	}
 
 	void update(Milliseconds step) override {

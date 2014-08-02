@@ -19,14 +19,14 @@ void PhysicsWorld::BeginContact(b2Contact* contact) {
 		m_handler(contact);
 }
 
-b2Fixture * PhysicsWorld::add_static_rect(const RealVector& center,
+b2Fixture * PhysicsWorld::add_static_rect(const MeterVector& center,
 		const float w, const float h) {
 	b2PolygonShape shape;
 	shape.SetAsBox(w/2.f,h/2.f,center,0.f);
 	return m_static->CreateFixture(&shape,0.f);
 }
 
-b2Fixture * PhysicsWorld::add_static_circle(const RealVector& center,
+b2Fixture * PhysicsWorld::add_static_circle(const MeterVector& center,
 		const float r) {
 	b2CircleShape shape;
 	shape.m_p = center;
@@ -34,7 +34,7 @@ b2Fixture * PhysicsWorld::add_static_circle(const RealVector& center,
 	return m_static->CreateFixture(&shape,0.f);
 }
 
-b2Fixture * PhysicsWorld::add_chain_rect(const RealVector& lt, const RealVector& dim) {
+b2Fixture * PhysicsWorld::add_chain_rect(const MeterVector& lt, const MeterVector& dim) {
 	b2Vec2 v[4];
 	auto x = lt.x;
 	auto y = lt.y;
@@ -50,7 +50,7 @@ b2Fixture * PhysicsWorld::add_chain_rect(const RealVector& lt, const RealVector&
 }
 
 
-b2Body * PhysicsWorld::add_dyna_circle(const RealVector& center, float r) {
+b2Body * PhysicsWorld::add_dyna_circle(const MeterVector& center, float r) {
 	b2BodyDef def;
 	def.position = center;
 	def.type = b2_dynamicBody;
