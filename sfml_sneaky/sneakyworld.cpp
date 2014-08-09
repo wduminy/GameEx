@@ -126,15 +126,21 @@ private:
 
 };
 
-class Ghost : public SpriteNode {
-
+class Ghost : public SpriteNode, public Physicalb2Fixture {
+public:
+	Ghost(const sf::Texture & tex, PhysicsWorld &world, const MeterVector &position) :
+		SpriteNode(tex,{120*3+30,285,30,30}, HEAD_SIZE/(30.f)),
+		Physicalb2Fixture(body_t::Ghost){
+		assign_body(world.add_static_circle(position, HEAD_RADIUS_M),this);
+		setPosition(to_screen(position));
+	}
 };
 
 class Pill : public SpriteNode, public Physicalb2Fixture {
 public:
 	Pill(const sf::Texture & tex, PhysicsWorld &world, const MeterVector &position) :
 		SpriteNode(tex,{120*3,285,30,30}, HEAD_SIZE/(30.f)),
-		Physicalb2Fixture({body_t::Pill}){
+		Physicalb2Fixture(body_t::Pill){
 		assign_body(world.add_static_circle(position, HEAD_RADIUS_M),this);
 		setPosition(to_screen(position));
 	}
@@ -206,6 +212,7 @@ public:
 		m_arena->attach(m_head = new Head(*context.texture));
 		// Add the pills and move the head based on the flare map data
 		size_t pill_count = 0;
+		size_t ghost_count = 0;
 		Wang2EdgeField field(ARENA_WIDTH_TILES, ARENA_HEIGHT_TILES, fm.layer().at("Level1_o"));
 		field.visit([&](const Tile &t){
 			if (t.tile == 16) // head
@@ -214,9 +221,14 @@ public:
 				auto p = new Pill(*context.texture,m_world,to_real_center(t.x,t.y));
 				m_scene_graph.attach(p);
 				pill_count++;
+			} else if (t.tile == 18) { // ghost
+				auto g = new Ghost(*context.texture,m_world,to_real_center(t.x,t.y));
+				m_scene_graph.attach(g);
+				ghost_count++;
 			}
 		});
 		check_that(m_head->has_body()); // the map must specify a place for the body
+		check_that(ghost_count > 0);
 		m_scene_graph.attach(m_hud = new Hud(m_view,pill_count));
 		check_that(m_wall_hit_sound.loadFromFile("media/sneaky/wall.wav"));
 		m_view.setCenter(m_head->getPosition());
@@ -228,12 +240,14 @@ public:
 			// we hit something that is not a wall;
 			// it must be a pill
 			// TODO 050 handle collisions with ghosts
-			m_hud->eat_pill();
-			auto p = reinterpret_cast<Pill *> (b);
-			m_commands.schedule([=](Milliseconds t){
-				p->destroy_body();
-				m_scene_graph.detach(p);
-			});
+			if (b->type == body_t::Pill) {
+				m_hud->eat_pill();
+				auto p = static_cast<Pill *> (b);
+				m_commands.schedule([=](Milliseconds t){
+					p->destroy_body();
+					m_scene_graph.detach(p);
+				});
+			}
 		}
 		m_sound.setBuffer(m_wall_hit_sound);m_sound.play();
 	}

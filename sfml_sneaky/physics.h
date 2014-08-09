@@ -27,7 +27,6 @@ template <class bodyT>
 class PhysicalBody : public Body {
 	protected:
 		bodyT * m_body = nullptr;
-		virtual void assign_body(bodyT * b, void * data) = 0;
 	public:
 		PhysicalBody<bodyT>(body_t t) : Body{t} {};
 		bool has_body() const {return m_body != nullptr;}
@@ -36,14 +35,14 @@ class PhysicalBody : public Body {
 
 class Physicalb2Body : public PhysicalBody<b2Body> {
 	protected:
-		void assign_body(b2Body * b, void * data) override;
+		void assign_body(b2Body * b, Body * data);
 	public:
 		Physicalb2Body(body_t t) : PhysicalBody<b2Body>{t} {}
 };
 
 class Physicalb2Fixture : public PhysicalBody<b2Fixture> {
 	protected:
-		void assign_body(b2Fixture * b, void * data) override;
+		void assign_body(b2Fixture * b, Body * data);
 	public:
 		Physicalb2Fixture(body_t t) : PhysicalBody<b2Fixture>(t) {}
 		void destroy_body();

@@ -151,13 +151,13 @@ void PhysicsWorld::debug_draw(sf::RenderTarget &t, float pixels_per_meter,
 	m_world.DrawDebugData();
 }
 
-void Physicalb2Body::assign_body(b2Body * b,void * data) {
+void Physicalb2Body::assign_body(b2Body * b,Body * data) {
 	check_that(m_body == nullptr);
 	m_body = b;
 	m_body->GetFixtureList()->SetUserData(data);
 }
 
-void Physicalb2Fixture::assign_body(b2Fixture * b, void * data) {
+void Physicalb2Fixture::assign_body(b2Fixture * b, Body * data) {
 	check_that(m_body == nullptr);
 	m_body = b;
 	m_body->SetUserData(data);
@@ -177,8 +177,8 @@ void PhysicsWorldWithBodies::handle_collision(b2Contact * contact) {
 	Body * b1 = nullptr;
 	Body * b2 = nullptr;
 	if (a && b) {
-		b1 = reinterpret_cast<Body *>(a);
-		b2 = reinterpret_cast<Body *>(b);
+		b1 = static_cast<Body *>(a);
+		b2 = static_cast<Body *>(b);
 		if (b1->type > b2->type) {
 			Body * t = b1;
 			b1 = b2;
