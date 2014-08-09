@@ -73,16 +73,18 @@ const DegreesPerSecond HEAD_TURN_SPEED = 320.f;
 const MetersPerSecond HEAD_SPEED = METERS_PER_TILE * 2.5;
 const PixelsPerMilliSecond SCROLL_SPEED = HEAD_SPEED * PIXELS_PER_METER / 1000.f;
 
-// TODO 900 Create ghosts; something to chase head
+using codespear::body_t;
+enum class body_t{Head,Pill,Ghost};
+
 // TODO 900 Head steers with explicit forward (turns without movement?)
-class Head : public SpriteNode {
+class Head : public SpriteNode, public Physicalb2Body{
 private:
 	MetersPerSecond m_speed{0.f};
 	DegreesPerSecond m_rotation_speed {0.f};
-	b2Body * m_body;
 public:
 	Head(const sf::Texture & tex) :
-		SpriteNode(tex,{120*3,0,90,90}, HEAD_SIZE/(90.f)) {
+		SpriteNode(tex,{120*3,0,90,90}, HEAD_SIZE/(90.f)),
+		Physicalb2Body({body_t::Head}){
 		m_body = nullptr;
 	}
 
@@ -103,12 +105,10 @@ public:
 
 	/* x and y are "square coordinates" */
 	void create_body(PhysicsWorld &world, const TileVector &v) {
-		check_that(m_body == nullptr); // cannot have two bodies for one head
-		m_body = world.add_dyna_circle(to_real_center(v),HEAD_RADIUS_M);
+		assign_body(world.add_dyna_circle(to_real_center(v),HEAD_RADIUS_M),this);
 		set_speed(HEAD_SPEED);
 		update();
 	}
-	bool has_body() const {return m_body != nullptr;}
 private:
 
 	void set_speed(MetersPerSecond speed) {
@@ -125,20 +125,18 @@ private:
 	}
 
 };
-class Pill : public SpriteNode {
-private:
-	b2Fixture * m_body{nullptr};
+
+class Ghost : public SpriteNode {
+
+};
+
+class Pill : public SpriteNode, public Physicalb2Fixture {
 public:
 	Pill(const sf::Texture & tex, PhysicsWorld &world, const MeterVector &position) :
-		SpriteNode(tex,{120*3,285,30,30}, HEAD_SIZE/(30.f))  {
+		SpriteNode(tex,{120*3,285,30,30}, HEAD_SIZE/(30.f)),
+		Physicalb2Fixture({body_t::Pill}){
+		assign_body(world.add_static_circle(position, HEAD_RADIUS_M),this);
 		setPosition(to_screen(position));
-		m_body = world.add_static_circle(position, HEAD_RADIUS_M);
-		m_body->SetUserData(this);
-	}
-
-	void destroy() {
-		m_body->GetBody()->DestroyFixture(m_body);
-		m_body = nullptr;
 	}
 };
 
@@ -158,7 +156,6 @@ protected:
 	}
 };
 
-// TODO 100 Show HUD -- number of pills
 class Hud : public SceneNode {
 	mutable Panel m_panel;
 	Label * m_label;
@@ -196,7 +193,7 @@ private:
 	Arena * m_arena;
 	Head * m_head;
 	sf::View m_view;
-	PhysicsWorld m_world;
+	PhysicsWorldWithBodies m_world;
 	sf::SoundBuffer m_wall_hit_sound;
 	sf::Sound m_sound;
 	CommandQueue m_commands;
@@ -214,7 +211,8 @@ public:
 			if (t.tile == 16) // head
 				m_head->create_body(m_world,{static_cast<float>(t.x),static_cast<float>(t.y)});
 			else if (t.tile == 17) { // pill
-				m_scene_graph.attach(new Pill(*context.texture,m_world,to_real_center(t.x,t.y)));
+				auto p = new Pill(*context.texture,m_world,to_real_center(t.x,t.y));
+				m_scene_graph.attach(p);
 				pill_count++;
 			}
 		});
@@ -222,21 +220,22 @@ public:
 		m_scene_graph.attach(m_hud = new Hud(m_view,pill_count));
 		check_that(m_wall_hit_sound.loadFromFile("media/sneaky/wall.wav"));
 		m_view.setCenter(m_head->getPosition());
-		m_world.set_handler([&](b2Contact * contact){
-			auto a = contact->GetFixtureA()->GetUserData();
-			auto b = contact->GetFixtureB()->GetUserData();
-			if (a || b) {
-				// we hit something that is not a wall;
-				// it must be a pill
-				m_hud->eat_pill();
-				auto p = reinterpret_cast<Pill *> (a?a:b);
-				m_commands.schedule([=](Milliseconds t){
-					p->destroy();
-					m_scene_graph.detach(p);
-				});
-			}
-			m_sound.setBuffer(m_wall_hit_sound);m_sound.play();
-		});
+		m_world.set_handler([&](Body *a, Body *b){handle_collision(a,b);});
+	}
+
+	void handle_collision(Body * a, Body * b) {
+		if (a) {
+			// we hit something that is not a wall;
+			// it must be a pill
+			// TODO 050 handle collisions with ghosts
+			m_hud->eat_pill();
+			auto p = reinterpret_cast<Pill *> (b);
+			m_commands.schedule([=](Milliseconds t){
+				p->destroy_body();
+				m_scene_graph.detach(p);
+			});
+		}
+		m_sound.setBuffer(m_wall_hit_sound);m_sound.play();
 	}
 
 	void update(Milliseconds step) override {

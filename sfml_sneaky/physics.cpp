@@ -4,6 +4,7 @@
 
 #include "physics.h"
 #include "log.h"
+#include "exception.h"
 
 namespace codespear {
 
@@ -150,5 +151,48 @@ void PhysicsWorld::debug_draw(sf::RenderTarget &t, float pixels_per_meter,
 	m_world.DrawDebugData();
 }
 
+void Physicalb2Body::assign_body(b2Body * b,void * data) {
+	check_that(m_body == nullptr);
+	m_body = b;
+	m_body->GetFixtureList()->SetUserData(data);
+}
+
+void Physicalb2Fixture::assign_body(b2Fixture * b, void * data) {
+	check_that(m_body == nullptr);
+	m_body = b;
+	m_body->SetUserData(data);
+}
+
+void Physicalb2Fixture::destroy_body() {
+	check_that(m_body);
+	m_body->GetBody()->DestroyFixture(m_body);
+	m_body = nullptr;
+}
+
+
+void PhysicsWorldWithBodies::handle_collision(b2Contact * contact) {
+	auto a = contact->GetFixtureA()->GetUserData();
+	auto b = contact->GetFixtureB()->GetUserData();
+	// we order a and b
+	Body * b1 = nullptr;
+	Body * b2 = nullptr;
+	if (a && b) {
+		b1 = reinterpret_cast<Body *>(a);
+		b2 = reinterpret_cast<Body *>(b);
+		if (b1->type > b2->type) {
+			Body * t = b1;
+			b1 = b2;
+			b2 = t;
+		}
+	} else
+		b2 = reinterpret_cast<Body *>(a?a:b);
+	if (m_body_handler)
+		m_body_handler(b1,b2);
+}
+
+void PhysicsWorldWithBodies::set_handler(BodyHitHandler h) {
+	PhysicsWorld::set_handler([&](b2Contact* c) {handle_collision(c);});
+	m_body_handler = h;
+}
 
 }

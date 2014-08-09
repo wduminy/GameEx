@@ -45,7 +45,7 @@
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.856850881" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.exe.debug.1060638697" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.exe.debug"/>
-							<tool command="g++ " id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.debug.1169849418" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.debug">
+							<tool command="g++ -mwindows" id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.debug.1169849418" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.debug">
 								<option id="gnu.cpp.link.option.paths.1940074556" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${SFML_ROOT}\lib&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${BOX2D_ROOT}\lib&quot;"/>
@@ -117,7 +117,7 @@
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.138103466" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.exe.release.2000804946" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.exe.release"/>
-							<tool command="g++" id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.release.690827562" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.release">
+							<tool command="g++ -mwindows" id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.release.690827562" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.exe.release">
 								<option id="gnu.cpp.link.option.paths.1351009571" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${SFML_ROOT}\lib&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${BOX2D_ROOT}\lib&quot;"/>
