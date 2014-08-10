@@ -3,16 +3,12 @@
 // License page: http://opensource.org/licenses/GPL-3.0
 
 #pragma once
-#include <Box2D/Box2D.h>
+
 #include <functional>
 #include <SFML/Graphics.hpp>
-
+#include "units.h"
 namespace codespear {
 
-/*
- * RealVector is  position in the physical world: 1.0f equals 1 meter
- */
-using MeterVector = b2Vec2;
 enum class body_t; // to be defined by specific game
 
 class Body {

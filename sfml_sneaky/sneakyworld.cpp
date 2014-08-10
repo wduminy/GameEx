@@ -10,6 +10,7 @@
 #include "wang2edge.h"
 #include "music.h"
 #include "command.h"
+#include "navmap.h"
 #include <SFML/Audio.hpp>
 
 using namespace codespear;
@@ -126,6 +127,7 @@ private:
 
 };
 
+//TODO 100 let the ghosts plan their path using the nav map
 class Ghost : public SpriteNode, public Physicalb2Fixture {
 public:
 	Ghost(const sf::Texture & tex, PhysicsWorld &world, const MeterVector &position) :
@@ -204,6 +206,7 @@ private:
 	sf::Sound m_sound;
 	CommandQueue m_commands;
 	Hud * m_hud;
+	NavigationMap m_navmap;
 public:
 	PlayState(StateStack &stack, Context& context) : State{stack,context},
 		m_view(m_context.window->getDefaultView()) {
@@ -214,15 +217,20 @@ public:
 		size_t pill_count = 0;
 		size_t ghost_count = 0;
 		Wang2EdgeField field(ARENA_WIDTH_TILES, ARENA_HEIGHT_TILES, fm.layer().at("Level1_o"));
+
 		field.visit([&](const Tile &t){
+			// TODO 090 fill the nav map
+			auto const rc = to_real_center(t.x,t.y);
+			m_navmap.add_relative(PathSegment{rc,RIGHT},true);
+			m_navmap.add_relative(PathSegment{rc,DOWN},true);
 			if (t.tile == 16) // head
 				m_head->create_body(m_world,{static_cast<float>(t.x),static_cast<float>(t.y)});
 			else if (t.tile == 17) { // pill
-				auto p = new Pill(*context.texture,m_world,to_real_center(t.x,t.y));
+				auto p = new Pill(*context.texture,m_world,rc);
 				m_scene_graph.attach(p);
 				pill_count++;
 			} else if (t.tile == 18) { // ghost
-				auto g = new Ghost(*context.texture,m_world,to_real_center(t.x,t.y));
+				auto g = new Ghost(*context.texture,m_world,rc);
 				m_scene_graph.attach(g);
 				ghost_count++;
 			}
@@ -239,7 +247,7 @@ public:
 		if (a) {
 			// we hit something that is not a wall;
 			// it must be a pill
-			// TODO 050 handle collisions with ghosts
+			// TODO 900 handle collisions with ghosts
 			if (b->type == body_t::Pill) {
 				m_hud->eat_pill();
 				auto p = static_cast<Pill *> (b);
