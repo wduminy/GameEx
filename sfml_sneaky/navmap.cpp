@@ -5,19 +5,37 @@
 #include "navmap.h"
 #include "exception.h"
 #include "log.h"
+#include <boost/graph/astar_search.hpp>
 
 namespace codespear {
 
+void add_edge(NavigationMap::vertex_idx_t& a,
+		NavigationMap::vertex_idx_t& b,
+		NavigationMap::graph_t& g, float32 distance) {
+	if (!boost::edge(a,b,g).second) {
+		auto e = boost::add_edge(a,b,g).first;
+		boost::get(boost::edge_weight,g)[e] = distance;
+	}
+}
+
 void NavigationMap::add_relative(const PathSegment& s, bool bi_directional) {
-	auto const b = s.a+s.b;
+	auto distance = s.b.LengthSquared();
 	auto ia = make_index(s.a);
-	auto ib = make_index(b);
+	auto ib = make_index(s.a+s.b);
 	ASSERT(ia != ib);
-	if (!boost::edge(ia,ib,m_graph).second)
-		boost::add_edge(ia,ib,m_graph);
+	add_edge(ia,ib,m_graph,distance);
 	if (bi_directional)
-		if (!boost::edge(ib,ia,m_graph).second)
-			boost::add_edge(ib,ia,m_graph);
+		add_edge(ib,ia,m_graph,distance);
+}
+
+void NavigationMap::add_absolute(const PathSegment& s, bool bi_directional) {
+	auto distance = s.distance_squared();
+	auto ia = make_index(s.a);
+	auto ib = make_index(s.b);
+	ASSERT(ia != ib);
+	add_edge(ia,ib,m_graph,distance);
+	if (bi_directional)
+		add_edge(ib,ia,m_graph,distance);
 }
 
 std::vector<MeterVector> NavigationMap::from(const MeterVector& v) const {
@@ -27,6 +45,57 @@ std::vector<MeterVector> NavigationMap::from(const MeterVector& v) const {
 	boost::tie(it_b, it_e) = boost::adjacent_vertices(ix,m_graph);
 	for (auto it = it_b;it != it_e; it++)
 		result.push_back(m_graph[*it]);
+	return result;
+}
+
+class DistanceSquaredHeuristic : public boost::astar_heuristic<NavigationMap::graph_t, float32>
+{
+public:
+	DistanceSquaredHeuristic(const NavigationMap::graph_t &g, const MeterVector& goal)
+    : m_graph(g), m_goal(goal) {}
+  float32 operator()(NavigationMap::vertex_idx_t u)
+  {
+	 return (m_goal - m_graph[u]).LengthSquared();
+  }
+private:
+  const NavigationMap::graph_t &m_graph;
+  const MeterVector m_goal;
+};
+
+class GoalFoundException {};
+
+class AStarGoalVisitor : public boost::default_astar_visitor
+{
+public:
+  AStarGoalVisitor(NavigationMap::vertex_idx_t goal) : m_goal(goal) {}
+  void examine_vertex(NavigationMap::vertex_idx_t u, const NavigationMap::graph_t& g) {
+    if(u == m_goal)
+      throw GoalFoundException();
+  }
+private:
+  NavigationMap::vertex_idx_t m_goal;
+};
+
+std::list<MeterVector> NavigationMap::astar(const MeterVector& a, const MeterVector & b) const {
+	using namespace boost;
+	std::list<MeterVector>  result;
+	auto ia = m_vertex_indexes.at(a);
+	auto ib = m_vertex_indexes.at(b);
+	std::vector<vertex_idx_t> preds(num_vertices(m_graph));
+	// call boost a-star
+	try {
+		astar_search(m_graph,ia,DistanceSquaredHeuristic(m_graph,b),
+				predecessor_map(make_iterator_property_map(preds.begin(), get(vertex_index, m_graph))).
+				visitor(AStarGoalVisitor(ib)));
+	} catch (GoalFoundException &) {
+		// boost uses an exception to interrupt a successful search.
+		// i cannot say I like that, but here goes
+		 for(auto v = ib;;v = preds[v]) {
+		      result.push_front(m_graph[v]);
+		      if(preds[v] == v)
+		    	  break; // end of path
+		 }
+	}
 	return result;
 }
 

@@ -3,11 +3,19 @@
 // License page: http://opensource.org/licenses/GPL-3.0
 
 #include <vector>
+#include <list>
 #include <ostream>
 #pragma once
 
 template<class T>
 inline std::ostream& operator <<(std::ostream& os, const std::vector<T>& v) {
+	os << "{";
+	for (auto &e : v) os << e << " ";
+	os << "}";
+	return os;
+}
+template<class T>
+inline std::ostream& operator <<(std::ostream& os, const std::list<T>& v) {
 	os << "{";
 	for (auto &e : v) os << e << " ";
 	os << "}";
