@@ -13,33 +13,34 @@ void NavigationMap::add_relative(const PathSegment& s, bool bi_directional) {
 	auto ia = make_index(s.a);
 	auto ib = make_index(b);
 	ASSERT(ia != ib);
-	m_branches.at(ia).insert(ib);
-	if (bi_directional) {
-		m_branches.at(ib).insert(ia);
-	}
+	if (!boost::edge(ia,ib,m_graph).second)
+		boost::add_edge(ia,ib,m_graph);
+	if (bi_directional)
+		if (!boost::edge(ib,ia,m_graph).second)
+			boost::add_edge(ib,ia,m_graph);
 }
 
 std::vector<MeterVector> NavigationMap::from(const MeterVector& v) const {
+	boost::graph_traits<graph_t>::adjacency_iterator it_b, it_e;
 	std::vector<MeterVector> result;
-	auto iv = m_indexes.at(v);
-	for (auto i : m_branches.at(iv))
-		result.push_back(m_points[i]);
+	auto ix = m_vertex_indexes.at(v);
+	boost::tie(it_b, it_e) = boost::adjacent_vertices(ix,m_graph);
+	for (auto it = it_b;it != it_e; it++)
+		result.push_back(m_graph[*it]);
 	return result;
 }
 
-size_t NavigationMap::make_index(const MeterVector &v) {
-	auto fnd = m_indexes.find(v);
-	size_t result;
-	if (fnd != m_indexes.end())
-		result = fnd->second;
-	else {
-		m_points.push_back(v);
-		result = m_points.size()-1;
-		m_indexes[v] = result;
-		m_branches.insert({result,std::set<size_t>()});
-	}
 
-	return result;
+auto NavigationMap::make_index(const MeterVector &v) -> vertex_idx_t {
+	auto fnd = m_vertex_indexes.find(v);
+	if (fnd != m_vertex_indexes.end())
+		return fnd->second;
+	else {
+		auto ni = boost::add_vertex(m_graph);
+		m_graph[ni] = v;
+		m_vertex_indexes[v] = ni;
+		return ni;
+	}
 }
 
 }

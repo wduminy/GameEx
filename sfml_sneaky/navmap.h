@@ -7,6 +7,7 @@
 #include "container.h"
 #include <map>
 #include <set>
+#include <boost/graph/adjacency_list.hpp>
 
 namespace codespear {
 
@@ -17,9 +18,10 @@ struct PathSegment {
 
 class NavigationMap {
 private:
-	std::map<MeterVector,size_t> m_indexes;
-	std::map<size_t,std::set<size_t>> m_branches;
-	std::vector<MeterVector> m_points;
+	typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, MeterVector> graph_t;
+	typedef graph_t::vertex_descriptor vertex_idx_t;
+	graph_t m_graph;
+	std::map<MeterVector,vertex_idx_t> m_vertex_indexes;
 public:
 	/** add from a to (a + b) */
 	void add_relative(const PathSegment& s, bool bi_directional = true);
@@ -27,7 +29,7 @@ public:
 	std::vector<MeterVector> from(const MeterVector& v) const;
 private:
 	/** makes an index if one does not exist */
-	size_t make_index(const MeterVector &v);
+	auto make_index(const MeterVector &v) -> vertex_idx_t;
 };
 
 
