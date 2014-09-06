@@ -7,10 +7,12 @@
 #include <iostream>
 int main()
 {
+	std::cout << "Started" << std::endl;
 	try {
 		sneaky::SneakyGame().run();
 	} catch (std::runtime_error &e) {
 		std::cout << "Error:" << e.what();
 	}
+	std::cout << "Ended" << std::endl;
 	return 0;
 }

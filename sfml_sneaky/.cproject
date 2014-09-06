@@ -4,7 +4,7 @@
 		<cconfiguration id="cdt.managedbuild.config.gnu.mingw.exe.debug.676747092">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.mingw.exe.debug.676747092" moduleId="org.eclipse.cdt.core.settings" name="Debug">
 				<macros>
-					<stringMacro name="SFML_ROOT" type="VALUE_TEXT" value="F:\dev\smfl\SFML-2.1"/>
+					<stringMacro name="SFML_ROOT" type="VALUE_TEXT" value="F:\dev\sfml"/>
 					<stringMacro name="BOX2D_ROOT" type="VALUE_TEXT" value="F:\dev\box2d"/>
 				</macros>
 				<externalSettings/>
@@ -74,7 +74,7 @@
 		<cconfiguration id="cdt.managedbuild.config.gnu.mingw.exe.release.1293383046">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.mingw.exe.release.1293383046" moduleId="org.eclipse.cdt.core.settings" name="Release">
 				<macros>
-					<stringMacro name="SFML_ROOT" type="VALUE_TEXT" value="F:\dev\smfl\SFML-2.1"/>
+					<stringMacro name="SFML_ROOT" type="VALUE_TEXT" value="F:\dev\sfml"/>
 					<stringMacro name="BOX2D_ROOT" type="VALUE_TEXT" value="F:\dev\box2d"/>
 				</macros>
 				<externalSettings/>
@@ -147,7 +147,7 @@
 		<cconfiguration id="cdt.managedbuild.config.gnu.mingw.exe.debug.676747092.1765353289">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.mingw.exe.debug.676747092.1765353289" moduleId="org.eclipse.cdt.core.settings" name="Test">
 				<macros>
-					<stringMacro name="SFML_ROOT" type="VALUE_TEXT" value="F:\dev\smfl\SFML-2.1"/>
+					<stringMacro name="SFML_ROOT" type="VALUE_TEXT" value="F:\dev\sfml"/>
 					<stringMacro name="BOX2D_ROOT" type="VALUE_TEXT" value="F:\dev\box2d"/>
 				</macros>
 				<externalSettings/>
@@ -193,7 +193,7 @@
 									<listOptionValue builtIn="false" value="&quot;${BOX2D_ROOT}\lib&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.libs.1039953212" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" value="boost_unit_test_framework-mgw48-mt-s-1_55"/>
+									<listOptionValue builtIn="false" value="boost_unit_test_framework-mgw48-mt-1_56"/>
 									<listOptionValue builtIn="false" value="Box2D"/>
 									<listOptionValue builtIn="false" value="sfml-audio"/>
 									<listOptionValue builtIn="false" value="sfml-window"/>

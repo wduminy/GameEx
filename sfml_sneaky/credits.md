@@ -6,7 +6,7 @@
 
 # Libraries
 - [SMFL](http://www.sfml-dev.org/resources.php)
-- Boost
+- [Boost](http://www.boost.org/): [Graph](http://www.boost.org/doc/libs/1_56_0/libs/graph/doc/index.html), [Test](http://www.boost.org/doc/libs/1_56_0/libs/test/doc/html/index.html)
 - Box2D
 
 # Media

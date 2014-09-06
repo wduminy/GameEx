@@ -98,7 +98,7 @@ BOOST_FIXTURE_TEST_CASE(astar_search, NavFixture) {
 	map.add_absolute({DOWN,end_point});
 	map.add_absolute({RIGHT,end_point});
 	auto path = map.astar(ORIGIN,end_point);
-	decltype(path) expected({ORIGIN,DOWN,end_point});
+	decltype(path) expected{ORIGIN,DOWN,end_point};
 	BOOST_CHECK_EQUAL(path,expected);
 
 }
