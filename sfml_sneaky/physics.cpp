@@ -126,7 +126,7 @@ void DrawSolidCircle(const b2Vec2& center,
 void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) override {
 	sf::VertexArray a(sf::Lines, 2);
 	a[0].position = sf::Vector2f(p1.x*scale, p1.y*scale);
-	a[1].position = sf::Vector2f(p2.x*scale, p2.x*scale);
+	a[1].position = sf::Vector2f(p2.x*scale, p2.y*scale);
 	a[0].color = sf::Color::Red;
 	a[1].color = sf::Color::Red;
 	t->draw(a,states);

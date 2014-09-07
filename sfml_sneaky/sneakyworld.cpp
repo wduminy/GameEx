@@ -12,9 +12,11 @@
 #include "command.h"
 #include "navmap.h"
 #include <SFML/Audio.hpp>
+#include "log.h"
 
 using namespace codespear;
 // TODO 900 Show keys to use on the title page
+// TODO 900 close app when quit is selected on title page
 // TODO 900 Implement pause
 namespace sneaky {
 using std::vector;
@@ -46,7 +48,7 @@ MeterVector to_real_center(const TileVector &v) {
 	return MeterVector{v.x*METERS_PER_TILE + METERS_PER_HALF_TILE,
 		               v.y*METERS_PER_TILE + METERS_PER_HALF_TILE};
 }
-MeterVector to_real_center(const int x, const int y) {return to_real_center({x*1.f,y*1.f});}
+MeterVector to_real_center(const UIntVector &v) {return to_real_center(TileVector({v.x*1.f,v.y*1.f}));}
 PixelVector to_screen(const MeterVector &v) {return PixelVector{v.x * PIXELS_PER_METER,v.y * PIXELS_PER_METER};}
 
 const Pixels HEAD_SIZE = PIXELS_PER_TILE / 2.f; // pixel size of head
@@ -194,6 +196,43 @@ protected:
 	}
 };
 
+enum class TileType : unsigned int {
+	Head = 16,
+	Pill  = 17,
+	Ghost = 18,
+	Floor = 12
+};
+
+bool operator ==(const size_t &a, const TileType &b) {
+	return a == static_cast<size_t>(b);
+}
+
+class SneakyField : public Wang2EdgeField {
+public:
+	SneakyField(const std::vector<size_t>& data)
+	: Wang2EdgeField(ARENA_WIDTH_TILES, ARENA_HEIGHT_TILES,data) {
+	}
+	bool is_open(const UIntVector& p) const {
+		if (!in_range(p))
+			return false;
+		else {
+			return tile_at(p) == TileType::Floor;
+		}
+	}
+	void fill_nav_map(NavigationMap &m) const{
+		visit([&](const Tile &t){
+			if (is_open(t.at)) {
+				auto rc = to_real_center(t.at);
+				UIntVector right(t.at.x +1, t.at.y) , bottom(t.at.x,t.at.y+1);
+				if (is_open(right)) m.add_absolute({rc,to_real_center(right)},false);
+				if (is_open(bottom)) m.add_absolute(
+						{rc,to_real_center(bottom)},false);
+			}
+		});
+	}
+
+};
+
 class PlayState : public State {
 private:
 	sf::RenderStates m_rstate;
@@ -211,30 +250,34 @@ public:
 	PlayState(StateStack &stack, Context& context) : State{stack,context},
 		m_view(m_context.window->getDefaultView()) {
 		FlareMap fm(FLAREMAP_FILE_NAME);
-		m_scene_graph.attach(m_arena = new Arena(m_world,fm.layer().at("Level1")));
+		const auto floor_data = fm.layer().at("Level1");
+		m_scene_graph.attach(m_arena = new Arena(m_world,floor_data));
 		m_arena->attach(m_head = new Head(*context.texture));
 		// Add the pills and move the head based on the flare map data
 		size_t pill_count = 0;
 		size_t ghost_count = 0;
-		Wang2EdgeField field(ARENA_WIDTH_TILES, ARENA_HEIGHT_TILES, fm.layer().at("Level1_o"));
-
-		field.visit([&](const Tile &t){
-			// TODO 090 fill the nav map
-			auto const rc = to_real_center(t.x,t.y);
-			m_navmap.add_relative(PathSegment{rc,RIGHT},true);
-			m_navmap.add_relative(PathSegment{rc,DOWN},true);
-			if (t.tile == 16) // head
-				m_head->create_body(m_world,{static_cast<float>(t.x),static_cast<float>(t.y)});
-			else if (t.tile == 17) { // pill
-				auto p = new Pill(*context.texture,m_world,rc);
-				m_scene_graph.attach(p);
-				pill_count++;
-			} else if (t.tile == 18) { // ghost
-				auto g = new Ghost(*context.texture,m_world,rc);
-				m_scene_graph.attach(g);
-				ghost_count++;
-			}
+		SneakyField objects( fm.layer().at("Level1_o"));
+		objects.visit([&](const Tile &t){
+			auto const rc = to_real_center(t.at);
+			switch (static_cast<TileType>(t.tile)) {
+				case TileType::Head:
+					m_head->create_body(m_world,{rc.x,rc.y});
+					break;
+				case TileType::Pill :
+					m_scene_graph += new Pill(*context.texture,m_world,rc);
+					pill_count++;
+					break;
+				case TileType::Ghost:
+					m_scene_graph += new Ghost(*context.texture,m_world,rc);
+					ghost_count++;
+					break;
+				default:
+					break;
+			};
 		});
+		SneakyField floor( floor_data);
+		floor.fill_nav_map(m_navmap);
+
 		check_that(m_head->has_body()); // the map must specify a place for the body
 		check_that(ghost_count > 0);
 		m_scene_graph.attach(m_hud = new Hud(m_view,pill_count));
@@ -283,7 +326,8 @@ public:
 		m_context.window->setView(m_view);
 		m_rstate.texture = m_context.texture;
 		m_scene_graph.draw(*m_context.window,m_rstate);
-//		m_world.debug_draw(*m_context.window,PIXELS_PER_METER, m_rstate);
+		//m_world.debug_draw(*m_context.window,PIXELS_PER_METER, m_rstate);
+		m_navmap.debug_draw(*m_context.window,PIXELS_PER_METER,m_rstate);
 	}
 };
 

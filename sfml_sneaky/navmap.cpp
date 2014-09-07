@@ -6,7 +6,35 @@
 #include "exception.h"
 #include "log.h"
 #include <boost/graph/astar_search.hpp>
+namespace {
+struct DebugDrawer {
+float scale {1.f};
+sf::RenderStates states;
+sf::RenderTarget * t {nullptr};
 
+void segment(const codespear::MeterVector& p1, const codespear::MeterVector& p2){
+	sf::VertexArray a(sf::Lines, 2);
+	a[0].position = sf::Vector2f(p1.x*scale, p1.y*scale);
+	a[1].position = sf::Vector2f(p2.x*scale, p2.y*scale);
+	a[0].color = sf::Color::Red;
+	a[1].color = sf::Color::Red;
+	t->draw(a,states);
+};
+
+void circle(const codespear::MeterVector& center) {
+	const float radius = 0.1f;
+	sf::CircleShape s;
+	s.setPosition({center.x*scale,center.y*scale});
+	s.setOutlineColor(sf::Color::Green);
+    s.setOrigin({radius*scale,radius*scale});
+	s.setRadius(radius*scale);
+	s.setFillColor({0,0,0,0});
+	s.setOutlineThickness(3);
+	t->draw(s,states);
+};
+
+} drawer;
+};
 namespace codespear {
 
 void add_edge(NavigationMap::vertex_idx_t& a,
@@ -29,6 +57,7 @@ void NavigationMap::add_relative(const PathSegment& s, bool bi_directional) {
 }
 
 void NavigationMap::add_absolute(const PathSegment& s, bool bi_directional) {
+	TRACE << "adding " << s;
 	auto distance = s.distance_squared();
 	auto ia = make_index(s.a);
 	auto ib = make_index(s.b);
@@ -112,4 +141,23 @@ auto NavigationMap::make_index(const MeterVector &v) -> vertex_idx_t {
 	}
 }
 
+
+void NavigationMap::debug_draw(sf::RenderTarget &t,const float pixels_per_meter, sf::RenderStates states) const {
+	drawer.scale = pixels_per_meter;
+	drawer.states = states;
+	drawer.t = &t;
+	drawer.states.blendMode  = sf::BlendNone;
+	for (const auto& e : m_vertex_indexes) {
+		drawer.circle(e.first);
+		for (const auto& t : from(e.first))
+			drawer.segment(e.first, t);
+	}
 }
+
+
+}
+
+std::ostream& operator <<(std::ostream& os, const codespear::PathSegment& v) {
+	return os << "(" << v.a << "->" << v.b << ")";
+}
+

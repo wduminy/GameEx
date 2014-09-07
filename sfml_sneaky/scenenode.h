@@ -43,6 +43,7 @@ public:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const final;
 	sf::Transform world_transform() const;
 	sf::Vector2f world_position() const {return world_transform() * sf::Vector2f();}
+	void operator += (SceneNode *child) {attach(child);}
 protected:
 	virtual void draw_node(sf::RenderTarget& target, sf::RenderStates state) const = 0;
 };

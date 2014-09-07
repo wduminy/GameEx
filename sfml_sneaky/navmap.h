@@ -8,6 +8,8 @@
 #include <map>
 #include <set>
 #include <boost/graph/adjacency_list.hpp>
+#include <SFML/Graphics.hpp>
+#include <ostream>
 
 namespace codespear {
 
@@ -34,6 +36,7 @@ public:
 	std::vector<MeterVector> from(const MeterVector& v) const;
 	/** find a short path from a to b */
 	std::list<MeterVector> astar(const MeterVector& a, const MeterVector& b) const;
+	void debug_draw(sf::RenderTarget &t,const float pixels_per_meter, sf::RenderStates states) const;
 private:
 	/** makes an index if one does not exist */
 	auto make_index(const MeterVector &v) -> vertex_idx_t;
@@ -41,3 +44,5 @@ private:
 
 
 }
+
+std::ostream& operator <<(std::ostream& os, const codespear::PathSegment& v);
