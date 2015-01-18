@@ -13,7 +13,9 @@
 #include "navmap.h"
 #include <SFML/Audio.hpp>
 #include "log.h"
-
+#include <thread>
+#include <atomic>
+#include <iostream>
 using namespace codespear;
 // TODO 900 Show keys to use on the title page
 // TODO 900 close app when quit is selected on title page
@@ -129,16 +131,67 @@ private:
 
 };
 
+
 //TODO 100 let the ghosts plan their path using the nav map
 class Ghost : public SpriteNode, public Physicalb2Fixture {
 public:
 	Ghost(const sf::Texture & tex, PhysicsWorld &world, const MeterVector &position) :
-		SpriteNode(tex,{120*3+30,285,30,30}, HEAD_SIZE/(30.f)),
-		Physicalb2Fixture(body_t::Ghost){
+			SpriteNode(tex,{120*3+30,285,30,30}, HEAD_SIZE/(30.f)),
+			Physicalb2Fixture(body_t::Ghost){
 		assign_body(world.add_static_circle(position, HEAD_RADIUS_M),this);
 		setPosition(to_screen(position));
 	}
 };
+
+class GhostAgent : public SceneNode {
+public:
+	GhostAgent(Ghost * g) : m_g(g) {};
+	void draw_node(sf::RenderTarget& target, sf::RenderStates state) const {
+		// may draw some debug lines?
+	}
+private:
+	const Ghost * m_g;
+};
+
+class AIController;
+void ai_loop(AIController * c, const Head * t);
+
+class AIController : public std::list<GhostAgent*> {
+private:
+	std::thread * m_thread = 0;
+	std::atomic_bool m_running{false};
+	AIController(const AIController&); // remove copy constructor
+public:
+	friend void ai_loop(AIController * c, const Head * t);
+	AIController() {}
+	NavigationMap navmap;
+	void start_planning(const Head* t){
+		if (m_thread != nullptr)
+			throw std::runtime_error("AI controller already running");
+		m_running = true;
+		m_thread = new std::thread(&ai_loop,this,t);
+	}
+	void stop_planning() {
+		if (m_thread != nullptr) {
+			m_running = false;
+			m_thread->join();
+		}
+		m_thread = nullptr;
+	}
+};
+
+void ai_loop(AIController * c, const Head * t) {
+	std::cout << "AI controller started!" << std::endl;
+	while (c->m_running) {
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+		std::cout << "AI controller stepped!" << std::endl;
+	}
+	std::cout << "AI controller done!" << std::endl;
+}
+
+
+
+
 
 class Pill : public SpriteNode, public Physicalb2Fixture {
 public:
@@ -243,9 +296,9 @@ private:
 	PhysicsWorldWithBodies m_world;
 	sf::SoundBuffer m_wall_hit_sound;
 	sf::Sound m_sound;
-	CommandQueue m_commands;
+	CommandQueueTS m_commands;
 	Hud * m_hud;
-	NavigationMap m_navmap;
+	AIController m_ai;
 public:
 	PlayState(StateStack &stack, Context& context) : State{stack,context},
 		m_view(m_context.window->getDefaultView()) {
@@ -267,16 +320,21 @@ public:
 					m_scene_graph += new Pill(*context.texture,m_world,rc);
 					pill_count++;
 					break;
-				case TileType::Ghost:
-					m_scene_graph += new Ghost(*context.texture,m_world,rc);
+				case TileType::Ghost: {
+					auto g = new Ghost(*context.texture,m_world,rc);
+					auto ga = new GhostAgent(g);
+					m_ai.push_back(ga);
+					m_scene_graph += g;
+					m_scene_graph += ga;
 					ghost_count++;
 					break;
+				}
 				default:
 					break;
 			};
 		});
 		SneakyField floor( floor_data);
-		floor.fill_nav_map(m_navmap);
+		floor.fill_nav_map(m_ai.navmap);
 
 		check_that(m_head->has_body()); // the map must specify a place for the body
 		check_that(ghost_count > 0);
@@ -284,6 +342,7 @@ public:
 		check_that(m_wall_hit_sound.loadFromFile("media/sneaky/wall.wav"));
 		m_view.setCenter(m_head->getPosition());
 		m_world.set_handler([&](Body *a, Body *b){handle_collision(a,b);});
+		m_ai.start_planning(m_head);
 	}
 
 	void handle_collision(Body * a, Body * b) {
@@ -327,7 +386,11 @@ public:
 		m_rstate.texture = m_context.texture;
 		m_scene_graph.draw(*m_context.window,m_rstate);
 		//m_world.debug_draw(*m_context.window,PIXELS_PER_METER, m_rstate);
-		m_navmap.debug_draw(*m_context.window,PIXELS_PER_METER,m_rstate);
+		m_ai.navmap.debug_draw(*m_context.window,PIXELS_PER_METER,m_rstate);
+	}
+
+	~PlayState() {
+		m_ai.stop_planning();
 	}
 };
 

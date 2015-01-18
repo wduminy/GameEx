@@ -6,6 +6,9 @@
 #include "exception.h"
 #include "log.h"
 #include <boost/graph/astar_search.hpp>
+
+namespace codespear {
+
 namespace {
 struct DebugDrawer {
 float scale {1.f};
@@ -35,7 +38,6 @@ void circle(const codespear::MeterVector& center) {
 
 } drawer;
 };
-namespace codespear {
 
 void add_edge(NavigationMap::vertex_idx_t& a,
 		NavigationMap::vertex_idx_t& b,

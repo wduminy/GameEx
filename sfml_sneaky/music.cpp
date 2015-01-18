@@ -6,10 +6,12 @@
 #include <SFML/Audio.hpp>
 #include "exception.h"
 
+
+namespace codespear {
 namespace {
 sf::Music music;
 }
-namespace codespear {
+
 MusicPlayer MusicPlayer::instance;
 
 void MusicPlayer::play(const string& filename) {

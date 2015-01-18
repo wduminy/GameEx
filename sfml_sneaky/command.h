@@ -6,8 +6,10 @@
 #include <queue>
 #include <map>
 #include "types.h"
+#include <mutex>
 
 namespace codespear {
+using guard = std::lock_guard<std::mutex>;
 
 enum class GameCommand; // to be provided by the specific game
 
@@ -34,4 +36,28 @@ public:
 	void update(Milliseconds dt);
 };
 
-}
+/* use this if your game has multiple thread that inject into the queue
+ * alias: CommandQueueThreadSafe
+ */
+class CommandQueueTS {
+public:
+	void register_handler(GameCommand command, CommandHandler handler) {
+		guard g(m_mtx);
+		m_q.register_handler(command,handler);
+	}
+	void schedule(CommandHandler command, Milliseconds when = 0.f) {
+		guard g(m_mtx);
+		m_q.schedule(command,when);
+	}
+	// update is typically called from one controlling thread
+	void update(Milliseconds dt) {
+		guard g(m_mtx);
+		m_q.update(dt);
+	}
+private:
+	std::mutex m_mtx;
+
+	CommandQueue m_q;
+};
+
+};
